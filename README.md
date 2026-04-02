@@ -16,4 +16,27 @@
 
 ## Instruções de utilização
 
-[Assim que a primeira versão do sistema estiver disponível, deverá complementar com as instruções de utilização. Descreva como instalar eventuais dependências e como executar a aplicação.]
+## Rodar projeto
+
+### Backend
+- Comando para rodar backend: ./mvnw spring-boot:run
+
+### Frontend
+- Comando para rodar frontend: npm run dev
+
+## Dependencias
+
+### Backend
+- Dependencias devem ser inseridas no arquivo [Pom.xml](./Codigo/backend/pom.xml) e subidas para o repositório
+
+### Frontend
+- Dependencias devem instaladas pelo comando **npm install**
+- Ao instalar, será criado uma pasta chamada **node_modules** na raíz do projeto frontend
+
+## Banco de Dados
+
+- Optamos pelo PostgreSQL por ser moderno e bastante utilizado em projetos robustos
+- Utilizaremos DOCKER para configurar o banco de dados e integrá-lo ao projeto Spring Boot, foi criado o arquivo
+[Docker](./Codigo/backend/docker-compose.yml)
+
+
