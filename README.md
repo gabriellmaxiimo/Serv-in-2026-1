@@ -39,4 +39,9 @@
 - Utilizaremos DOCKER para configurar o banco de dados e integrá-lo ao projeto Spring Boot, foi criado o arquivo
 [Docker](./Codigo/backend/docker-compose.yml)
 
+## Env/Application.properties
+- É necessário que seja criado um arquivo chamado **application.properties** em [Backend](./Codigo/backend/) 
+- Foi criado um arquivo chamado application.properties.example onde será colocado o que deve ter no arquivo **application.properties**
+
+
 
