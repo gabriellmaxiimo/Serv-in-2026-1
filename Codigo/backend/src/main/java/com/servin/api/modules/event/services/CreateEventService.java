@@ -36,7 +36,7 @@ public class CreateEventService {
             );
 
             if (eventExists) {
-                throw new IllegalArgumentException("Já existe um evento ativo com este nome.");
+                throw new IllegalArgumentException("O evento ja está criado para esta data.");
             }
 
             Event event = new Event();
