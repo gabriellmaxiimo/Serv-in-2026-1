@@ -30,15 +30,14 @@ public class CreateEventService {
                 throw new IllegalArgumentException("A data final não pode ser anterior à data inicial.");
             }
 
-            boolean eventExists = eventRepository.existsBySimilarName(
-                createEventDto.name().trim()
+            boolean eventExists = eventRepository.existsBySimilarNameAndInitialDate(
+                createEventDto.name().trim(),
+                start
             );
 
             if (eventExists) {
                 throw new IllegalArgumentException("Já existe um evento ativo com este nome.");
             }
-
-            System.out.println("eventExists: " + eventExists);
 
             Event event = new Event();
             event.setName(createEventDto.name());
