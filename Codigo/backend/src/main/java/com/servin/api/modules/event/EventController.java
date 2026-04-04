@@ -1,4 +1,4 @@
-package com.servin.api.modules.event.controllers;
+package com.servin.api.modules.event;
 
 import com.servin.api.modules.event.dto.CreateEventDto;
 import com.servin.api.modules.event.services.CreateEventService;

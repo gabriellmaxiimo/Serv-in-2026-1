@@ -1,6 +1,6 @@
 # [Nome do projeto]
 
-[Escreva um ou dois  parágrafo resumindo o objetivo do seu projeto.]
+[Escreva um ou dois parágrafo resumindo o objetivo do seu projeto.]
 
 ## Alunos integrantes da equipe
 
@@ -14,7 +14,17 @@
 * [Nome completo do professor 1]
 * [Nome completo do professor 2]
 
-## Instruções de utilização
+## Principais tecnologias
+Para garantir escalabilidade e manutenção simplificada, utilizamos o que há de mais moderno no ecossistema Web:
+
+**React**: Biblioteca base para construção de interfaces modulares.
+**TypeScript**: Tipagem estática para maior segurança e produtividade no desenvolvimento.
+**Vite**: Tooling de última geração para um build extremamente rápido.
+**Styled Components**: Para estilização moderna e responsiva.
+**Integração Restful**: Consumo de API desenvolvida com Springboot.
+
+## Arquitetura
+O projeto segue padrões de Clean Code e organização por módulos, facilitando a separação de responsabilidades entre componentes de UI, hooks de lógica e serviços de API.
 
 ## Rodar projeto
 
@@ -40,8 +50,13 @@
 [Docker](./Codigo/backend/docker-compose.yml)
 
 ## Env/Application.properties
+
+### Backend
 - É necessário que seja criado um arquivo chamado **application.properties** em [Backend](./Codigo/backend/) 
 - Foi criado um arquivo chamado application.properties.example onde será colocado o que deve ter no arquivo **application.properties**
+
+### Frontend
+- Seguindo a mesma lógica que o backend, foi criado um arquivo chamado **.env** para que seja armazenado as variáveis de ambiente
 
 
 
