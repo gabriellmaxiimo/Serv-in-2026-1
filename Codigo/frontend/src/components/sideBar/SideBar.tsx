@@ -67,7 +67,7 @@ const SideBar: React.FC = () => {
           }}
         >
           {!collapsed ? (
-            <a href="/flights">
+            <a href="/events">
               <img
                 src={logoServin}
                 alt="Logo GMS"
