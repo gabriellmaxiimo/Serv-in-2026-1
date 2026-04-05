@@ -60,6 +60,7 @@ const CreateEvent: React.FC = () => {
           <DatePicker 
             format="DD/MM/YYYY" 
             onChange={(date) => date && setStartDate(date)}
+            placeholder='Data inicial'
           />
         </Form.Item>
 
@@ -74,7 +75,10 @@ const CreateEvent: React.FC = () => {
         >
           <DatePicker 
             format="DD/MM/YYYY" 
-            onChange={(date) => setEndDate(date)}/>
+            onChange={(date) => setEndDate(date)}
+            placeholder='Data final'
+          />
+            
         </Form.Item>
       </div>
 
