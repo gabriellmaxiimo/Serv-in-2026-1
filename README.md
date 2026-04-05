@@ -49,6 +49,8 @@ O projeto segue padrões de Clean Code e organização por módulos, facilitando
 - Utilizaremos DOCKER para configurar o banco de dados e integrá-lo ao projeto Spring Boot, foi criado o arquivo
 [Docker](./Codigo/backend/docker-compose.yml)
 
+- Comando para gerar imagem: **docker-compose up --build**
+
 ## Env/Application.properties
 
 ### Backend
