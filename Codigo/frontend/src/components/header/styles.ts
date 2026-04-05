@@ -2,10 +2,10 @@ import styled from "styled-components";
 
 export const HeaderContainer = styled.div`
   background-color: #050521;
-  padding: 20px 5%; /* Adicionei 5% aqui para alinhar com a logo */
+  padding: 20px 5%;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centraliza as linhas horizontalmente */
+  align-items: center;
   gap: 20px;
   width: 100%;
   box-sizing: border-box;
@@ -18,15 +18,15 @@ export const TopBar = styled.div`
   width: 100%;
   max-width: 1200px;
   color: white;
-  margin: 0 auto 20px auto; /* Centraliza a barra e aumenta o espaço inferior */
-  padding: 0 20px; /* Evita que o conteúdo cole nas bordas em telas menores */
+  margin: 0 auto 20px auto;
+  padding: 0 20px;
 
   .logo {
     display: flex;
     align-items: center;
 
     img {
-      width: 140px; /* Aumentei de 100px para 140px para dar mais presença */
+      width: 140px;
       height: auto;
       object-fit: contain;
     }
@@ -34,7 +34,7 @@ export const TopBar = styled.div`
 
   .user-menu {
     display: flex;
-    gap: 25px; /* Aumentei um pouco o espaçamento entre os itens */
+    gap: 25px;
     align-items: center;
     font-size: 0.95rem;
 
@@ -46,7 +46,7 @@ export const TopBar = styled.div`
       transition: opacity 0.2s;
 
       &:hover {
-        opacity: 0.8; /* Feedback visual ao passar o mouse */
+        opacity: 0.8;
       }
     }
   }

@@ -101,7 +101,7 @@ const SideBar: React.FC = () => {
         items={items}
         onClick={onMenuClick}
         selectedKeys={[
-          window.location.pathname === "/flights"
+          window.location.pathname === "/events"
             ? "1"
             : window.location.pathname === "/my-purchases"
               ? "2"
@@ -111,7 +111,7 @@ const SideBar: React.FC = () => {
                   ? "4"
                   : window.location.pathname === "/settings"
                     ? "5"
-                    : "1",
+                    : "",
         ]}
       />
     </SiderStyle>

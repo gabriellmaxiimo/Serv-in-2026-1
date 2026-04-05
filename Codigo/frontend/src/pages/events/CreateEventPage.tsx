@@ -1,9 +1,10 @@
 import { Layout, ConfigProvider } from "antd";
-import HeaderFlightsComponent from "../../components/header/HeaderComponent";
+import HeaderEventComponent from "../../components/header/HeaderComponent";
+import CreateEvent from "../../components/createEvent/CreateEvent";
 
 const { Content } = Layout;
 
-const AppLayout = () => {
+const CreateEventPage = () => {
   return (
     <ConfigProvider
       theme={{
@@ -14,7 +15,7 @@ const AppLayout = () => {
     >
       <Layout style={{ minHeight: "100vh" }}>
         <Layout>
-          <HeaderFlightsComponent />
+          <HeaderEventComponent />
           <Content
             style={{
               margin: "24px 16px",
@@ -24,6 +25,7 @@ const AppLayout = () => {
               overflowY: "auto",
             }}
           >
+            <CreateEvent />
           </Content>
         </Layout>
       </Layout>
@@ -31,4 +33,4 @@ const AppLayout = () => {
   );
 };
 
-export default AppLayout;
+export default CreateEventPage;

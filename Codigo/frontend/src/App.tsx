@@ -4,6 +4,8 @@ import { Content } from "antd/es/layout/layout";
 import { GlobalStyle } from "./components/global-style";
 import SideBar from "./components/sideBar/SideBar";
 import SupportButton from "./components/supportButton/SupportButton";
+import CreateEventPage from "./pages/events/CreateEventPage";
+import ListEventPage from "./pages/events/ListEventPage";
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
               <Content style={{ background: "#fff" }}>
                 <Routes>
                   <Route path="/" element={<div>Página Inicial</div>} />
+                  <Route path="/events" element={<ListEventPage />} />
+                  <Route path="/events/create" element={<CreateEventPage />} />
                 </Routes>
               </Content>
             </Layout>
