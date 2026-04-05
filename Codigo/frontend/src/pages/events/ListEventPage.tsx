@@ -1,5 +1,6 @@
 import { Layout, ConfigProvider } from "antd";
 import HeaderEventComponent from "../../components/header/HeaderComponent";
+import ListEvent from "../../components/listEvent/ListEvent";
 
 const { Content } = Layout;
 
@@ -24,6 +25,7 @@ const ListEventPage = () => {
               overflowY: "auto",
             }}
           >
+            <ListEvent></ListEvent>
           </Content>
         </Layout>
       </Layout>

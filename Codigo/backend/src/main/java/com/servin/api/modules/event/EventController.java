@@ -1,8 +1,14 @@
 package com.servin.api.modules.event;
 
+import com.servin.api.model.Event;
 import com.servin.api.modules.event.dto.CreateEventDto;
 import com.servin.api.modules.event.services.CreateEventService;
+import com.servin.api.modules.event.services.ListEventService;
+
 import jakarta.validation.Valid;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +21,9 @@ public class EventController {
     @Autowired
     private CreateEventService createEventService;
 
+    @Autowired
+    private ListEventService listEventService;
+
     @PostMapping
     public ResponseEntity<String> create(@Valid @RequestBody CreateEventDto createEventDto) {
         try {
@@ -22,6 +31,16 @@ public class EventController {
             return ResponseEntity.status(HttpStatus.CREATED).body("Evento criado com sucesso!");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Event>> listAllEvents() {
+        try {
+            List<Event> events = listEventService.execute();
+            return ResponseEntity.ok(events);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

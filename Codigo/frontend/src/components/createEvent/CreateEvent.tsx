@@ -24,7 +24,15 @@ const CreateEvent: React.FC = () => {
   };
 
   return (
-    <Form onFinish={fetchEvent}>
+    <Form 
+      onFinish={fetchEvent} 
+      style={{ 
+        margin: 0, 
+        backgroundColor: "#dfdfdf", 
+        padding: "30px", 
+        borderRadius: "10px"
+      }}
+    >
       <Form.Item 
         layout="vertical" 
         label="Nome do Evento" 
@@ -60,6 +68,7 @@ const CreateEvent: React.FC = () => {
           <DatePicker 
             format="DD/MM/YYYY" 
             onChange={(date) => date && setStartDate(date)}
+            placeholder='Data inicial'
           />
         </Form.Item>
 
@@ -74,7 +83,10 @@ const CreateEvent: React.FC = () => {
         >
           <DatePicker 
             format="DD/MM/YYYY" 
-            onChange={(date) => setEndDate(date)}/>
+            onChange={(date) => setEndDate(date)}
+            placeholder='Data final'
+          />
+            
         </Form.Item>
       </div>
 
