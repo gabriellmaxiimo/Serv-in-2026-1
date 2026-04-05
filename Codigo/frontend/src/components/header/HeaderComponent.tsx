@@ -1,6 +1,6 @@
-import { LeftOutlined } from "@ant-design/icons";
-import Button from "../button/Button";
+import { LeftOutlined, PlusOutlined } from "@ant-design/icons";
 import { HeaderContainer, SearchContainer } from "./styles";
+import { Button } from "antd";
 
 const HeaderEventComponent = () => {
   return (
@@ -20,6 +20,8 @@ const HeaderEventComponent = () => {
           {window.location.pathname === "/events" && (
             <Button 
               onClick={() => (window.location.href = "/events/create")}
+              type="primary"
+              icon={<PlusOutlined />}
             >
               Criar Evento
             </Button>
@@ -27,10 +29,12 @@ const HeaderEventComponent = () => {
 
           {window.location.pathname === "/events/create" && (
             <Button 
-              onClick={() => (window.history.back())} 
-              disabled={false} 
+              onClick={() => (window.location.href = "/events")}
               children={"Voltar"}
-              icon={<LeftOutlined />}>
+              icon={<LeftOutlined />}
+              type="primary"
+            >
+              
             </Button>
           )}
         </SearchContainer>
