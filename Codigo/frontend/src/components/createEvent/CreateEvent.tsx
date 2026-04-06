@@ -1,5 +1,5 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, DatePicker, Form, Input, Upload } from 'antd';
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, DatePicker, Form, Input, message, Upload, type GetProp, type UploadProps } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import React from 'react';
 import useEvent from '../../hooks/event/useEvent';
@@ -12,8 +12,11 @@ const CreateEvent: React.FC = () => {
     setStartDate,
     setEndDate,
     setLocation,
-    setImageUrl,
-    fetchEvent
+    fetchEvent,
+    beforeUpload,
+    handleChange,
+    imageUrl,
+    loading
   } = useEvent()
 
   const normFile = (e: any) => {
@@ -22,6 +25,13 @@ const CreateEvent: React.FC = () => {
     }
     return e?.fileList;
   };
+
+  const uploadButton = (
+        <button style={{ border: 0, background: 'none' }} type="button">
+        {loading ? <LoadingOutlined /> : <PlusOutlined />}
+        <div style={{ marginTop: 8 }}>Upload</div>
+        </button>
+    );
 
   return (
     <Form 
@@ -110,21 +120,25 @@ const CreateEvent: React.FC = () => {
         valuePropName="fileList" 
         getValueFromEvent={normFile}
       >
-        <Upload 
-          action="/upload.do" 
-          listType="picture-card" 
-          onChange={((value) => setImageUrl(value))}
+        <Upload
+          name="avatar"
+          listType="picture-card"
+          className="avatar-uploader"
+          showUploadList={false}
+          customRequest={({ onSuccess }) => {
+            setTimeout(() => {
+              if (onSuccess) onSuccess("ok");
+            }, 0);
+          }}
+          beforeUpload={beforeUpload}
+          onChange={handleChange}
         >
-          <button
-            style={{ color: 'inherit', cursor: 'inherit', border: 0, background: 'none' }}
-            type="button"
-          >
-            <PlusOutlined />
-            <div style={{ marginTop: 8 }}>
-              Upload
-            </div>
-          </button>
-        </Upload>
+          {imageUrl ? (
+            <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
+          ) : (
+            uploadButton
+          )}
+        </Upload> 
       </Form.Item>
 
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
