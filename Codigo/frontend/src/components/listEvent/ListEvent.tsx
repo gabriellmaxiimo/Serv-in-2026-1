@@ -105,7 +105,12 @@ const ListEvent: React.FC = () => {
       }}
     >
         {!loading ? (
-            <Table columns={columns} dataSource={events} loading={loading} />
+            <Table 
+                columns={columns} 
+                dataSource={events} 
+                loading={loading} 
+                locale={{ emptyText: <Empty description="Nenhum evento encontrado" /> }}
+            />
         ) : (
             <div 
                 style={{ 
@@ -116,23 +121,6 @@ const ListEvent: React.FC = () => {
                 }}
             >
                 <LoadingOutlined />
-            </div>
-        )}
-
-        {events?.length === 0 && !loading && (
-            <div 
-                style={{ 
-                    display: "flex", 
-                    justifyContent: "center", 
-                    alignItems: "center", 
-                    height: "100%" 
-                }}
-            >
-                <Empty 
-                    description="Nenhum evento encontrado" 
-                    imageStyle={{ height: "100%" }} 
-                    image={Empty.PRESENTED_IMAGE_DEFAULT}
-                />
             </div>
         )}
     </Form>
