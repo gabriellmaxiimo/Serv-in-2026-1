@@ -21,7 +21,7 @@ public class Event {
 
     private String name;
 
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String description;
 
     private LocalDateTime initialDate;
@@ -31,7 +31,7 @@ public class Event {
 
     private String location;
 
-    @Column(name = "image_url", nullable = true)
+    @Column(name = "image_url", nullable = true, columnDefinition = "TEXT")
     private String imageUrl;
 
     @Enumerated(EnumType.STRING)
