@@ -19,6 +19,7 @@ import {
   MoreOutlined,
 } from "@ant-design/icons";
 import { Modal } from "antd";
+import { deleteEvent } from "../../services/events/integration";
 
 const ListEvent: React.FC = () => {
   const { events, loading } = useListEvent();
@@ -106,8 +107,7 @@ const ListEvent: React.FC = () => {
                 okType: "danger",
                 cancelText: "Não",
                 onOk() {
-                  // TODO: PARA QUEM FOR FAZER O DELETE, CHAMAR AQUI A FUNÇÃO DE DELETE DO HOOK E PASSAR O ID DO EVENTO
-                  console.log("Deletar evento com ID:", record.id);
+                  deleteEvent(record.id);
                 },
               });
             },

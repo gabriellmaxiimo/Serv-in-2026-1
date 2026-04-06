@@ -21,4 +21,15 @@ export const listAllEvents = async () => {
         console.error('Erro ao listar eventos:', error);
         throw error;
     }
+    
+}
+
+export const deleteEvent = async (eventId: number) => {
+    try {
+        const response = await axios.delete(`${API_BASE_URL}/events/${eventId}`);   
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao deletar evento:', error);
+        throw error;
+    }
 }
