@@ -4,6 +4,7 @@ import {
   CloseCircleFilled,
   DeleteOutlined,
   EditOutlined,
+  EyeFilled,
   LoadingOutlined,
   MoreOutlined,
 } from "@ant-design/icons";
@@ -62,6 +63,13 @@ const ListEvent: React.FC = () => {
       key: "actionButton",
       render: (_: any, record: any) => {
         const items: MenuProps["items"] = [
+          {
+            key: "view",
+            label: "Visualizar",
+            icon: <EyeFilled />,
+            // TODO: PARA QUEM FOR FAZER O VIEW, CHAMAR AQUI A FUNÇÃO DE VIEW DO HOOK E PASSAR O ID DO EVENTO
+            onClick: () => console.log("Visualizar evento com ID:", record.id),
+          },
           {
             key: "edit",
             label: "Editar",
