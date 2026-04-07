@@ -3,7 +3,6 @@ import {
   DatePicker,
   Dropdown,
   Empty,
-  Form,
   Input,
   Select,
   Table,
@@ -15,14 +14,21 @@ import {
   DeleteOutlined,
   EditOutlined,
   EyeFilled,
-  LoadingOutlined,
   MoreOutlined,
 } from "@ant-design/icons";
 import { Modal } from "antd";
-import { deleteEvent } from "../../services/events/integration";
 
 const ListEvent: React.FC = () => {
-  const { events, loading } = useListEvent();
+  const { 
+    events, 
+    loading, 
+    setFilterName, 
+    setFilterLocation, 
+    setFilterInitialDate, 
+    setFilterFinalDate, 
+    setFilterStatus,
+    deleteEventById
+  } = useListEvent();
 
   const { confirm } = Modal;
 
@@ -107,7 +113,7 @@ const ListEvent: React.FC = () => {
                 okType: "danger",
                 cancelText: "Não",
                 onOk() {
-                  deleteEvent(record.id);
+                  deleteEventById(record.id);
                 },
               });
             },
@@ -123,58 +129,49 @@ const ListEvent: React.FC = () => {
     },
   ];
 
-  const handleStatusFilterChange = (value: string[]) => {
-    return events.filter((event) => value.includes(event.status));
-  };
-
-  return (
+return (
     <>
-      <div
-        style={{
-          width: "100%",
-          marginBottom: "20px",
-          display: "flex",
-          gap: "10px",
-        }}
-      >
-        <Input placeholder="Digite o nome do evento" onChange={() => {}} />
-        <Input placeholder="Digite a localização" onChange={() => {}} />
-        <DatePicker style={{ width: "100%" }} placeholder="Data de Início" />
-        <DatePicker style={{ width: "100%" }} placeholder="Data de Término" />
+      
+      <div style={{ width: "100%", marginBottom: "20px", display: "flex", gap: "10px" }}>
+        <Input 
+          placeholder="Nome do evento" 
+          onChange={(e) => setFilterName(e.target.value)} 
+        />
+        <Input 
+          placeholder="Localização" 
+          onChange={(e) => setFilterLocation(e.target.value)} 
+        />
+        <DatePicker 
+          style={{ width: "100%" }} 
+          placeholder="A partir de" 
+          onChange={(date) => setFilterInitialDate(date ? date.toISOString() : null)} 
+          format="DD/MM/YYYY"
+        />
+        <DatePicker 
+          style={{ width: "100%" }} 
+          placeholder="Até" 
+          onChange={(date) => setFilterFinalDate(date ? date.toISOString() : null)} 
+          format="DD/MM/YYYY"
+        />
 
         <Select
           mode="multiple"
           allowClear
           style={{ width: "100%" }}
           placeholder="Status"
-          defaultValue={[]}
-          onChange={handleStatusFilterChange}
+          onChange={(value) => setFilterStatus(value)}
           options={statusOptions}
-          size="middle"
-          styles={{}}
         />
       </div>
-      {!loading ? (
-        <Table
-          columns={columns}
-          dataSource={events}
-          loading={loading}
-          locale={{
-            emptyText: <Empty description="Nenhum evento encontrado" />,
-          }}
-        />
-      ) : (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-          }}
-        >
-          <LoadingOutlined />
-        </div>
-      )}
+
+      <Table
+        columns={columns}
+        dataSource={events}
+        loading={loading}
+        rowKey="id"
+        locale={{ emptyText: <Empty description="Nenhum evento encontrado" /> }}
+      />
+      
     </>
   );
 };
