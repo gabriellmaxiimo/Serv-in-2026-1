@@ -1,3 +1,5 @@
+
+import { useState } from "react";
 import {
   Button,
   DatePicker,
@@ -29,6 +31,9 @@ const ListEvent: React.FC = () => {
     setFilterStatus,
     deleteEventById
   } = useListEvent();
+
+  const [selectedEvent, setSelectedEvent] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { confirm } = Modal;
 
@@ -91,7 +96,10 @@ const ListEvent: React.FC = () => {
             label: "Visualizar",
             icon: <EyeFilled />,
             // TODO: PARA QUEM FOR FAZER O VIEW, CHAMAR AQUI O COMPONENTE DE VISUALIZAÇÃO E PASSAR O ID DO EVENTO
-            onClick: () => console.log("Visualizar evento com ID:", record.id),
+            onClick: () => {
+              setSelectedEvent(record);
+              setIsModalOpen(true);
+            },
           },
           {
             key: "edit",
@@ -171,8 +179,25 @@ return (
         rowKey="id"
         locale={{ emptyText: <Empty description="Nenhum evento encontrado" /> }}
       />
-      
+      <Modal
+  title="Detalhes do Evento"
+  open={isModalOpen}
+  onCancel={() => setIsModalOpen(false)}
+  footer={null}
+>
+  {selectedEvent && (
+    <>
+      <p><b>Nome:</b> {selectedEvent.name}</p>
+      <p><b>Descrição:</b> {selectedEvent.description}</p>
+      <p><b>Localização:</b> {selectedEvent.location}</p>
+      <p><b>Data Inicial:</b> {new Date(selectedEvent.initialDate).toLocaleString("pt-BR")}</p>
+      <p><b>Data Final:</b> {selectedEvent.finalDate ? new Date(selectedEvent.finalDate).toLocaleString("pt-BR") : "-"}</p>
+      <p><b>Status:</b> {selectedEvent.status}</p>
     </>
+  )}
+</Modal>
+
+</>   
   );
 };
 
