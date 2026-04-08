@@ -1,64 +1,84 @@
-# [Nome do projeto]
+# SERV’IN
 
-[Escreva um ou dois parágrafo resumindo o objetivo do seu projeto.]
+O **SERV’IN** é um sistema desenvolvido no contexto da disciplina de Engenharia de Software da PUC Minas com o objetivo principal de auxiliar e otimizar o processo de credenciamento de trabalhadores em eventos.
 
-## Alunos integrantes da equipe
+Atualmente, esse processo é realizado por meio de planilhas compartilhadas, o que torna a operação:
+- Lenta  
+- Sujeita a erros  
+- Com risco de sobrescrita de dados  
+- Com dificuldades no acesso simultâneo  
 
-* [Nome completo do aluno 1]
-* [Nome completo do aluno 2]
-* [Nome completo do aluno 3]
-* [Nome completo do aluno 4]
+Diante disso, o sistema propõe **centralizar e automatizar todas as etapas do credenciamento**, tornando o processo mais:
+- Ágil  
+- Organizado  
+- Confiável  
 
-## Professores responsáveis
+A solução permite:
+- Cadastro e gerenciamento de funcionários  
+- Criação de eventos  
+- Organização de equipes  
+- Controle de presença  
+- Importação e exportação de dados  
 
-* [Nome completo do professor 1]
-* [Nome completo do professor 2]
+---
 
-## Principais tecnologias
-Para garantir escalabilidade e manutenção simplificada, utilizamos o que há de mais moderno no ecossistema Web:
+## 👥 Alunos integrantes da equipe
 
-**React**: Biblioteca base para construção de interfaces modulares.
-**TypeScript**: Tipagem estática para maior segurança e produtividade no desenvolvimento.
-**Vite**: Tooling de última geração para um build extremamente rápido.
-**Styled Components**: Para estilização moderna e responsiva.
-**Integração Restful**: Consumo de API desenvolvida com Springboot.
+- Iago de Lara Cotta Monteiro  
+- João Vitor Heleno Marinho  
+- Gabriel Máximo de Castro  
+- Luan Henrique  
+- Ítalo Vinhas Antunes Silva  
+- Pedro Vieira  
 
-## Arquitetura
-O projeto segue padrões de Clean Code e organização por módulos, facilitando a separação de responsabilidades entre componentes de UI, hooks de lógica e serviços de API.
+---
 
-## Rodar projeto
+## 👨‍🏫 Professores responsáveis
 
-### Backend
-- Comando para rodar backend: ./mvnw spring-boot:run
+- Michelle Hanne  
+- Luiz Carlos  
+- Nelson  
 
-### Frontend
-- Comando para rodar frontend: npm run dev
+---
 
-## Dependencias
+## 📘 Instruções de utilização
 
-### Backend
-- Dependencias devem ser inseridas no arquivo [Pom.xml](./Codigo/backend/pom.xml) e subidas para o repositório
+Assim que a primeira versão do sistema estiver disponível, esta seção deverá ser atualizada com:
 
-### Frontend
-- Dependencias devem instaladas pelo comando **npm install**
-- Ao instalar, será criado uma pasta chamada **node_modules** na raíz do projeto frontend
+- Passo a passo de instalação  
+- Configuração de dependências  
+- Execução da aplicação  
 
-## Banco de Dados
+---
 
-- Optamos pelo PostgreSQL por ser moderno e bastante utilizado em projetos robustos
-- Utilizaremos DOCKER para configurar o banco de dados e integrá-lo ao projeto Spring Boot, foi criado o arquivo
-[Docker](./Codigo/backend/docker-compose.yml)
+## 🚀 Principais tecnologias
 
-- Comando para gerar imagem: **docker-compose up --build**
+Para garantir escalabilidade e manutenção simplificada, utilizamos tecnologias modernas do ecossistema web:
 
-## Env/Application.properties
+- **React** → Construção de interfaces modulares  
+- **TypeScript** → Tipagem estática para maior segurança  
+- **Vite** → Build rápido e eficiente  
+- **Styled Components** → Estilização moderna e responsiva  
+- **Integração RESTful** → Consumo de API desenvolvida com Spring Boot  
 
-### Backend
-- É necessário que seja criado um arquivo chamado **application.properties** em [Backend](./Codigo/backend/) 
-- Foi criado um arquivo chamado application.properties.example onde será colocado o que deve ter no arquivo **application.properties**
+---
 
-### Frontend
-- Seguindo a mesma lógica que o backend, foi criado um arquivo chamado **.env** para que seja armazenado as variáveis de ambiente
+## 🏗️ Arquitetura
 
+O projeto segue boas práticas de desenvolvimento, incluindo:
 
+- Clean Code  
+- Organização por módulos  
+- Separação de responsabilidades:
+  - Componentes de UI  
+  - Hooks de lógica  
+  - Serviços de API  
 
+---
+
+## ▶️ Rodar o projeto
+
+### 🔧 Backend
+
+```bash
+./mvnw spring-boot:run
