@@ -21,7 +21,6 @@ public class EditEmployeeService {
             Employee employee = employeeRepository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Funcionário não encontrado."));
 
-            // Validação básica
             if (editEmployeeDto.name() == null || editEmployeeDto.name().trim().isEmpty()) {
                 throw new IllegalArgumentException("O nome é obrigatório.");
             }
@@ -30,13 +29,9 @@ public class EditEmployeeService {
                 throw new IllegalArgumentException("O cargo é obrigatório.");
             }
 
-            // Atualização dos campos
             employee.setName(editEmployeeDto.name().trim());
             employee.setRole(editEmployeeDto.role().trim());
-
-            // Se você tiver campo updatedAt no model, pode usar:
-            // employee.setUpdatedAt(LocalDateTime.now());
-
+            
             employeeRepository.save(employee);
 
         } catch (Exception e) {
