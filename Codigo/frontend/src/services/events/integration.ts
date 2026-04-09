@@ -20,8 +20,7 @@ export const listAllEvents = async () => {
     } catch (error) {
         console.error('Erro ao listar eventos:', error);
         throw error;
-    }
-    
+    }   
 }
 
 export const deleteEvent = async (eventId: number) => {
