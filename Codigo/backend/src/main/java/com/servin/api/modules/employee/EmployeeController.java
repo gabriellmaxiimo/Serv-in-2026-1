@@ -16,6 +16,10 @@ import com.servin.api.modules.employee.dto.CreateEmployeeDto;
 import com.servin.api.modules.employee.dto.EditEmployeeDto;
 import com.servin.api.modules.employee.services.CreateEmployeeService;
 import com.servin.api.modules.employee.services.EditEmployeeService;
+import org.springframework.web.bind.annotation.GetMapping;
+import java.util.List;
+import com.servin.api.model.Employee;
+import com.servin.api.modules.employee.services.ListEmployeeService;
 
 import jakarta.validation.Valid;
 
@@ -28,6 +32,14 @@ public class EmployeeController {
 
     @Autowired
     private EditEmployeeService editEmployeeService;
+
+    @Autowired
+    private ListEmployeeService listEmployeeService;
+
+    @GetMapping
+    public ResponseEntity<List<Employee>> listAll() {
+        return ResponseEntity.ok(listEmployeeService.execute());
+    }
 
     @PostMapping
     public ResponseEntity<String> create(@Valid @RequestBody CreateEmployeeDto dto) {
