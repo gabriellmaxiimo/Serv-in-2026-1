@@ -95,7 +95,6 @@ const ListEvent: React.FC = () => {
             key: "view",
             label: "Visualizar",
             icon: <EyeFilled />,
-            // TODO: PARA QUEM FOR FAZER O VIEW, CHAMAR AQUI O COMPONENTE DE VISUALIZAÇÃO E PASSAR O ID DO EVENTO
             onClick: () => {
               setSelectedEvent(record);
               setIsModalOpen(true);

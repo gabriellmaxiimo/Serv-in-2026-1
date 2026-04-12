@@ -4,6 +4,7 @@ import {
   LogoutOutlined,
   ExclamationCircleFilled,
   EnvironmentOutlined,
+  TeamOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
 import { SiderStyle } from "./style";
@@ -12,6 +13,7 @@ import { logoServin } from "../../assets";
 
 const items = [
   { key: "1", icon: <EnvironmentOutlined />, label: "Eventos" },
+  { key: "2", icon: <TeamOutlined />, label: "Funcionários" },
   {
     key: "6",
     icon: <LogoutOutlined />,
@@ -21,10 +23,12 @@ const items = [
 
 const path = {
   "1": "/events",
+  "2": "/employees",
 };
 
 const onMenuClick = (e: any) => {
   if (e.key === "1") window.location.href = path["1"];
+  if (e.key === "2") window.location.href = path["2"];
   if (e.key === "6") {
     return Modal.confirm({
       title: "Tem certeza que deseja sair?",
@@ -103,7 +107,7 @@ const SideBar: React.FC = () => {
         selectedKeys={[
           window.location.pathname === "/events"
             ? "1"
-            : window.location.pathname === "/my-purchases"
+            : window.location.pathname === "/employees"
               ? "2"
               : window.location.pathname === "/history"
                 ? "3"
