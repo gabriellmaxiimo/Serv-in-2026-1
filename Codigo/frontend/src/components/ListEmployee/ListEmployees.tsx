@@ -8,6 +8,7 @@ import {
   Input,
   Table,
   type MenuProps,
+  Modal,
 } from "antd";
 import useListEmployees from "../../hooks/employees/useListEmployees";
 import {
@@ -17,7 +18,6 @@ import {
   EyeFilled,
   MoreOutlined,
 } from "@ant-design/icons";
-import { Modal } from "antd";
 
 const ListEmployees: React.FC = () => {
   const { 
@@ -29,13 +29,17 @@ const ListEmployees: React.FC = () => {
     setFilterEmail, 
     setFilterPhone,
     setFilterRole,
-    deleteEmployeeById
+    deleteEmployeeById,
+    fetchEmployees,
+    fetchUpdateEmployee
   } = useListEmployees();
 
   console.log(employees);
 
   const [selectedEmployee, setSelectedEmployee] = useState<any>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [editingEmployee, setEditingEmployee] = useState<any>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const { confirm } = Modal;
 
@@ -81,15 +85,17 @@ const ListEmployees: React.FC = () => {
             icon: <EyeFilled />,
             onClick: () => {
               setSelectedEmployee(record);
-              setIsModalOpen(true);
+              setIsViewModalOpen(true);
             },
           },
           {
             key: "edit",
             label: "Editar",
             icon: <EditOutlined />,
-            // TODO: PARA QUEM FOR FAZER O EDIT, CHAMAR AQUI O COMPONENTE DE EDIÇÃO E PASSAR O ID DO EVENTO
-            onClick: () => console.log("Editar Funcionario com ID:", record.id),
+            onClick: () => {
+              setEditingEmployee({ ...record });
+              setIsEditModalOpen(true);
+            }
           },
           {
             key: "delete",
@@ -165,21 +171,99 @@ return (
       />
       <Modal
         title="Detalhes do Funcionario"
-        open={isModalOpen}
-        onCancel={() => setIsModalOpen(false)}
+        open={isViewModalOpen}
+        onCancel={() => setIsViewModalOpen(false)}
         footer={null}
       >
         {selectedEmployee && (
-    <>
-      <p><b>Nome:</b> {selectedEmployee.name}</p>
-      <p><b>CPF:</b> {selectedEmployee.cpf}</p>
-      <p><b>Data de Nascimento:</b> {new Date(selectedEmployee.birthDate).toLocaleString("pt-BR")}</p>
-      <p><b>E-Mail:</b> {selectedEmployee.email}</p>
-      <p><b>Telefone:</b> {selectedEmployee.phone}</p>
-      <p><b>Cargo:</b> {selectedEmployee.role}</p>
-    </>
-  )}
-</Modal>
+          <>
+            <p><b>Nome:</b> {selectedEmployee.name}</p>
+            <p><b>CPF:</b> {selectedEmployee.cpf}</p>
+            <p><b>Data de Nascimento:</b> {new Date(selectedEmployee.birthDate).toLocaleString("pt-BR")}</p>
+            <p><b>E-Mail:</b> {selectedEmployee.email}</p>
+            <p><b>Telefone:</b> {selectedEmployee.phone}</p>
+            <p><b>Cargo:</b> {selectedEmployee.role}</p>
+          </>
+        )}
+      </Modal>
+
+      <Modal
+        title="Editar Funcionario"
+        open={isEditModalOpen}
+        onCancel={() => {
+          setIsEditModalOpen(false);
+          setEditingEmployee(null);
+        }}
+        okText="Salvar"
+        onOk={async () => {
+          await fetchUpdateEmployee(editingEmployee.id, editingEmployee);
+
+          await fetchEmployees();
+
+          setIsEditModalOpen(false);
+          setEditingEmployee(null);
+        }}
+      >
+        {editingEmployee && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <Input
+            value={editingEmployee.name}
+            onChange={(e) =>
+              setEditingEmployee({
+                ...editingEmployee,
+                name: e.target.value,
+              })
+            }
+             placeholder="Nome"
+           />
+
+          <Input
+            value={editingEmployee.cpf}
+            onChange={(e) =>
+              setEditingEmployee({
+              ...editingEmployee,
+                cpf: e.target.value,
+              })
+            }
+            placeholder="CPF"
+          />
+
+          <Input
+            value={editingEmployee.email}
+            onChange={(e) =>
+              setEditingEmployee({
+                ...editingEmployee,
+                email: e.target.value,
+              })
+            }
+            placeholder="Email"
+          />
+
+          <Input
+            value={editingEmployee.phone}
+            onChange={(e) =>
+              setEditingEmployee({
+                ...editingEmployee,
+                phone: e.target.value,
+              })
+             }
+            placeholder="Telefone"
+          />
+
+          <Input
+            value={editingEmployee.role}
+            onChange={(e) =>
+              setEditingEmployee({
+                ...editingEmployee,
+                role: e.target.value,
+              })
+            }
+            placeholder="Cargo"
+          />
+          </div>
+        )}
+       </Modal>
+
 
 </>   
   );

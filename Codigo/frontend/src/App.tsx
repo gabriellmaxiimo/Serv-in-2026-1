@@ -6,8 +6,8 @@ import SideBar from "./components/sideBar/SideBar";
 import SupportButton from "./components/supportButton/SupportButton";
 import CreateEventPage from "./pages/events/CreateEventPage";
 import ListEventPage from "./pages/events/ListEventPage";
-import PaginaListaFuncionarios from "./pages/employees/ListEmployeesPage";
-import PaginaCadastroFuncionario from "./pages/employees/PaginaCadastroFuncionario";
+import ListEmployeesPage from "./pages/employees/ListEmployeesPage";
+import CreateEmployeePage from "./pages/employees/CreateEmployeePage";
 
 function App() {
   return (
@@ -25,8 +25,8 @@ function App() {
                   <Route path="/" element={<div>Página Inicial</div>} />
                   <Route path="/events" element={<ListEventPage />} />
                   <Route path="/events/create" element={<CreateEventPage />} />
-                  <Route path="/employees" element={<PaginaListaFuncionarios />} />
-                  <Route path="/employees/create" element={<PaginaCadastroFuncionario />} />
+                  <Route path="/employees" element={<ListEmployeesPage />} />
+                  <Route path="/employees/create" element={<CreateEmployeePage />} />
                 </Routes>
               </Content>
             </Layout>

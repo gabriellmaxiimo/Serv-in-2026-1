@@ -2,6 +2,8 @@ import { useEffect, useState, useMemo, useCallback } from "react";
 import { deleteEmployee, listAllEmployees } from "../../services/employees/integration";
 import { openErrorNotification } from "../../components/errorNotification";
 import { mockEmployee } from "../../mocks/Employee";
+import { updateEmployee } from "../../services/employees/integration";
+import { openSuccessNotification } from "../../components/successNotification";
 
 export interface iEmployee {
     id: string;
@@ -75,12 +77,35 @@ const useListEmployees = () => {
     const deleteEmployeeById = async (id: string) => {
         try {
           await deleteEmployee(id);
+          await fetchEmployees();
           setEmployees((prevEmployee) => prevEmployee.filter((employee) => employee.id !== id));
+          openSuccessNotification("Funcionário deletado com sucesso!");
         } catch (error: any) {
           openErrorNotification(
             "Erro ao deletar funcionario:",
             error.response?.data || "Erro interno",
           );
+        }
+    };
+
+    const fetchUpdateEmployee = async (id: string, data: any) => {
+        setLoading(true);
+    
+        try {
+            const response = await updateEmployee(id, data);
+    
+            if (response) {
+                openSuccessNotification("Funcionário atualizado com sucesso!");
+            }
+    
+            return response;
+        } catch (error: any) {
+            openErrorNotification(
+                "Erro ao atualizar funcionário",
+                error.response?.data?.message || "Erro interno"
+            );
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -94,7 +119,8 @@ const useListEmployees = () => {
         setFilterEmail, 
         setFilterPhone, 
         setFilterRole,
-        deleteEmployeeById
+        deleteEmployeeById,
+        fetchUpdateEmployee
     };
 };
 

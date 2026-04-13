@@ -3,6 +3,7 @@ import { createEmployee } from "../../services/employees/integration";
 import { openErrorNotification } from "../../components/errorNotification";
 import { openSuccessNotification } from "../../components/successNotification";
 import { Dayjs } from "dayjs";
+import { updateEmployee } from "../../services/employees/integration";
 
 const useEmployee = () => {
     const [name, setName] = useState<string>("")
@@ -19,14 +20,14 @@ const useEmployee = () => {
             openErrorNotification("Campos obrigatorio", "Preencha todos os campos.");
             return;
         }
-
+        
         setLoading(true)    
 
         try{
             const response = await createEmployee({
                 name,
                 cpf,
-                birthDate: birthDate.format("YYYY/MM/DD"),
+                birthDate: birthDate.format("YYYY-MM-DD"),
                 email,
                 phone,
                 role
@@ -43,6 +44,28 @@ const useEmployee = () => {
             setLoading(false);
         }
     };
+
+    const fetchUpdateEmployee = async (id: string, data: any) => {
+        setLoading(true);
+
+        try {
+            const response = await updateEmployee(id, data);
+
+            if (response) {
+                openSuccessNotification("Funcionário atualizado com sucesso!");
+            }
+
+            return response;
+        } catch (error: any) {
+            openErrorNotification(
+                "Erro ao atualizar funcionário",
+                error.response?.data?.message || "Erro interno"
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return {
         name, setName,
         cpf, setCPF,
@@ -51,6 +74,7 @@ const useEmployee = () => {
         phone, setPhone,
         role, setRole,
         fetchEmployee,
+        fetchUpdateEmployee,
         loading
     };
 }

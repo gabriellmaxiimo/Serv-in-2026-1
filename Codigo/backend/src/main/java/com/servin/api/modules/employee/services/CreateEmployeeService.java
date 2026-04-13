@@ -15,6 +15,7 @@ public class CreateEmployeeService {
 
     public void execute(CreateEmployeeDto createEmployeeDto) {
 
+
         try {
             if (createEmployeeDto.name() == null || createEmployeeDto.name().trim().isEmpty()) {
                 throw new IllegalArgumentException("O nome é obrigatório.");
@@ -25,14 +26,19 @@ public class CreateEmployeeService {
             }
 
             Employee employee = new Employee();
-            
             employee.setName(createEmployeeDto.name().trim());
             employee.setRole(createEmployeeDto.role().trim());
+            employee.setCpf(createEmployeeDto.cpf());
+            employee.setEmail(createEmployeeDto.email());
+            employee.setPhone(createEmployeeDto.phone());
+            employee.setBirthDate(createEmployeeDto.birthDate());
 
             employeeRepository.save(employee);
 
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao criar funcionário: " + e.getMessage());
+            //throw new RuntimeException("Erro ao criar funcionário: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
         }
     }
 }

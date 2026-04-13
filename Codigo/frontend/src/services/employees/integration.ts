@@ -32,3 +32,19 @@ export const deleteEmployee = async (employeesID: string) => {
         throw error;
     }
 }
+
+export const updateEmployee = async (
+    employeesID: string,
+    employeesData: CreatEmployeesType
+) => {
+    try {
+        const response = await axios.put(
+            `${API_BASE_URL}/employees/${employeesID}`,
+            employeesData
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao atualizar funcionario:', error);
+        throw error;
+    }
+};

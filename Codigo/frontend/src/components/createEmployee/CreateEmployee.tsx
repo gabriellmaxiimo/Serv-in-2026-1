@@ -1,6 +1,7 @@
 import React from "react";
-import { Button, DatePicker, Form, Input } from "antd";
+import { Button, DatePicker, Form, Input, message } from "antd";
 import useEmployee from "../../hooks/employees/useEmployee";
+import { useNavigate } from "react-router-dom";
 
 const CreateEmployee: React.FC = () => {
   const {
@@ -20,8 +21,22 @@ const CreateEmployee: React.FC = () => {
     loading
   } = useEmployee();
 
+  const navigate = useNavigate();
+
+  const handleSubmit = async () => {
+    try {
+      await fetchEmployee(); // cria funcionário no backend
+
+      message.success("Funcionário criado com sucesso!");
+
+      navigate("/employees"); // 👈 VOLTA PRA LISTA
+    } catch (error) {
+      message.error("Erro ao criar funcionário");
+    }
+  };
+
   return (
-    <Form onFinish = {fetchEmployee} layout="vertical">
+    <Form onFinish = {handleSubmit} layout="vertical">
         <Form.Item
             label="Nome"
             name="name"

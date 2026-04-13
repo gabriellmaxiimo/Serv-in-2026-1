@@ -16,6 +16,9 @@ import com.servin.api.modules.employee.dto.CreateEmployeeDto;
 import com.servin.api.modules.employee.dto.EditEmployeeDto;
 import com.servin.api.modules.employee.services.CreateEmployeeService;
 import com.servin.api.modules.employee.services.EditEmployeeService;
+import com.servin.api.modules.employee.services.DeleteEmployeeService;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
 import com.servin.api.model.Employee;
@@ -35,6 +38,9 @@ public class EmployeeController {
 
     @Autowired
     private ListEmployeeService listEmployeeService;
+
+    @Autowired
+    private DeleteEmployeeService deleteEmployeeService;
 
     @GetMapping
     public ResponseEntity<List<Employee>> listAll() {
@@ -57,6 +63,16 @@ public class EmployeeController {
         try {
             editEmployeeService.execute(id, dto);
             return ResponseEntity.ok("Funcionário atualizado com sucesso.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable UUID id) {
+        try {
+            deleteEmployeeService.execute(id);
+            return ResponseEntity.ok("Funcionário excluído com sucesso.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

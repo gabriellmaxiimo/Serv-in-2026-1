@@ -14,7 +14,6 @@ const CreateEmployeePage = () => {
       }}
     >
       <Layout style={{ minHeight: "100vh" }}>
-        <Layout>
           <HeaderEventComponent />
           <Content
             style={{
@@ -27,7 +26,6 @@ const CreateEmployeePage = () => {
           >
             <CreateEmployee />
           </Content>
-        </Layout>
       </Layout>
     </ConfigProvider>
   );
