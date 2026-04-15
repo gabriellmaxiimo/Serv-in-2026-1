@@ -1,9 +1,9 @@
 import axios from 'axios';
-import type { CreatEmployeesType } from './types';
+import type { CreateEmployeesType } from './types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
 
-export const createEmployee = async (employeesData: CreatEmployeesType) => {
+export const createEmployee = async (employeesData: CreateEmployeesType) => {
     try {
         const response = await axios.post(`${API_BASE_URL}/employees`, employeesData);
         return response.data;
@@ -35,7 +35,7 @@ export const deleteEmployee = async (employeesID: string) => {
 
 export const updateEmployee = async (
     employeesID: string,
-    employeesData: CreatEmployeesType
+    employeesData: CreateEmployeesType
 ) => {
     try {
         const response = await axios.put(
