@@ -18,6 +18,10 @@ public class EditEmployeeService {
     public void execute(UUID id, EditEmployeeDto editEmployeeDto) {
 
         try {
+            if (id == null) {
+                throw new IllegalArgumentException("ID não pode ser nulo.");
+            }
+
             Employee employee = employeeRepository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Funcionário não encontrado."));
 
@@ -29,7 +33,19 @@ public class EditEmployeeService {
                 throw new IllegalArgumentException("O cargo é obrigatório.");
             }
 
+            if (editEmployeeDto.cpf() == null || editEmployeeDto.cpf().trim().isEmpty()) {
+                throw new IllegalArgumentException("CPF é obrigatório.");
+            }
+
+            if (editEmployeeDto.email() == null || editEmployeeDto.email().trim().isEmpty()) {
+                throw new IllegalArgumentException("Email é obrigatório.");
+            }
+
             employee.setName(editEmployeeDto.name().trim());
+            employee.setCpf(editEmployeeDto.cpf() != null ? editEmployeeDto.cpf().trim() : null);
+            employee.setBirthDate(editEmployeeDto.birthDate());
+            employee.setEmail(editEmployeeDto.email() != null ? editEmployeeDto.email().trim() : null);
+            employee.setPhone(editEmployeeDto.phone() != null ? editEmployeeDto.phone().trim() : null);
             employee.setRole(editEmployeeDto.role().trim());
             
             employeeRepository.save(employee);
