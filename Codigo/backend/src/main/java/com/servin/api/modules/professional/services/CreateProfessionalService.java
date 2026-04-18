@@ -38,8 +38,7 @@ public void validateAdult(CreateProfessionalDto dto){
 
         if (repository.existsByEmail(dto.getEmail())) {
             throw new IllegalArgumentException("Email já cadastrado");
-        }
-        
+        } 
 
         Professional professional = new Professional();
 
@@ -49,18 +48,17 @@ public void validateAdult(CreateProfessionalDto dto){
         professional.setEmail(dto.getEmail());
         professional.setBirthDate(dto.getBirthDate());
         professional.setPhone(dto.getPhone());
-        professional.setRole(dto.getRole());
-        professional.setStatus(ProfessionalStatusEnum.AVAILABLE);
+        professional.setArea(dto.getArea());
 
         try {
-            professional.setArea(ProfessionalAreaEnum.valueOf(dto.getArea().trim().toUpperCase()));
+            professional.setRole(dto.getRole().trim().toUpperCase());
         } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException("Área inválida. Use um valor válido de ProfessionalAreaEnum.");
+            throw new IllegalArgumentException("Função/Cargo inválidos");
         }
+        
+        professional.setStatus(ProfessionalStatusEnum.AVAILABLE);
 
+        
         return repository.save(professional);
     }
-
-
-
 }

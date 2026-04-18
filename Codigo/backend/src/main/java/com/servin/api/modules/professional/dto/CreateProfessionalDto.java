@@ -2,9 +2,12 @@ package com.servin.api.modules.professional.dto;
 
 import java.time.LocalDate;
 
+import com.servin.api.enums.ProfessionalAreaEnum;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.Setter;
 
 public class CreateProfessionalDto {
 
@@ -24,7 +27,7 @@ public class CreateProfessionalDto {
     @NotBlank(message = "Informe o telefone do profissional") String phone;
 
     @Getter
-    @NotBlank(message = "Informe a area de atuacao do profissional") String area;
+    @NotBlank(message = "Informe a area de atuacao do profissional") private ProfessionalAreaEnum area;
 
     @Getter
     @NotBlank(message = "Informe o cargo do profissional") String role;
