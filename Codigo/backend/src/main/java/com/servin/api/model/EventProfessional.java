@@ -1,9 +1,14 @@
 package com.servin.api.model;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
+
+import com.servin.api.enums.EventProfessionalStatusEnum;
 
 import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -27,4 +32,12 @@ public class EventProfessional {
     @JoinColumn(name = "event_id")
     private Event event;
 
+    @Enumerated(EnumType.STRING)
+    private EventProfessionalStatusEnum status;
+
+    private String confirmationToken;
+
+    private LocalDateTime confirmedAt;
+
+    private LocalDateTime createdAt;
 }
