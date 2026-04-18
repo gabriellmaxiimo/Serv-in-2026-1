@@ -7,11 +7,16 @@ import java.time.Period;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.servin.api.modules.role.*;
 import com.servin.api.modules.professional.enums.ProfessionalAreaEnum;
 import com.servin.api.modules.professional.enums.ProfessionalStatusEnum;
 import com.servin.api.modules.professional.dto.CreateProfessionalDto;
 import com.servin.api.modules.professional.model.Professional;
 import com.servin.api.modules.professional.repository.ProfessionalRepository;
+import com.servin.api.modules.role.model.Role;
+import com.servin.api.modules.role.repository.RoleRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class CreateProfessionalService {
@@ -19,7 +24,10 @@ public class CreateProfessionalService {
     @Autowired
     private ProfessionalRepository repository;
 
-public void validateAdult(CreateProfessionalDto dto){
+    @Autowired
+    private RoleRepository roleRepository;
+
+public void validateAdult(CreateProfessionalDto dto){ //*Valida a idade do profissional, não pode ser de menor */
 
     int age = Period.between(dto.getBirthDate(), LocalDate.now()).getYears();
 
@@ -28,7 +36,8 @@ public void validateAdult(CreateProfessionalDto dto){
         }
     }
 
-    public Professional execute(CreateProfessionalDto dto){
+    @Transactional
+    public Professional execute(CreateProfessionalDto dto){ //*Recebe os dados do dto e cria o profissional após todas as validações
 
         validateAdult(dto);
 
@@ -49,16 +58,23 @@ public void validateAdult(CreateProfessionalDto dto){
         professional.setBirthDate(dto.getBirthDate());
         professional.setPhone(dto.getPhone());
         professional.setArea(dto.getArea());
-
-        try {
-            professional.setRole(dto.getRole().trim().toUpperCase());
-        } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException("Função/Cargo inválidos");
-        }
-        
         professional.setStatus(ProfessionalStatusEnum.AVAILABLE);
 
-        
+        if (dto.getRole() == null || dto.getRole().isBlank()) {
+        throw new IllegalArgumentException("Cargo é obrigatório");
+        }
+
+        String roleName = dto.getRole().trim().toUpperCase();
+
+            Role role = roleRepository.findByName(roleName)
+            .orElseGet(() -> {
+            Role newRole = new Role();
+            newRole.setName(roleName);
+        return roleRepository.save(newRole);
+        });
+
+        professional.setRole(role);
+
         return repository.save(professional);
     }
 }

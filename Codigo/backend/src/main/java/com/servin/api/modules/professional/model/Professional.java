@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.servin.api.modules.role.*;
+import com.servin.api.modules.role.model.Role;
 import com.servin.api.modules.professional.enums.ProfessionalAreaEnum;
 import com.servin.api.modules.professional.enums.ProfessionalStatusEnum;
 
@@ -13,6 +15,8 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -65,7 +69,9 @@ public class Professional {
 
     @NotBlank(message = "Cargo é obrigatório.")
     @Column(nullable = false)
-    private String role;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     @NotNull(message = "Status é obrigatório.")
     @Enumerated(EnumType.STRING)

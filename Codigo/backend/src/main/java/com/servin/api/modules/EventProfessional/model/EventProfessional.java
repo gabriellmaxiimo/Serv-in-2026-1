@@ -1,9 +1,9 @@
-package com.servin.api.model;
+package com.servin.api.modules.EventProfessional.model;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import com.servin.api.enums.EventProfessionalStatusEnum;
+import com.servin.api.modules.EventProfessional.enums.EventProfessionalStatusEnum;
 import com.servin.api.modules.event.model.Event;
 import com.servin.api.modules.professional.model.Professional;
 
@@ -16,7 +16,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Setter;
+import lombok.Getter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "event_professionals")
 
