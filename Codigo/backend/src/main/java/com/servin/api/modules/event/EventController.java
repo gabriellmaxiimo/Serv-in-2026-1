@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.servin.api.model.Event;
+import com.servin.api.modules.event.model.Event;
 import com.servin.api.modules.event.dto.CreateEventDto;
 import com.servin.api.modules.event.services.CreateEventService;
 import com.servin.api.modules.event.services.DeleteEventService;

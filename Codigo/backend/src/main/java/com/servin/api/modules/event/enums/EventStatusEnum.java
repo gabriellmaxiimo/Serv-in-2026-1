@@ -1,4 +1,4 @@
-package com.servin.api.enums;
+package com.servin.api.modules.event.enums;
 
 public enum EventStatusEnum {
     ANDAMENTO,

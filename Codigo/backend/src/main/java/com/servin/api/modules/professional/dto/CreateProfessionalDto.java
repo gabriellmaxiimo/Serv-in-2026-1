@@ -2,7 +2,7 @@ package com.servin.api.modules.professional.dto;
 
 import java.time.LocalDate;
 
-import com.servin.api.enums.ProfessionalAreaEnum;
+import com.servin.api.modules.professional.enums.ProfessionalAreaEnum;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

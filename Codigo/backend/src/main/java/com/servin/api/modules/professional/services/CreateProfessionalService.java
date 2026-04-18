@@ -7,11 +7,11 @@ import java.time.Period;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.servin.api.enums.ProfessionalAreaEnum;
-import com.servin.api.enums.ProfessionalStatusEnum;
+import com.servin.api.modules.professional.enums.ProfessionalAreaEnum;
+import com.servin.api.modules.professional.enums.ProfessionalStatusEnum;
 import com.servin.api.modules.professional.dto.CreateProfessionalDto;
+import com.servin.api.modules.professional.model.Professional;
 import com.servin.api.modules.professional.repository.ProfessionalRepository;
-import com.servin.api.model.Professional;
 
 @Service
 public class CreateProfessionalService {

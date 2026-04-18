@@ -1,4 +1,4 @@
-package com.servin.api.enums;
+package com.servin.api.modules.professional.enums;
 
 public enum ProfessionalAreaEnum {
     MEDICINE, // Profissionais da área médica: médicos, enfermeiros, socorristas

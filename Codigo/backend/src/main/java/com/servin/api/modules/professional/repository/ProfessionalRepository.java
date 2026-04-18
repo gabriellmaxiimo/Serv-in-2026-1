@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.servin.api.model.Professional;
+import com.servin.api.modules.professional.model.Professional;
 
 public interface ProfessionalRepository extends JpaRepository<Professional, UUID>{
 

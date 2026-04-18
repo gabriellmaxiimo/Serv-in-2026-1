@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.servin.api.model.Employee;
+import com.servin.api.modules.employee.model.Employee;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
