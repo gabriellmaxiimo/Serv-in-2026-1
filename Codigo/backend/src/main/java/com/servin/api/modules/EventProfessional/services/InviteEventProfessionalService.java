@@ -19,13 +19,13 @@ import jakarta.transaction.Transactional;
 
 
 @Service
-public class EventProfessionalService {
+public class InviteEventProfessionalService {
  
     private final EventRepository eventRepository;
     private final ProfessionalRepository professionalRepository;
     private final EventProfessionalRepository eventProfessionalRepository;
 
-    public EventProfessionalService(EventRepository eventRepository, ProfessionalRepository professionalRepository, EventProfessionalRepository eventProfessionalRepository) {
+    public InviteEventProfessionalService(EventRepository eventRepository, ProfessionalRepository professionalRepository, EventProfessionalRepository eventProfessionalRepository) {
         this.eventRepository = eventRepository;
         this.professionalRepository = professionalRepository;
         this.eventProfessionalRepository = eventProfessionalRepository;

@@ -27,7 +27,7 @@ public class CreateProfessionalDto {
     @NotBlank(message = "Informe o telefone do profissional") String phone;
 
     @Getter
-    @NotBlank(message = "Informe a area de atuacao do profissional") private ProfessionalAreaEnum area;
+    @NotNull(message = "Informe a area de atuacao do profissional") private ProfessionalAreaEnum area;
 
     @Getter
     @NotBlank(message = "Informe o cargo do profissional") String role;

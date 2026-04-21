@@ -15,4 +15,6 @@ public interface EventProfessionalRepository extends JpaRepository<EventProfessi
 
     Optional<EventProfessional> findByConfirmationToken(String token);
 
+    //*Objetivo: buscar por evento/profissional e remover vínculo. */
+
 }

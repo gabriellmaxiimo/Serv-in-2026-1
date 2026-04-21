@@ -67,7 +67,7 @@ public class Professional {
     @Column(nullable = false)
     private ProfessionalAreaEnum area;
 
-    @NotBlank(message = "Cargo é obrigatório.")
+    @NotNull(message = "Cargo é obrigatório.")
     @ManyToOne(optional = false)
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;

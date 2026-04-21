@@ -66,4 +66,16 @@ public class ProfessionalController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}
+
+
+	// TODO: adicionar endpoint PUT /professionals/{id} para editar 		profissional.
+
+	// TODO: adicionar endpoint PATCH /professionals/{id}/inactivate para inativar conta. 
+
+	// TODO: trocar DELETE hard por soft delete/inativação. 
+	
+	// TODO: filtrar GET para retornar apenas profissionais ativos (ou aceitar query param status). 
+	
+	
+	
 }
