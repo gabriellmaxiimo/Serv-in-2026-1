@@ -1,4 +1,4 @@
-import { Layout, ConfigProvider } from "antd";
+import { Layout } from "antd";
 import HeaderEventComponent from "../../components/header/HeaderComponent";
 import ListEvent from "../../components/listEvent/ListEvent";
 
@@ -6,13 +6,6 @@ const { Content } = Layout;
 
 const ListEventPage = () => {
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: "#050521",
-        },
-      }}
-    >
       <Layout style={{ minHeight: "100vh" }}>
         <Layout>
           <HeaderEventComponent />
@@ -29,7 +22,6 @@ const ListEventPage = () => {
           </Content>
         </Layout>
       </Layout>
-    </ConfigProvider>
   );
 };
 

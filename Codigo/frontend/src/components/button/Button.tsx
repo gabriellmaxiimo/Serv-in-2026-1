@@ -1,4 +1,4 @@
-import { StyledAntButton } from "./styles";
+import { Button } from "antd";
 
 interface SearchButtonProps {
   onClick: () => void;
@@ -7,20 +7,18 @@ interface SearchButtonProps {
   icon?: React.ReactNode;
 }
 
-const Button = ({
-  onClick,
-  children,
-  disabled,
-  icon
-}: SearchButtonProps) => {
+const CustomButton = ({ onClick, children, disabled, icon }: SearchButtonProps) => {
   return (
-    <>
-      <StyledAntButton onClick={onClick} disabled={disabled}>
-        {icon}
-        {children}
-      </StyledAntButton>
-    </>
+    <Button
+      type="primary"
+      onClick={onClick}
+      disabled={disabled}
+      icon={icon}
+      style={{ height: 45, fontWeight: "bold" }}
+    >
+      {children}
+    </Button>
   );
 };
 
-export default Button;
+export default CustomButton;
