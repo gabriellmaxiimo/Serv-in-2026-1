@@ -33,6 +33,9 @@ public class Employee {
     @Column(nullable = false)
     private String cpf;
 
+    @Column()
+    private String password;
+
     @Column(nullable = false)
     private LocalDate birthDate;
 

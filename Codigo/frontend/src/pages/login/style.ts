@@ -1,0 +1,17 @@
+import styled from "styled-components";
+
+export const LoginPageBackground = styled.div`
+    background: #050521;
+    margin: 0;
+    padding: 0; 
+    width: 100%; 
+    height: 100vh; 
+    display: flex; 
+    justifyContent: center; 
+    alignItems: center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`
