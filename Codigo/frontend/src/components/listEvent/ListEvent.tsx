@@ -1,4 +1,4 @@
-
+import logoServin from "../../assets/logo-servin.png";
 import { useState } from "react";
 import {
   Button,
@@ -8,6 +8,9 @@ import {
   Input,
   Select,
   Table,
+  Modal,
+  Descriptions,
+  Tag,
   type MenuProps,
 } from "antd";
 import useListEvent from "../../hooks/event/useListEvent";
@@ -18,7 +21,7 @@ import {
   EyeFilled,
   MoreOutlined,
 } from "@ant-design/icons";
-import { Modal } from "antd";
+
 
 const ListEvent: React.FC = () => {
   const { 
@@ -178,24 +181,275 @@ return (
         rowKey="id"
         locale={{ emptyText: <Empty description="Nenhum evento encontrado" /> }}
       />
-      <Modal
-  title="Detalhes do Evento"
+
+<Modal
   open={isModalOpen}
   onCancel={() => setIsModalOpen(false)}
   footer={null}
+  width={820}
+  centered
+  style={{ padding: 0 }}
+  styles={{
+    content: {
+      background: "transparent",
+      boxShadow: "none",
+      padding: 0,
+    },
+    body: {
+      padding: 0,
+      margin: 0,
+      background: "transparent",
+    },
+  }}
 >
-  {selectedEvent && (
-    <>
-      <p><b>Nome:</b> {selectedEvent.name}</p>
-      <p><b>Descrição:</b> {selectedEvent.description}</p>
-      <p><b>Localização:</b> {selectedEvent.location}</p>
-      <p><b>Data Inicial:</b> {new Date(selectedEvent.initialDate).toLocaleString("pt-BR")}</p>
-      <p><b>Data Final:</b> {selectedEvent.finalDate ? new Date(selectedEvent.finalDate).toLocaleString("pt-BR") : "-"}</p>
-      <p><b>Status:</b> {selectedEvent.status}</p>
-    </>
-  )}
-</Modal>
+  <div
+    style={{
+      background: "linear-gradient(160deg, #020617, #0b1230)",
+      borderRadius: "26px",
 
+      margin: "-36px",
+      width: "calc(100% + 72px)",
+
+      padding: "40px",
+      display: "flex",
+      flexDirection: "column",
+      gap: "32px",
+
+      boxShadow:
+        "0 60px 160px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.05)",
+
+      position: "relative",
+      overflow: "hidden",
+      animation: "modalEnter 0.5s cubic-bezier(.22,1,.36,1)",
+    }}
+  >
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        background:
+          "radial-gradient(circle at 20% 20%, rgba(59,130,246,0.25), transparent 40%), radial-gradient(circle at 80% 60%, rgba(37,99,235,0.2), transparent 40%)",
+        opacity: 0.7,
+      }}
+    />
+
+    <div
+      style={{
+        textAlign: "center",
+        zIndex: 1,
+      }}
+    >
+      <img
+        src={logoServin}
+        alt="Servin"
+        style={{
+          height: 72,
+          transition: "transform 0.3s ease",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "scale(1.05)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "scale(1)";
+        }}
+      />
+
+      <div style={{ marginTop: 14 }}>
+        <span
+          style={{
+            fontSize: 12,
+            color: "#3b82f6",
+            letterSpacing: "2px",
+            textTransform: "uppercase",
+            fontWeight: 600,
+          }}
+        >
+          EVENTO
+        </span>
+
+        <h1
+          style={{
+            margin: "4px 0 0 0",
+            fontSize: 30,
+            fontWeight: 700,
+            color: "#e2e8f0",
+            letterSpacing: "-0.5px",
+          }}
+        >
+          Detalhes
+        </h1>
+
+        <div
+          style={{
+            width: 70,
+            height: 3,
+            borderRadius: 999,
+            margin: "8px auto 0",
+            background: "linear-gradient(90deg, #1677ff, #3b82f6)",
+          }}
+        />
+      </div>
+    </div>
+
+    {selectedEvent && (
+      <>
+        <div
+          style={{
+            borderRadius: "22px",
+            padding: "1px",
+            background:
+              "linear-gradient(135deg, rgba(59,130,246,0.7), rgba(37,99,235,0.3))",
+            zIndex: 1,
+          }}
+        >
+          <div
+            style={{
+              borderRadius: "21px",
+              overflow: "hidden",
+              background: "rgba(10,15,40,0.75)",
+              backdropFilter: "blur(20px)",
+            }}
+          >
+            <Descriptions
+              bordered
+              column={1}
+              size="middle"
+              style={{ width: "100%" }}
+              labelStyle={{
+                color: "#93c5fd",
+                background: "rgba(30,58,138,0.35)",
+                fontWeight: 600,
+                width: "180px",
+              }}
+              contentStyle={{
+                color: "#e5e7eb",
+                background: "rgba(15,23,42,0.5)",
+              }}
+            >
+              <Descriptions.Item label="Nome">
+                {selectedEvent.name}
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Descrição">
+                {selectedEvent.description || "-"}
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Localização">
+                {selectedEvent.location}
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Data Inicial">
+                {new Date(selectedEvent.initialDate).toLocaleString("pt-BR")}
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Data Final">
+                {selectedEvent.finalDate
+                  ? new Date(selectedEvent.finalDate).toLocaleString("pt-BR")
+                  : "-"}
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Status">
+                <Tag
+                  style={{
+                    padding: "6px 20px",
+                    borderRadius: "999px",
+                    fontWeight: 600,
+                    background: "linear-gradient(90deg, #fff, #dbeafe)",
+                    color: "#1d4ed8",
+                    boxShadow: "0 0 20px rgba(59,130,246,0.6)",
+                  }}
+                >
+                  {selectedEvent.status === "AGENDADO"
+                    ? "AGENDADO"
+                    : selectedEvent.status}
+                </Tag>
+              </Descriptions.Item>
+            </Descriptions>
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            zIndex: 1,
+          }}
+        >
+          <Button
+            type="primary"
+            style={{
+              height: 48,
+              padding: "0 26px",
+              borderRadius: "16px",
+              border: "none",
+              fontWeight: 500,
+              background:
+                "linear-gradient(90deg, #1677ff, #2563eb, #1d4ed8)",
+              boxShadow: "0 20px 50px rgba(22,119,255,0.6)",
+              transition: "all .25s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform =
+                "translateY(-4px) scale(1.03)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+            }}
+          >
+            📍 Ver Localização
+          </Button>
+
+          <Button
+            onClick={() => setIsModalOpen(false)}
+            style={{
+              height: 48,
+              padding: "0 26px",
+              borderRadius: "16px",
+              fontWeight: 500,
+              background: "rgba(255,255,255,0.08)",
+              color: "#fff",
+              border: "1px solid rgba(255,255,255,0.2)",
+              backdropFilter: "blur(6px)",
+              transition: "all .25s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background =
+                "rgba(255,255,255,0.15)";
+              e.currentTarget.style.transform = "translateY(-2px)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background =
+                "rgba(255,255,255,0.08)";
+              e.currentTarget.style.transform = "translateY(0)";
+            }}
+          >
+            Fechar
+          </Button>
+        </div>
+      </>
+    )}
+  </div>
+
+  <style>
+    {`
+      @keyframes modalEnter {
+        from {
+          opacity: 0;
+          transform: scale(0.94) translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+
+      .ant-descriptions-row:hover td {
+        background: rgba(59,130,246,0.12) !important;
+        transition: 0.25s;
+      }
+    `}
+  </style>
+</Modal>
 </>   
   );
 };
