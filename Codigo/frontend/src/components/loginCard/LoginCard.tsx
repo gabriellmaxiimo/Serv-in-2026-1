@@ -4,9 +4,11 @@ import { LoginCardContainer } from "./styles";
 import useLogin from "../../hooks/auth/useLogin";
 import { servinIcon } from "../../assets";
 import { maskCPF } from "../../functions/maskCpf";
+import useFirstAccess from "../../hooks/auth/useFirstAccess";
 
 const LoginCard = () => {
     const { setCpf, setPassword, fetchLogin } = useLogin();
+    const { setCpfFA, setPasswordFA, fetchFirstAccess } = useFirstAccess();
     const [form] = Form.useForm();
 
     const handleCpfChange = (e: any) => {
@@ -16,7 +18,7 @@ const LoginCard = () => {
 
         form.setFieldsValue({ cpf: maskedValue });
         
-        setCpf(onlyNumbers);
+        window.location.pathname === "/login" ? setCpf(onlyNumbers) : setCpfFA(onlyNumbers);
     };
 
     return (
@@ -27,7 +29,7 @@ const LoginCard = () => {
                 form={form}
                 name="login_form" 
                 layout="vertical" 
-                onFinish={fetchLogin}
+                onFinish={window.location.pathname === "/login" ? fetchLogin : fetchFirstAccess}
             >
                 <Flex vertical gap="middle">
                     <Form.Item
@@ -53,7 +55,7 @@ const LoginCard = () => {
                             prefix={<LockOutlined />} 
                             placeholder="Senha" 
                             size="large"
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e) => window.location.pathname === "/login" ? setPassword(e.target.value) : setPasswordFA(e.target.value)}
                         />
                     </Form.Item>
 
@@ -65,20 +67,23 @@ const LoginCard = () => {
                             size="large"
                             style={{ backgroundColor: "#31553B" }}
                         >
-                            Entrar
+                            {window.location.pathname === "/login" ? "Entrar" : "Cadastrar"}
                         </Button>
                     </Form.Item>
                 </Flex>
 
-                <Button 
-                    type="primary" 
-                    block 
-                    size="large"
-                    onClick={() => window.location.href = "/first-access"}
-                    style={{ backgroundColor: "#181880" }}
-                >
-                    Primeiro acesso
-                </Button>
+                {window.location.pathname === "/login" && (
+                    <Button 
+                        type="primary" 
+                        block 
+                        size="large"
+                        onClick={() => window.location.href = "/first-access"}
+                        style={{ backgroundColor: "#181880" }}
+                    >
+                        Primeiro acesso
+                    </Button>
+                )}
+                
             </Form>
         </LoginCardContainer>
     );

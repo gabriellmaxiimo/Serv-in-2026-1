@@ -33,13 +33,6 @@ public class LoginService {
 
         Employee employee = employeeOpt.get();
 
-        if (employee.getPassword() == null || employee.getPassword().isEmpty()) {
-            String encodedPassword = passwordEncoder.encode(loginDto.password());
-            employee.setPassword(encodedPassword);
-            employeeRepository.save(employee);
-            return tokenService.generateToken(employee);
-        }
-
         if (passwordEncoder.matches(loginDto.password(), employee.getPassword())) {
             return tokenService.generateToken(employee);
         }

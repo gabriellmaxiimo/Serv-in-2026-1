@@ -9,3 +9,12 @@ export const login = async (loginData: LoginDataType) => {
         status: response.status
     };
 }
+
+export const firstAccess = async (loginData: LoginDataType) => {
+    const response = await api.post('/auth/first-access', loginData);
+    
+    return {
+        data: response.data,
+        status: response.status
+    };
+}

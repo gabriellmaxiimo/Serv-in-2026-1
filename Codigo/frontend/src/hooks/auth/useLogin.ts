@@ -26,8 +26,12 @@ const useLogin = () => {
             }
 
         } catch (error) {
+            if((error as any).response?.status === 401) {
+                openErrorNotification("Credenciais inválidas. Por favor, tente novamente.");
+            }
+
             console.error("Erro ao fazer login:", error);
-            openErrorNotification("Erro ao fazer login:", (error as any).response?.data || "Erro interno");
+
         } finally {
             setLoading(false);
         }

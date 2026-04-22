@@ -9,6 +9,7 @@ import CreateEmployeePage from "./pages/employees/CreateEmployeePage";
 import ListEmployeesPage from "./pages/employees/ListEmployeesPage";
 import CreateEventPage from "./pages/events/CreateEventPage";
 import ListEventPage from "./pages/events/ListEventPage";
+import FirstAccessPage from "./pages/firstAccess/FirstAccessPage";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => (
   <Layout style={{ minHeight: "100vh" }}>
@@ -29,6 +30,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/first-access" element={<FirstAccessPage />} />
 
           <Route path="/*" element={
             <MainLayout>
