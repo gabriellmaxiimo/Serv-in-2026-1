@@ -1,6 +1,5 @@
 package com.servin.api.modules.EventProfessional.services;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -20,6 +19,8 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class InviteEventProfessionalService {
+
+    //* Serviço que centraliza regras de convite e resposta do profissional ao convite.
  
     private final EventRepository eventRepository;
     private final ProfessionalRepository professionalRepository;
@@ -32,16 +33,17 @@ public class InviteEventProfessionalService {
     }
 
     @Transactional
-    public void invite(UUID eventId, UUID professionalId) { //*Convida o profissional para o evento, gerando o token e definindo o Status dele para Confirmação Pendente;
+    //* Convida profissional para evento e cria token de confirmação.
+    public void invite(UUID eventId, UUID professionalId) {
 
         Event event = eventRepository.findByIdAndDeletedAtIsNull(eventId)
-                .orElseThrow(() -> new IllegalArgumentException("Event não encontrado")); //Busca o evento pelo Id
+            .orElseThrow(() -> new IllegalArgumentException("Event não encontrado"));
 
         Professional professional = professionalRepository.findById(professionalId)
-                    .orElseThrow(() -> new RuntimeException("Profissional não encontrado")); //Busca o profissional pelo Id
+                .orElseThrow(() -> new RuntimeException("Profissional não encontrado"));
 
         if (professional.getStatus() == ProfessionalStatusEnum.INACTIVE){
-            throw new RuntimeException("Profissional está inativo"); //Impede que o profissional inavito seja convidado para um evento
+            throw new RuntimeException("Profissional está inativo");
         }
         
         if (eventProfessionalRepository.existsByEventAndProfessional(event, professional)) {
@@ -58,11 +60,10 @@ public class InviteEventProfessionalService {
         ep.setConfirmationToken(token);
 
         eventProfessionalRepository.save(ep);
-        
-
     }
 
-    public void confirm(String token){ //*Caso o profissional confirme a presença, o Status muda para confirmado.
+    //* Marca o convite como confirmado.
+    public void confirm(String token){
         EventProfessional ep = eventProfessionalRepository.findByConfirmationToken(token)
             .orElseThrow(() -> new RuntimeException("Token Inválido"));
 
@@ -72,7 +73,8 @@ public class InviteEventProfessionalService {
         eventProfessionalRepository.save(ep); 
     }
 
-    public void reject(String token){ //*Caso o profissional confirme a presença, o Status muda para recusado.
+    //* Marca o convite como recusado.
+    public void reject(String token){
         EventProfessional ep = eventProfessionalRepository.findByConfirmationToken(token)
             .orElseThrow(() -> new RuntimeException("Token Inválido"));
 

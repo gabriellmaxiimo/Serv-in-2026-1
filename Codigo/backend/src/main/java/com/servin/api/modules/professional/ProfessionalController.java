@@ -8,16 +8,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.servin.api.modules.professional.dto.CreateProfessionalDto;
+import com.servin.api.modules.professional.dto.UpdateProfessionalDto;
+import com.servin.api.modules.professional.enums.ProfessionalStatusEnum;
 import com.servin.api.modules.professional.model.Professional;
 import com.servin.api.modules.professional.repository.ProfessionalRepository;
 import com.servin.api.modules.professional.services.CreateProfessionalService;
+import com.servin.api.modules.professional.services.InactivateProfessionalService;
+import com.servin.api.modules.professional.services.UpdateProfessionalService;
 
 import jakarta.validation.Valid;
 
@@ -31,14 +38,23 @@ public class ProfessionalController {
 	@Autowired
 	private ProfessionalRepository professionalRepository;
 
+	@Autowired
+	private UpdateProfessionalService updateProfessionalService;
+
+	@Autowired
+	private InactivateProfessionalService inactivateProfessionalService;
+
 	@GetMapping
-	public ResponseEntity<List<Professional>> listAll() {
-		return ResponseEntity.ok(professionalRepository.findAll());
+	public ResponseEntity<List<Professional>> listAll(@RequestParam(required = false) ProfessionalStatusEnum status) {
+		if (status != null) {
+			return ResponseEntity.ok(professionalRepository.findByStatusAndDeletedAtIsNull(status));
+		}
+		return ResponseEntity.ok(professionalRepository.findByDeletedAtIsNull());
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<?> findById(@PathVariable UUID id) {
-		return professionalRepository.findById(id)
+		return professionalRepository.findByIdAndDeletedAtIsNull(id)
 				.<ResponseEntity<?>>map(ResponseEntity::ok)
 				.orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Profissional não encontrado."));
 	}
@@ -53,29 +69,33 @@ public class ProfessionalController {
 		}
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<String> delete(@PathVariable UUID id) {
+	@PutMapping("/{id}")
+	public ResponseEntity<String> update(@PathVariable UUID id, @Valid @RequestBody UpdateProfessionalDto dto) {
 		try {
-			if (!professionalRepository.existsById(id)) {
-				throw new IllegalArgumentException("Profissional não encontrado.");
-			}
+			updateProfessionalService.execute(id, dto);
+			return ResponseEntity.ok("Profissional atualizado com sucesso.");
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+	}
 
-			professionalRepository.deleteById(id);
-			return ResponseEntity.ok("Profissional excluído com sucesso!");
+	@PatchMapping("/{id}/inactivate")
+	public ResponseEntity<String> inactivate(@PathVariable UUID id) {
+		try {
+			inactivateProfessionalService.execute(id);
+			return ResponseEntity.ok("Profissional inativado com sucesso.");
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}
 
-
-	// TODO: adicionar endpoint PUT /professionals/{id} para editar 		profissional.
-
-	// TODO: adicionar endpoint PATCH /professionals/{id}/inactivate para inativar conta. 
-
-	// TODO: trocar DELETE hard por soft delete/inativação. 
-	
-	// TODO: filtrar GET para retornar apenas profissionais ativos (ou aceitar query param status). 
-	
-	
-	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String> delete(@PathVariable UUID id) {
+		try {
+			inactivateProfessionalService.execute(id);
+			return ResponseEntity.ok("Profissional inativado com sucesso.");
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		}
+	}
 }
