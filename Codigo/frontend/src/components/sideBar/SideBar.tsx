@@ -8,7 +8,6 @@ import {
 } from "@ant-design/icons";
 import { useState } from "react";
 import { SiderStyle } from "./style";
-import { TopBar } from "../header/styles";
 import { logoServin } from "../../assets";
 
 const items = [
@@ -60,47 +59,17 @@ const SideBar: React.FC = () => {
       }}
       breakpoint="lg"
     >
-      <TopBar>
-        <div
-          className="logo"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-          }}
-        >
-          {!collapsed ? (
-            <a href="/events">
-              <img
-                src={logoServin}
-                alt="Logo GMS"
-                style={{ height: "auto", objectFit: "contain" }}
-              />
-            </a>
-          ) : (
-            <img
-              src={logoServin}
-              alt="Logo GMS"
-              style={{
-                height: "auto",
-                objectFit: "contain",
-              }}
-              hidden={true}
-            />
-          )}
-        </div>
-      </TopBar>
+    <div className="logo">
+      <a href="/events">
+        <img src={logoServin} alt="Logo Servin" />
+      </a>
+    </div>
 
       <Menu
         theme="dark"
         mode="inline"
         style={{
-          backgroundColor: "#050521",
-          position: "absolute",
-          top: 200,
-          bottom: 0,
-          width: "100%",
+          marginTop: 20,
         }}
         items={items}
         onClick={onMenuClick}
