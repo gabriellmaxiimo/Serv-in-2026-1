@@ -30,7 +30,7 @@ public class Employee {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 11, unique = true)
     private String cpf;
 
     @Column(nullable = false)
@@ -53,5 +53,4 @@ public class Employee {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
-
 }

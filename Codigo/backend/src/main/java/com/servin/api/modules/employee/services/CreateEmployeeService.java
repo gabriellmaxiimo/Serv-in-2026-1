@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.servin.api.model.Employee;
 import com.servin.api.modules.employee.dto.CreateEmployeeDto;
 import com.servin.api.modules.employee.repository.EmployeeRepository;
+import com.servin.api.utils.CpfUtils;
 
 @Service
 public class CreateEmployeeService {
@@ -14,8 +15,6 @@ public class CreateEmployeeService {
     private EmployeeRepository employeeRepository;
 
     public void execute(CreateEmployeeDto createEmployeeDto) {
-
-
         try {
             if (createEmployeeDto.name() == null || createEmployeeDto.name().trim().isEmpty()) {
                 throw new IllegalArgumentException("O nome é obrigatório.");
@@ -28,7 +27,9 @@ public class CreateEmployeeService {
             Employee employee = new Employee();
             employee.setName(createEmployeeDto.name().trim());
             employee.setRole(createEmployeeDto.role().trim());
-            employee.setCpf(createEmployeeDto.cpf());
+            
+            employee.setCpf(CpfUtils.sanitizar(createEmployeeDto.cpf()));
+            
             employee.setEmail(createEmployeeDto.email());
             employee.setPhone(createEmployeeDto.phone());
             employee.setBirthDate(createEmployeeDto.birthDate());
@@ -36,7 +37,6 @@ public class CreateEmployeeService {
             employeeRepository.save(employee);
 
         } catch (Exception e) {
-            //throw new RuntimeException("Erro ao criar funcionário: " + e.getMessage());
             e.printStackTrace();
             throw e;
         }

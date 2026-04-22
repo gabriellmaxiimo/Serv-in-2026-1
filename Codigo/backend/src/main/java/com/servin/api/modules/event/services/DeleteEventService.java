@@ -22,6 +22,5 @@ public class DeleteEventService {
 
         eventRepository.save(event);
 
-        System.out.println("\u001B[32m[SUCESSO] O evento '" + event.getName() + "' foi marcado como DELETADO!\u001B[0m");
     }
 }
