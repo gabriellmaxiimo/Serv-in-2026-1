@@ -8,6 +8,7 @@ import CreateEventPage from "./pages/events/CreateEventPage";
 import ListEventPage from "./pages/events/ListEventPage";
 import ListEmployeesPage from "./pages/employees/ListEmployeesPage";
 import CreateEmployeePage from "./pages/employees/CreateEmployeePage";
+import EditEventPage from "./pages/events/EditEventPage";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
                   <Route path="/events/create" element={<CreateEventPage />} />
                   <Route path="/employees" element={<ListEmployeesPage />} />
                   <Route path="/employees/create" element={<CreateEmployeePage />} />
+                  <Route path="/edit-event/:id" element={<EditEventPage />} />
                 </Routes>
               </Content>
             </Layout>

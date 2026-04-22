@@ -21,7 +21,7 @@ import {
   EyeFilled,
   MoreOutlined,
 } from "@ant-design/icons";
-
+import { useNavigate } from "react-router-dom";
 
 const ListEvent: React.FC = () => {
   const { 
@@ -39,6 +39,7 @@ const ListEvent: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { confirm } = Modal;
+  const navigate = useNavigate();
 
   const statusOptions = [
     { label: "Agendado", value: "AGENDADO" },
@@ -107,8 +108,7 @@ const ListEvent: React.FC = () => {
             key: "edit",
             label: "Editar",
             icon: <EditOutlined />,
-            // TODO: PARA QUEM FOR FAZER O EDIT, CHAMAR AQUI O COMPONENTE DE EDIÇÃO E PASSAR O ID DO EVENTO
-            onClick: () => console.log("Editar evento com ID:", record.id),
+            onClick: () => navigate(`/edit-event/${record.id}`),
           },
           {
             key: "delete",
