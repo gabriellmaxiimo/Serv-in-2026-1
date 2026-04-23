@@ -40,7 +40,7 @@ function App() {
                 <Route path="/employees" element={<ListEmployeesPage />} />
                 <Route path="/employees/create" element={<CreateEmployeePage />} />
                 
-                <Route path="/" element={<Navigate to="/events" />} />
+                <Route path="/" element={<Navigate to="/login" />} />
               </Routes>
             </MainLayout>
           } />

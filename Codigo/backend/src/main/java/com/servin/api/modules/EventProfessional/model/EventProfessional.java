@@ -7,7 +7,6 @@ import com.servin.api.modules.event.model.Event;
 import com.servin.api.modules.eventProfessional.enums.EventProfessionalStatusEnum;
 import com.servin.api.modules.professional.model.Professional;
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
