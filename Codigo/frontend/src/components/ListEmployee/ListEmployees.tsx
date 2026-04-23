@@ -9,6 +9,9 @@ import {
   Table,
   type MenuProps,
   Modal,
+  Select,
+  Switch,
+  Form,
 } from "antd";
 import useListEmployees from "../../hooks/employees/useListEmployees";
 import {
@@ -18,6 +21,7 @@ import {
   EyeFilled,
   MoreOutlined,
 } from "@ant-design/icons";
+import { ListEmployeesContainer } from "./styles";
 
 const ListEmployees: React.FC = () => {
   const { 
@@ -28,7 +32,6 @@ const ListEmployees: React.FC = () => {
     setFilterBirthDate, 
     setFilterEmail, 
     setFilterPhone,
-    setFilterRole,
     deleteEmployeeById,
     fetchEmployees,
     fetchUpdateEmployee
@@ -70,6 +73,7 @@ const ListEmployees: React.FC = () => {
     {
         title: "Cargo",
         dataIndex: "role",
+        render: (role: boolean) => role ? "Gerente" : "Funcionário"
     },
     {
       title: "Ação",
@@ -126,8 +130,7 @@ const ListEmployees: React.FC = () => {
 
 return (
     <>
-      
-      <div style={{ width: "100%", marginBottom: "20px", display: "flex", gap: "10px" }}>
+      <ListEmployeesContainer>
         <Input 
           style={{flex: "1 1 200px"}}
           placeholder="Nome" 
@@ -153,12 +156,7 @@ return (
           placeholder="Telefone"
           onChange={(e) => setFilterPhone(e.target.value)}
         />
-        <Input
-          style={{flex: "1 1 160px"}}
-          placeholder="Cargo"
-          onChange={(e) => setFilterRole(e.target.value)}
-        />
-      </div>
+      </ListEmployeesContainer>
 
       <Table
         columns={columns}
@@ -180,7 +178,7 @@ return (
             <p><b>Data de Nascimento:</b> {new Date(selectedEmployee.birthDate).toLocaleString("pt-BR")}</p>
             <p><b>E-Mail:</b> {selectedEmployee.email}</p>
             <p><b>Telefone:</b> {selectedEmployee.phone}</p>
-            <p><b>Cargo:</b> {selectedEmployee.role}</p>
+            <p><b>Cargo:</b> {selectedEmployee.role ? "Gerente" : "Funcionário"}</p>
           </>
         )}
       </Modal>
@@ -203,61 +201,57 @@ return (
         }}
       >
         {editingEmployee && (
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          <Input
-            value={editingEmployee.name}
-            onChange={(e) =>
-              setEditingEmployee({
-                ...editingEmployee,
-                name: e.target.value,
-              })
-            }
-             placeholder="Nome"
-           />
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <Input
+              value={editingEmployee.name}
+              onChange={(e) =>
+                setEditingEmployee({
+                  ...editingEmployee,
+                  name: e.target.value,
+                })
+              }
+              placeholder="Nome"
+            />
 
-          <Input
-            value={editingEmployee.cpf}
-            onChange={(e) =>
-              setEditingEmployee({
-              ...editingEmployee,
-                cpf: e.target.value,
-              })
-            }
-            placeholder="CPF"
-          />
-
-          <Input
-            value={editingEmployee.email}
-            onChange={(e) =>
-              setEditingEmployee({
+            <Input
+              value={editingEmployee.cpf}
+              onChange={(e) =>
+                setEditingEmployee({
                 ...editingEmployee,
-                email: e.target.value,
-              })
-            }
-            placeholder="Email"
-          />
+                  cpf: e.target.value,
+                })
+              }
+              placeholder="CPF"
+            />
 
-          <Input
-            value={editingEmployee.phone}
-            onChange={(e) =>
-              setEditingEmployee({
-                ...editingEmployee,
-                phone: e.target.value,
-              })
-             }
-            placeholder="Telefone"
-          />
+            <Input
+              value={editingEmployee.email}
+              onChange={(e) =>
+                setEditingEmployee({
+                  ...editingEmployee,
+                  email: e.target.value,
+                })
+              }
+              placeholder="Email"
+            />
 
-          <Input
-            value={editingEmployee.role}
-            onChange={(e) =>
-              setEditingEmployee({
-                ...editingEmployee,
-                role: e.target.value,
-              })
-            }
-            placeholder="Cargo"
-          />
+            <Input
+              value={editingEmployee.phone}
+              onChange={(e) =>
+                setEditingEmployee({
+                  ...editingEmployee,
+                  phone: e.target.value,
+                })
+              }
+              placeholder="Telefone"
+            />
+
+            <Form.Item label="Gerente" valuePropName="checked">
+              <Switch 
+                checked={editingEmployee.role}
+                onChange={(checked) => setEditingEmployee({...editingEmployee, role: checked})} 
+              />
+            </Form.Item>
           </div>
         )}
        </Modal>

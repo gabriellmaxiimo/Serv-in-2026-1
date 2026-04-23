@@ -1,4 +1,3 @@
-import axios from 'axios';
 import type { CreateEmployeesType } from './types';
 import api from '../api';
 

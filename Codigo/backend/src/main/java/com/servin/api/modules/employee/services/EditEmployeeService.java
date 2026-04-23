@@ -29,10 +29,6 @@ public class EditEmployeeService {
                 throw new IllegalArgumentException("O nome é obrigatório.");
             }
 
-            if (editEmployeeDto.role() == null || editEmployeeDto.role().trim().isEmpty()) {
-                throw new IllegalArgumentException("O cargo é obrigatório.");
-            }
-
             if (editEmployeeDto.cpf() == null || editEmployeeDto.cpf().trim().isEmpty()) {
                 throw new IllegalArgumentException("CPF é obrigatório.");
             }
@@ -46,8 +42,8 @@ public class EditEmployeeService {
             employee.setBirthDate(editEmployeeDto.birthDate());
             employee.setEmail(editEmployeeDto.email() != null ? editEmployeeDto.email().trim() : null);
             employee.setPhone(editEmployeeDto.phone() != null ? editEmployeeDto.phone().trim() : null);
-            employee.setRole(editEmployeeDto.role().trim());
-            
+            employee.setRole(editEmployeeDto.role());
+
             employeeRepository.save(employee);
 
         } catch (Exception e) {

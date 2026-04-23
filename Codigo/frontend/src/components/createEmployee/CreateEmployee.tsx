@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, DatePicker, Form, Input, message } from "antd";
+import { Button, DatePicker, Form, Input, message, Switch } from "antd";
 import useEmployee from "../../hooks/employees/useEmployee";
 import { useNavigate } from "react-router-dom";
 
@@ -15,7 +15,6 @@ const CreateEmployee: React.FC = () => {
     setEmail,
     phone,
     setPhone,
-    role,
     setRole,
     fetchEmployee,
     loading
@@ -98,16 +97,8 @@ const CreateEmployee: React.FC = () => {
             />
         </Form.Item>
 
-        <Form.Item
-            label="Cargo"
-            name="role"
-            rules={[{ required: true, message: "Informe o cargo!" }]}
-        >
-            <Input
-            placeholder="Ex: Desenvolvedor"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            />
+        <Form.Item label="Gerente?" valuePropName="checked">
+          <Switch onChange={(checked) => setRole(checked)} />
         </Form.Item>
 
         <div style={{ display: "flex", justifyContent: "flex-end" }}>

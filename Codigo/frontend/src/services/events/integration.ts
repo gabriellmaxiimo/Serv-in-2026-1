@@ -1,4 +1,3 @@
-import axios from 'axios';
 import type { CreateEventType } from './types';
 import api from '../api';
 

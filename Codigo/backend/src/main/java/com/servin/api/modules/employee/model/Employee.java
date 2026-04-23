@@ -45,8 +45,8 @@ public class Employee {
     @Column(nullable = false)
     private String phone;
 
-    @Column(nullable = false)
-    private String role;
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean role;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

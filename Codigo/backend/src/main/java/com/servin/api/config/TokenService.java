@@ -11,7 +11,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.servin.api.model.Employee;
+import com.servin.api.modules.employee.model.Employee;
 
 @Service
 public class TokenService {
