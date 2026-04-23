@@ -39,7 +39,7 @@ const useListEvent = () => {
 
   useEffect(() => {
     fetchEvents();
-  }, [fetchEvents]);
+  }, []);
 
   const filteredEvents = useMemo(() => {
     return events.filter((event) => {

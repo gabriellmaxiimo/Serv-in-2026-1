@@ -4,10 +4,7 @@ import {
   DatePicker,
   Form,
   Input,
-  message,
   Upload,
-  type GetProp,
-  type UploadProps,
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import React from "react";

@@ -25,11 +25,11 @@ const CreateEmployee: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
-      await fetchEmployee(); // cria funcionário no backend
+      await fetchEmployee();
 
       message.success("Funcionário criado com sucesso!");
 
-      navigate("/employees"); // 👈 VOLTA PRA LISTA
+      navigate("/employees");
     } catch (error) {
       message.error("Erro ao criar funcionário");
     }
