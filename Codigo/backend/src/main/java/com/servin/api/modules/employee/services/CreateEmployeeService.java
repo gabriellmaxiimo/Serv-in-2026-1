@@ -21,13 +21,9 @@ public class CreateEmployeeService {
                 throw new IllegalArgumentException("O nome é obrigatório.");
             }
 
-            if (createEmployeeDto.role() == null || createEmployeeDto.role().trim().isEmpty()) {
-                throw new IllegalArgumentException("O cargo é obrigatório.");
-            }
-
             Employee employee = new Employee();
             employee.setName(createEmployeeDto.name().trim());
-            employee.setRole(createEmployeeDto.role().trim());
+            employee.setRole(createEmployeeDto.role());
             employee.setCpf(createEmployeeDto.cpf());
             employee.setEmail(createEmployeeDto.email());
             employee.setPhone(createEmployeeDto.phone());

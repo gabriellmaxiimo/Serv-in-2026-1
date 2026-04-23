@@ -3,6 +3,6 @@ export interface CreateEmployeesType {
     cpf: string;
     email: string;
     phone: string;
-    role: string;
+    role: boolean;
     birthDate: string;
 }

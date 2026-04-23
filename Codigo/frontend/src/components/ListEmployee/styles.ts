@@ -6,10 +6,9 @@ export const ListEmployeeStyles = styled.div`
     align-items: center;
 `
 
-export const DashboardHeader = styled.div`
-    display: flex;
-    text-align: center;
-    width: 100%;
-    justify-content: center;
-    margin-bottom: 20px;
+export const ListEmployeesContainer = styled.div`
+    width: 100%; 
+    marginBottom: 20px;
+    display: flex; 
+    gap: 10px;
 `

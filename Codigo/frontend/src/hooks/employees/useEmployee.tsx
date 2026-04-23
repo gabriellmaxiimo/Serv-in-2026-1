@@ -11,12 +11,12 @@ const useEmployee = () => {
     const [birthDate, setBirthDate] = useState<Dayjs | null>(null);
     const [email, setEmail] = useState<string>("")
     const [phone, setPhone] = useState<string>("")
-    const [role, setRole] = useState<string>("")
+    const [role, setRole] = useState<boolean>(false)
 
     const [loading, setLoading] = useState<boolean>(false);
 
     const fetchEmployee = async () => {
-        if(name.trim() === "" || cpf.trim() === "" || !birthDate || email.trim() === "" || phone.trim() === "" || role.trim() === ""){
+        if(name.trim() === "" || cpf.trim() === "" || !birthDate || email.trim() === "" || phone.trim() === ""){
             openErrorNotification("Campos obrigatorio", "Preencha todos os campos.");
             return;
         }

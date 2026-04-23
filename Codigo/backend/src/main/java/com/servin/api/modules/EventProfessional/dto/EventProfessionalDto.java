@@ -1,11 +1,10 @@
-package com.servin.api.modules.EventProfessional.dto;
+package com.servin.api.modules.eventProfessional.dto;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import com.servin.api.modules.EventProfessional.enums.EventProfessionalStatusEnum;
+import com.servin.api.modules.eventProfessional.enums.EventProfessionalStatusEnum;
 
-//* DTO de saída para retornar dados de vínculo sem expor entidades completas.
 public record EventProfessionalDto(
         UUID id,
         UUID eventId,
