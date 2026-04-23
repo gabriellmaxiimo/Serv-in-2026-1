@@ -1,10 +1,21 @@
-package com.servin.api.model;
+package com.servin.api.modules.event.model;
 
-import jakarta.persistence.*;
-import lombok.*;
-import java.util.UUID;
 import java.time.LocalDateTime;
-import com.servin.api.enums.EventStatusEnum;
+import java.util.UUID;
+
+import com.servin.api.modules.event.enums.EventStatusEnum;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "events")
@@ -45,5 +56,4 @@ public class Event {
 
     @Column(name = "deleted_at", nullable = true)
     private LocalDateTime deletedAt;
-
 }

@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.servin.api.enums.EventStatusEnum;
-import com.servin.api.model.Event;
+import com.servin.api.modules.event.enums.EventStatusEnum;
+import com.servin.api.modules.event.model.Event;
 import com.servin.api.modules.event.dto.CreateEventDto;
 import com.servin.api.modules.event.repository.EventRepository;
 

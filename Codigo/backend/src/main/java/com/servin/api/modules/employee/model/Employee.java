@@ -1,4 +1,4 @@
-package com.servin.api.model;
+package com.servin.api.modules.employee.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -53,5 +53,4 @@ public class Employee {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
-
 }

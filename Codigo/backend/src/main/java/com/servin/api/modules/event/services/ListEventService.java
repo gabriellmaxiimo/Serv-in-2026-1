@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.servin.api.model.Event;
+import com.servin.api.modules.event.model.Event;
 import com.servin.api.modules.event.repository.EventRepository;
 
 @Service
