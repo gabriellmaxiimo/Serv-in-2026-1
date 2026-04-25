@@ -24,7 +24,6 @@ const useListEmployees = () => {
     const [filterBirthDate, setFilterBirthDate] = useState<string | null>(null);
     const [filterEmail, setFilterEmail] = useState("");
     const [filterPhone, setFilterPhone] = useState("");
-    const [filterRole, setFilterRole] = useState("");
     
 
     const fetchEmployees = useCallback(async () => {
@@ -68,11 +67,9 @@ const useListEmployees = () => {
 
         const matchPhone = employee.phone.toLowerCase().includes(filterPhone.toLowerCase());
 
-        const matchRole = employee.role.toLowerCase().includes(filterRole.toLowerCase());
-
-        return matchName && matchCPF && matchBirthDate && matchEmail && matchPhone && matchRole;
+        return matchName && matchCPF && matchBirthDate && matchEmail && matchPhone;
         });
-    }, [employees, filterName, filterCPF, filterBirthDate, filterEmail, filterPhone, filterRole]);
+    }, [employees, filterName, filterCPF, filterBirthDate, filterEmail, filterPhone]);
 
     const deleteEmployeeById = async (id: string) => {
         try {
@@ -117,8 +114,7 @@ const useListEmployees = () => {
         setFilterCPF, 
         setFilterBirthDate,
         setFilterEmail, 
-        setFilterPhone, 
-        setFilterRole,
+        setFilterPhone,
         deleteEmployeeById,
         fetchUpdateEmployee
     };

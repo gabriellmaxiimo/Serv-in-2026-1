@@ -8,5 +8,5 @@ public record CreateEmployeeDto(
     LocalDate birthDate,
     String email,
     String phone,
-    String role
+    boolean role
 ) {}

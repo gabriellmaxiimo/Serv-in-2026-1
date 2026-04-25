@@ -1,18 +1,16 @@
-package com.servin.api.modules.EventProfessional.services;
+package com.servin.api.modules.eventProfessional.services;
 
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.servin.api.modules.EventProfessional.dto.EventProfessionalDto;
-import com.servin.api.modules.EventProfessional.model.EventProfessional;
-import com.servin.api.modules.EventProfessional.repository.EventProfessionalRepository;
+import com.servin.api.modules.eventProfessional.dto.EventProfessionalDto;
+import com.servin.api.modules.eventProfessional.model.EventProfessional;
+import com.servin.api.modules.eventProfessional.repository.EventProfessionalRepository;
 
 @Service
 public class ListEventProfessionalService {
-
-    //* Serviço responsável por consultas de vínculos evento-profissional.
 
     private final EventProfessionalRepository eventProfessionalRepository;
 
@@ -20,7 +18,6 @@ public class ListEventProfessionalService {
         this.eventProfessionalRepository = eventProfessionalRepository;
     }
 
-    //* Lista vínculos pelo id do evento.
     public List<EventProfessionalDto> listByEvent(UUID eventId) {
         return eventProfessionalRepository.findByEventId(eventId)
                 .stream()
@@ -28,7 +25,6 @@ public class ListEventProfessionalService {
                 .toList();
     }
 
-    //* Lista vínculos pelo id do profissional.
     public List<EventProfessionalDto> listByProfessional(UUID professionalId) {
         return eventProfessionalRepository.findByProfessionalId(professionalId)
                 .stream()
@@ -36,7 +32,6 @@ public class ListEventProfessionalService {
                 .toList();
     }
 
-    //* Converte entidade de vínculo em DTO de resposta.
     private EventProfessionalDto toDto(EventProfessional eventProfessional) {
         return new EventProfessionalDto(
                 eventProfessional.getId(),

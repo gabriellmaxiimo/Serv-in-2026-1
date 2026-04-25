@@ -5,8 +5,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.servin.api.config.TokenService;
-import com.servin.api.modules.employee.model.Employee;
+import com.servin.api.model.Employee;
 import com.servin.api.modules.auth.dto.LoginDto;
+import com.servin.api.modules.employee.model.Employee;
 import com.servin.api.modules.employee.repository.EmployeeRepository;
 
 import java.util.Optional;
