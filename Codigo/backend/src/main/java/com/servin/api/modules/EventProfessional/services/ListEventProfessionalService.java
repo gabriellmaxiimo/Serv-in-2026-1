@@ -1,13 +1,13 @@
-package com.servin.api.modules.eventProfessional.services;
+package com.servin.api.modules.EventProfessional.services;
 
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.servin.api.modules.eventProfessional.dto.EventProfessionalDto;
-import com.servin.api.modules.eventProfessional.model.EventProfessional;
-import com.servin.api.modules.eventProfessional.repository.EventProfessionalRepository;
+import com.servin.api.modules.EventProfessional.dto.EventProfessionalDto;
+import com.servin.api.modules.EventProfessional.model.EventProfessional;
+import com.servin.api.modules.EventProfessional.repository.EventProfessionalRepository;
 
 @Service
 public class ListEventProfessionalService {

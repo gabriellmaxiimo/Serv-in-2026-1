@@ -1,11 +1,11 @@
-package com.servin.api.modules.eventProfessional.services;
+package com.servin.api.modules.EventProfessional.services;
 
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.servin.api.modules.eventProfessional.model.EventProfessional;
-import com.servin.api.modules.eventProfessional.repository.EventProfessionalRepository;
+import com.servin.api.modules.EventProfessional.model.EventProfessional;
+import com.servin.api.modules.EventProfessional.repository.EventProfessionalRepository;
 
 import jakarta.transaction.Transactional;
 

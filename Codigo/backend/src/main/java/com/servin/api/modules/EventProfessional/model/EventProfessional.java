@@ -1,10 +1,10 @@
-package com.servin.api.modules.eventProfessional.model;
+package com.servin.api.modules.EventProfessional.model;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.servin.api.modules.event.model.Event;
-import com.servin.api.modules.eventProfessional.enums.EventProfessionalStatusEnum;
+import com.servin.api.modules.EventProfessional.enums.EventProfessionalStatusEnum;
 import com.servin.api.modules.professional.model.Professional;
 
 import jakarta.persistence.Entity;
