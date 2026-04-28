@@ -1,0 +1,48 @@
+import type { ProfessionalDTO } from "../types/ProfessionalDTO";
+
+export const mockProfessionals: ProfessionalDTO[] = [
+  {
+    id: "1",
+    name: "Pedro Vieira",
+    cpf: "12345678900",
+    birthDate: "1990-10-10",
+    email: "pedro.vieira@email.com",
+    phone: "31999999999",
+    role: { id: "role-1", name: "Médico" },
+    area: "MEDICINE",
+    status: "AVAILABLE",
+  },
+  {
+    id: "2",
+    name: "Italo Vinhas",
+    cpf: "12345678801",
+    birthDate: "1995-03-05",
+    email: "italo.vinhas@email.com",
+    phone: "31999999998",
+    role: { id: "role-2", name: "Coordenador de Segurança" },
+    area: "SECURITY",
+    status: "AVAILABLE",
+  },
+  {
+    id: "3",
+    name: "Iago de Lara",
+    cpf: "12345678802",
+    birthDate: "2000-08-20",
+    email: "iago.delara@email.com",
+    phone: "31999999997",
+    role: { id: "role-3", name: "Chefe de Cozinha" },
+    area: "FOOD_SERVICE",
+    status: "INACTIVE",
+  },
+  {
+    id: "4",
+    name: "Luan Santos",
+    cpf: "12345678803",
+    birthDate: "1998-05-13",
+    email: "luan.santos@email.com",
+    phone: "31999999996",
+    role: { id: "role-4", name: "Técnico de Limpeza" },
+    area: "CLEANING",
+    status: "INACTIVE",
+  },
+];

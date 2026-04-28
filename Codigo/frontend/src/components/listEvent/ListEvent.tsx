@@ -1,5 +1,6 @@
 import logoServin from "../../assets/logo-servin.png";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   DatePicker,
@@ -24,6 +25,7 @@ import {
 
 
 const ListEvent: React.FC = () => {
+  const navigate = useNavigate();
   const { 
     events, 
     loading, 
@@ -190,11 +192,6 @@ return (
   centered
   style={{ padding: 0 }}
   styles={{
-    content: {
-      background: "transparent",
-      boxShadow: "none",
-      padding: 0,
-    },
     body: {
       padding: 0,
       margin: 0,
@@ -335,12 +332,21 @@ return (
     marginTop: 16,
   }}
 >
-  <Button
-    onClick={() => console.log("ver localização")}
-    className="btn-azul-modal"
-  >
-    Ver Localização
-  </Button>
+  <div style={{ display: "flex", gap: 8 }}>
+    <Button
+      onClick={() => console.log("ver localização")}
+      className="btn-azul-modal"
+    >
+      Ver Localização
+    </Button>
+
+    <Button
+      onClick={() => navigate("/professional")}
+      className="btn-azul-modal"
+    >
+      Adicionar profissional
+    </Button>
+  </div>
 
   <Button
     onClick={() => setIsModalOpen(false)}

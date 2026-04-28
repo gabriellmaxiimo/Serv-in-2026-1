@@ -40,39 +40,40 @@ public class UpdateProfessionalService {
 
         validateAdult(dto);
 
-        if (professionalRepository.existsByCpfAndIdNot(dto.cpf(), id)) {
+        String normalizedCpf = dto.cpf().replaceAll("\\D", "");
+        String normalizedEmail = dto.email().trim().toLowerCase();
+        String normalizedName = dto.name().trim();
+        String normalizedPhone = dto.phone().trim();
+
+        if (normalizedCpf.length() != 11) {
+            throw new IllegalArgumentException("CPF deve conter exatamente 11 dígitos numéricos");
+        }
+
+        if (professionalRepository.existsByCpfAndIdNot(normalizedCpf, id)) {
             throw new IllegalArgumentException("CPF já cadastrado");
         }
 
-        if (professionalRepository.existsByEmailAndIdNot(dto.email(), id)) {
+        if (professionalRepository.existsByEmailAndIdNot(normalizedEmail, id)) {
             throw new IllegalArgumentException("Email já cadastrado");
         }
 
         String roleName = dto.role().trim().toUpperCase();
         Role role = roleRepository.findByName(roleName)
-                .orElseGet(() -> {
-                    Role newRole = new Role();
-                    newRole.setName(roleName);
-                    return roleRepository.save(newRole);
-                });
+                .orElseThrow(() -> new IllegalArgumentException("Cargo não encontrado"));
 
-        professional.setName(dto.name().trim());
-        professional.setCpf(dto.cpf().trim());
-        professional.setEmail(dto.email().trim());
+        professional.setName(normalizedName);
+        professional.setCpf(normalizedCpf);
+        professional.setEmail(normalizedEmail);
         professional.setBirthDate(dto.birthDate());
-        professional.setPhone(dto.phone().trim());
+        professional.setPhone(normalizedPhone);
         professional.setArea(dto.area());
         professional.setRole(role);
         professional.setStatus(dto.status());
         professional.setUpdatedAt(LocalDateTime.now());
 
-        if (dto.status() == ProfessionalStatusEnum.INACTIVE) {
-            if (professional.getDeletedAt() == null) {
-                professional.setDeletedAt(LocalDateTime.now());
-            }
-        } else {
-            professional.setDeletedAt(null);
-        }
+        // Note: Do NOT modify deletedAt based on status
+        // Status is for inactivation (business logic)
+        // deletedAt is for soft deletion (system logic)
 
         return professionalRepository.save(professional);
     }

@@ -9,7 +9,6 @@ import {
   Table,
   type MenuProps,
   Modal,
-  Select,
   Switch,
   Form,
 } from "antd";
@@ -23,7 +22,13 @@ import {
 } from "@ant-design/icons";
 import { ListEmployeesContainer } from "./styles";
 
-const ListEmployees: React.FC = () => {
+type ListEmployeesProps = {
+  emptyDescription?: string;
+};
+
+const ListEmployees: React.FC<ListEmployeesProps> = ({
+  emptyDescription = "Nenhum funcionario encontrado",
+}) => {
   const { 
     employees, 
     loading, 
@@ -163,7 +168,7 @@ return (
         dataSource={employees}
         loading={loading}
         rowKey="id"
-        locale={{ emptyText: <Empty description="Nenhum funcionario encontrado" /> }}
+        locale={{ emptyText: <Empty description={emptyDescription} /> }}
       />
       <Modal
         title="Detalhes do Funcionario"

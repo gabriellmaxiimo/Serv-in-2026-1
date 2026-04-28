@@ -27,5 +27,5 @@ public interface ProfessionalRepository extends JpaRepository<Professional, UUID
 
 	List<Professional> findByStatusAndDeletedAtIsNull(ProfessionalStatusEnum status);
 
-	
+	List<Professional> findByStatus(ProfessionalStatusEnum status);
 }

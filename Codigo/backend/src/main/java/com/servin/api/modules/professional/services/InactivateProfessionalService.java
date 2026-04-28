@@ -23,12 +23,10 @@ public class InactivateProfessionalService {
         Professional professional = professionalRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Profissional não encontrado."));
 
+        // Change status to INACTIVE (inactivation, not deletion)
+        // Do NOT mark deletedAt - that's for real deletions
         professional.setStatus(ProfessionalStatusEnum.INACTIVE);
         professional.setUpdatedAt(LocalDateTime.now());
-
-        if (professional.getDeletedAt() == null) {
-            professional.setDeletedAt(LocalDateTime.now());
-        }
 
         professionalRepository.save(professional);
     }

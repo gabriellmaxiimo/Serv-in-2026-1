@@ -38,6 +38,16 @@ public class RoleController {
 
 			String normalizedName = role.getName().trim().toUpperCase();
 
+			// Validação de caracteres permitidos (previne caracteres perigosos)
+			if (!normalizedName.matches("^[A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ\\s\\-_]+$")) {
+				throw new IllegalArgumentException("Nome do cargo contém caracteres inválidos.");
+			}
+
+			// Validação de comprimento
+			if (normalizedName.length() < 2 || normalizedName.length() > 100) {
+				throw new IllegalArgumentException("Nome do cargo deve ter entre 2 e 100 caracteres.");
+			}
+
 			if (roleRepository.findByName(normalizedName).isPresent()) {
 				throw new IllegalArgumentException("Cargo já cadastrado.");
 			}

@@ -40,22 +40,31 @@ public void validateAdult(CreateProfessionalDto dto){ //*Valida a idade do profi
 
         validateAdult(dto);
 
-        if(repository.existsByCpf(dto.getCpf())){
+        String normalizedCpf = dto.getCpf().replaceAll("\\D", "");
+        String normalizedEmail = dto.getEmail().trim().toLowerCase();
+        String normalizedName = dto.getName().trim();
+        String normalizedPhone = dto.getPhone().trim();
+
+        if (normalizedCpf.length() != 11) {
+            throw new IllegalArgumentException("CPF deve conter exatamente 11 dígitos numéricos");
+        }
+
+        if(repository.existsByCpf(normalizedCpf)){
             throw new IllegalArgumentException("CPF já cadastrado");
         }
 
-        if (repository.existsByEmail(dto.getEmail())) {
+        if (repository.existsByEmail(normalizedEmail)) {
             throw new IllegalArgumentException("Email já cadastrado");
         } 
 
         Professional professional = new Professional();
 
         professional.setCreatedAt(LocalDateTime.now());
-        professional.setName(dto.getName());
-        professional.setCpf(dto.getCpf());
-        professional.setEmail(dto.getEmail());
+        professional.setName(normalizedName);
+        professional.setCpf(normalizedCpf);
+        professional.setEmail(normalizedEmail);
         professional.setBirthDate(dto.getBirthDate());
-        professional.setPhone(dto.getPhone());
+        professional.setPhone(normalizedPhone);
         professional.setArea(dto.getArea());
         professional.setStatus(ProfessionalStatusEnum.AVAILABLE);
 
@@ -65,12 +74,8 @@ public void validateAdult(CreateProfessionalDto dto){ //*Valida a idade do profi
 
         String roleName = dto.getRole().trim().toUpperCase();
 
-            Role role = roleRepository.findByName(roleName)
-            .orElseGet(() -> {
-            Role newRole = new Role();
-            newRole.setName(roleName);
-        return roleRepository.save(newRole);
-        });
+        Role role = roleRepository.findByName(roleName)
+            .orElseThrow(() -> new IllegalArgumentException("Cargo não encontrado"));
 
         professional.setRole(role);
 

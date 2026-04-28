@@ -57,6 +57,26 @@ const HeaderEventComponent = () => {
               Voltar
             </Button>
           )}
+
+          {window.location.pathname === "/professional" && (
+            <Button
+              onClick={() => (window.location.href = "/professional/create")}
+              type="primary"
+              icon={<PlusOutlined />}
+            >
+              Criar Profissional
+            </Button>
+          )}
+
+          {window.location.pathname === "/professional/create" && (
+            <Button
+              onClick={() => (window.location.href = "/professional")}
+              type="primary"
+              icon={<LeftOutlined />}
+            >
+              Voltar
+            </Button>
+          )}
         </SearchContainer>
       </HeaderContainer>
     </>

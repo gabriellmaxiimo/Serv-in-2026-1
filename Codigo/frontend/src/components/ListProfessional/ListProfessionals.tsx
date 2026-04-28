@@ -1,0 +1,347 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+	Button,
+	DatePicker,
+	Descriptions,
+	Dropdown,
+	Empty,
+	Input,
+	Modal,
+	Select,
+	Table,
+	Tag,
+	type MenuProps,
+} from "antd";
+import type { ColumnsType } from "antd/es/table";
+import useListProfessionals from "../../hooks/professional/useListProfessionals";
+import type { ProfessionalDTO } from "../../types/ProfessionalDTO";
+import {
+	CloseCircleFilled,
+	CheckCircleOutlined,
+	StopOutlined,
+	EditOutlined,
+	EyeFilled,
+	MoreOutlined,
+	DownOutlined,
+} from "@ant-design/icons";
+
+type ListProfessionalsProps = {
+	emptyDescription?: string;
+};
+
+type MenuClickInfo = Parameters<NonNullable<MenuProps["onClick"]>>[0];
+
+const ListProfessionals = ({
+	emptyDescription = "Nenhum profissional encontrado",
+}: ListProfessionalsProps) => {
+	const navigate = useNavigate();
+	const {
+		professionals,
+		loading,
+		setFilterSearch,
+		setFilterArea,
+		setFilterStatus,
+		setFilterBirthDate,
+		setFilterEmail,
+		setFilterPhone,
+		inactivateProfessionalById,
+		reactivateProfessionalById,
+	} = useListProfessionals();
+
+	const [selectedProfessional, setSelectedProfessional] =
+		useState<ProfessionalDTO | null>(null);
+	const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+	const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+
+	const { confirm } = Modal;
+
+	const areaLabelMap: Record<string, string> = {
+		MEDICINE: "Medicina",
+		SECURITY: "Segurança",
+		FOOD_SERVICE: "Alimentação",
+		BEVERAGES: "Bebidas",
+		CLEANING: "Limpeza",
+		LOGISTICS: "Logística",
+		STAFF: "Staff",
+		RECEPTION: "Recepção",
+		TECHNOLOGY: "Tecnologia",
+	};
+
+	const statusLabelMap: Record<string, { label: string; color: string }> = {
+		AVAILABLE: { label: "Disponível", color: "green" },
+		INACTIVE: { label: "Inativo", color: "red" },
+	};
+
+	const areaOptions = Object.entries(areaLabelMap).map(([key, value]) => ({
+		label: value,
+		value: key,
+	}));
+
+	const statusOptions = Object.entries(statusLabelMap).map(([key, value]) => ({
+		label: value.label,
+		value: key,
+	}));
+
+	const columns: ColumnsType<ProfessionalDTO> = [
+		{
+			title: "Nome",
+			dataIndex: "name",
+			key: "name",
+			render: (text: string) => <strong>{text}</strong>,
+		},
+		{
+			title: "CPF",
+			dataIndex: "cpf",
+			key: "cpf",
+			render: (cpf: string) =>
+				cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"),
+		},
+		{
+			title: "Cargo",
+			dataIndex: "role",
+			key: "role",
+			render: (role: ProfessionalDTO["role"]) => role?.name || "-",
+		},
+		{
+			title: "Área",
+			dataIndex: "area",
+			key: "area",
+			render: (area: string) => areaLabelMap[area] || area || "-",
+		},
+		{
+			title: "Status",
+			dataIndex: "status",
+			key: "status",
+			render: (status: string) => {
+				const statusInfo = statusLabelMap[status];
+				return (
+					<Tag color={statusInfo.color}>
+						{statusInfo.label}
+					</Tag>
+				);
+			},
+		},
+		{
+			title: "Ação",
+			dataIndex: "actionButton",
+			key: "actionButton",
+				render: (_: unknown, record: ProfessionalDTO) => {
+					const actionItem: NonNullable<MenuProps["items"]>[number] =
+					record.status === "INACTIVE"
+						? {
+							key: "reactivate",
+							label: <span style={{ color: "green" }}>Reativar</span>,
+							icon: <CheckCircleOutlined style={{ color: "green" }} />,
+								onClick: (e: MenuClickInfo) => {
+								e.domEvent.stopPropagation();
+								confirm({
+									title: "Você deseja reativar este profissional?",
+									icon: <CheckCircleOutlined style={{ color: "green" }} />,
+									content: `O profissional "${record.name}" será reativado.`,
+									okText: "Sim, reativar",
+									cancelText: "Não",
+									onOk() {
+										reactivateProfessionalById(record.id);
+									},
+								});
+							},
+						}
+						: {
+							key: "inactivate",
+							label: <span style={{ color: "red" }}>Inativar</span>,
+							icon: <StopOutlined style={{ color: "red" }} />,
+							onClick: (e: MenuClickInfo) => {
+								e.domEvent.stopPropagation();
+								confirm({
+									title: "Você deseja inativar este profissional?",
+									icon: <CloseCircleFilled />,
+									content: `O profissional "${record.name}" será inativado.`,
+									okText: "Sim, inativar",
+									okType: "danger",
+									cancelText: "Não",
+									onOk() {
+										inactivateProfessionalById(record.id);
+									},
+								});
+							},
+						};
+
+				const items: MenuProps["items"] = [
+					{
+						key: "view",
+						label: "Visualizar",
+						icon: <EyeFilled />,
+						onClick: (e) => {
+							e.domEvent.stopPropagation();
+							setSelectedProfessional(record);
+							setIsViewModalOpen(true);
+						},
+					},
+					{
+						key: "edit",
+						label: "Editar",
+						icon: <EditOutlined />,
+						onClick: (e) => {
+							e.domEvent.stopPropagation();
+							Modal.info({
+								title: "Edição de profissional",
+								content: "Fluxo de edição ainda não implementado para profissionais.",
+							});
+						},
+					},
+					actionItem,
+				];
+
+				return (
+					<Dropdown menu={{ items }} trigger={["click"]}>
+						<Button type="text" icon={<MoreOutlined />} onClick={(e) => e.stopPropagation()} />
+					</Dropdown>
+				);
+			},
+		},
+	];
+
+	const handleRowClick = (record: ProfessionalDTO) => {
+		// Navigate to professional detail page
+		navigate(`/professional/${record.id}`);
+	};
+
+	return (
+		<>
+			{/* Main Filters */}
+			<div
+				style={{
+					width: "100%",
+					marginBottom: "20px",
+					display: "flex",
+					gap: "10px",
+					flexWrap: "wrap",
+					alignItems: "center",
+				}}
+			>
+				<Input
+					style={{ flex: "1 1 200px", minWidth: "150px" }}
+					placeholder="Buscar por Nome ou CPF"
+					onChange={(e) => setFilterSearch(e.target.value)}
+				/>
+				<Select
+					style={{ flex: "1 1 180px", minWidth: "150px" }}
+					placeholder="Área"
+					allowClear
+					onChange={(value) => setFilterArea(value || "")}
+					options={areaOptions}
+				/>
+				<Select
+					style={{ flex: "1 1 180px", minWidth: "150px" }}
+					placeholder="Status"
+					allowClear
+					onChange={(value) => setFilterStatus(value || "")}
+					options={statusOptions}
+				/>
+				<Button
+					type="link"
+					onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+					style={{ whiteSpace: "nowrap" }}
+				>
+					{showAdvancedFilters ? "Ocultar Filtros" : "Mais Filtros"} <DownOutlined />
+				</Button>
+			</div>
+
+			{/* Advanced Filters */}
+			{showAdvancedFilters && (
+				<div
+					style={{
+						width: "100%",
+						marginBottom: "20px",
+						display: "flex",
+						gap: "10px",
+						flexWrap: "wrap",
+						padding: "10px",
+						backgroundColor: "#f5f5f5",
+						borderRadius: "4px",
+					}}
+				>
+					<DatePicker
+						style={{ flex: "1 1 200px", minWidth: "150px" }}
+						placeholder="Data de Nascimento"
+						onChange={(date) =>
+							setFilterBirthDate(date ? date.toISOString() : null)
+						}
+						format="DD/MM/YYYY"
+					/>
+					<Input
+						style={{ flex: "1 1 200px", minWidth: "150px" }}
+						placeholder="E-mail"
+						onChange={(e) => setFilterEmail(e.target.value)}
+					/>
+					<Input
+						style={{ flex: "1 1 180px", minWidth: "150px" }}
+						placeholder="Telefone"
+						onChange={(e) => setFilterPhone(e.target.value)}
+					/>
+				</div>
+			)}
+
+			<Table
+				columns={columns}
+				dataSource={professionals}
+				loading={loading}
+				rowKey="id"
+				onRow={(record) => ({
+					onClick: () => handleRowClick(record),
+					style: { cursor: "pointer" },
+				})}
+				locale={{ emptyText: <Empty description={emptyDescription} /> }}
+			/>
+
+			<Modal
+				title="Detalhes do Profissional"
+				open={isViewModalOpen}
+				onCancel={() => setIsViewModalOpen(false)}
+				footer={null}
+			>
+				{selectedProfessional && (
+					<Descriptions column={1} bordered>
+						<Descriptions.Item label="Nome">
+							{selectedProfessional.name}
+						</Descriptions.Item>
+						<Descriptions.Item label="CPF">
+							{selectedProfessional.cpf.replace(
+								/(\d{3})(\d{3})(\d{3})(\d{2})/,
+								"$1.$2.$3-$4",
+							)}
+						</Descriptions.Item>
+						<Descriptions.Item label="Data de Nascimento">
+							{selectedProfessional.birthDate
+								? new Date(selectedProfessional.birthDate).toLocaleDateString("pt-BR")
+								: "-"}
+						</Descriptions.Item>
+						<Descriptions.Item label="E-mail">
+							{selectedProfessional.email}
+						</Descriptions.Item>
+						<Descriptions.Item label="Telefone">
+							{selectedProfessional.phone.replace(
+								/(\d{2})(\d{5})(\d{4})/,
+								"($1) $2-$3",
+							)}
+						</Descriptions.Item>
+						<Descriptions.Item label="Cargo">
+							{selectedProfessional.role?.name || "-"}
+						</Descriptions.Item>
+						<Descriptions.Item label="Área">
+							{areaLabelMap[selectedProfessional.area] || selectedProfessional.area || "-"}
+						</Descriptions.Item>
+						<Descriptions.Item label="Status">
+							<Tag color={statusLabelMap[selectedProfessional.status].color}>
+								{statusLabelMap[selectedProfessional.status].label}
+							</Tag>
+						</Descriptions.Item>
+					</Descriptions>
+				)}
+			</Modal>
+		</>
+	);
+};
+
+export default ListProfessionals;
