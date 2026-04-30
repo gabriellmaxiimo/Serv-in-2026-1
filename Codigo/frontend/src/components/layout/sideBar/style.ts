@@ -16,12 +16,12 @@ export const RedButton = styled.div`
 `;
 
 export const SiderStyle = styled(Sider)`
-  background-color: #1c5aa6 !important;
+  background-color: #001529 !important;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
 
   .ant-menu {
-    background-color: #1c5aa6 !important;
-    color: #FFFFFF
+    background-color: #001529 !important;
+    color: #001529
   }
 
   .ant-menu-item[data-menu-id*="6"] {
@@ -45,6 +45,9 @@ export const SiderStyle = styled(Sider)`
     &:hover {
       background-color: #333333 !important;
     }
+
+    background-color: transparent !important;
+    color: #ffffff !important;
   }
 
   .logo {
@@ -58,7 +61,5 @@ export const SiderStyle = styled(Sider)`
     width: 90%;
     max-width: 200px;
     height: auto;
-    filter: drop-shadow(0 0 2px rgba(159, 159, 159, 0.6))
-          drop-shadow(0 0 4px rgba(255, 255, 255, 0.4));
   }
 `;

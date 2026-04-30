@@ -5,15 +5,16 @@ import {
   ExclamationCircleFilled,
   EnvironmentOutlined,
   TeamOutlined,
+  UserSwitchOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
 import { SiderStyle } from "./style";
-import { logoServin } from "../../assets";
+import { logoServin, servinIcon } from "../../../assets";
 
 const items = [
   { key: "1", icon: <EnvironmentOutlined />, label: "Eventos" },
   { key: "2", icon: <TeamOutlined />, label: "Funcionários" },
-  { key: "3", icon: <TeamOutlined />, label: "Profissionais" },
+  { key: "3", icon: <UserSwitchOutlined />, label: "Profissionais" },
   {
     key: "6",
     icon: <LogoutOutlined />,
@@ -64,7 +65,7 @@ const SideBar: React.FC = () => {
     >
     <div className="logo">
       <a href="/events">
-        <img src={logoServin} alt="Logo Servin" />
+        <img src={servinIcon} alt="Logo Servin" />
       </a>
     </div>
 

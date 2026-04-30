@@ -1,5 +1,6 @@
 package com.servin.api.modules.employee.services;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class DeleteEmployeeService {
 
     public void execute(UUID id) {
         try {
-            if(id == null) {
+            if (id == null) {
                 throw new IllegalArgumentException("ID não pode ser nulo.");
             }
 
@@ -26,7 +27,10 @@ public class DeleteEmployeeService {
             Employee employee = employeeRepository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Funcionário não encontrado."));
 
-            employeeRepository.delete(employee);
+            employee.setDeletedAt(LocalDateTime.now());
+
+            employeeRepository.save(employee);
+
         } catch (Exception e) {
             throw new RuntimeException("Erro ao excluir funcionário: " + e.getMessage());
         }

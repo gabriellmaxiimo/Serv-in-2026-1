@@ -1,6 +1,6 @@
 import { Layout } from "antd";
-import HeaderEventComponent from "../../components/header/HeaderComponent";
-import ListProfessionals from "../../components/ListProfessional/ListProfessionals";
+import HeaderEventComponent from "../../components/layout/header/HeaderComponent";
+import ListProfessionals from "../../components/professional/ListProfessional/ListProfessionals";
 
 const { Content } = Layout;
 

@@ -1,5 +1,6 @@
 package com.servin.api.modules.employee.services;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class EditEmployeeService {
 
     public void execute(UUID id, EditEmployeeDto editEmployeeDto) {
 
+        boolean isValidPhone = editEmployeeDto.phone() != null &&
+                editEmployeeDto.phone().trim().length() >= 10;
+
         try {
             if (id == null) {
                 throw new IllegalArgumentException("ID não pode ser nulo.");
@@ -29,20 +33,21 @@ public class EditEmployeeService {
                 throw new IllegalArgumentException("O nome é obrigatório.");
             }
 
-            if (editEmployeeDto.cpf() == null || editEmployeeDto.cpf().trim().isEmpty()) {
-                throw new IllegalArgumentException("CPF é obrigatório.");
-            }
-
             if (editEmployeeDto.email() == null || editEmployeeDto.email().trim().isEmpty()) {
                 throw new IllegalArgumentException("Email é obrigatório.");
             }
 
+            if (!isValidPhone) {
+                throw new IllegalArgumentException("Telefone é obrigatório e deve conter no mínimo 10 dígitos.");
+            }
+
             employee.setName(editEmployeeDto.name().trim());
-            employee.setCpf(editEmployeeDto.cpf() != null ? editEmployeeDto.cpf().trim() : null);
             employee.setBirthDate(editEmployeeDto.birthDate());
             employee.setEmail(editEmployeeDto.email() != null ? editEmployeeDto.email().trim() : null);
             employee.setPhone(editEmployeeDto.phone() != null ? editEmployeeDto.phone().trim() : null);
             employee.setRole(editEmployeeDto.role());
+
+            employee.setUpdatedAt(LocalDateTime.now());
 
             employeeRepository.save(employee);
 

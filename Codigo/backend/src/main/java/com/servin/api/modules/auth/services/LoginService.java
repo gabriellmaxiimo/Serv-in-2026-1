@@ -33,6 +33,9 @@ public class LoginService {
 
         Employee employee = employeeOpt.get();
 
+        if (employee.getPassword() == null)
+            throw new RuntimeException("Funcionário não possui senha cadastrada.");
+
         if (passwordEncoder.matches(loginDto.password(), employee.getPassword())) {
             return tokenService.generateToken(employee);
         }

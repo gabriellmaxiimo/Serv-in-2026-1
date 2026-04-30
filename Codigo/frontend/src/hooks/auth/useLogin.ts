@@ -26,11 +26,15 @@ const useLogin = () => {
             }
 
         } catch (error) {
-            if((error as any).response?.status === 401) {
-                openErrorNotification("Credenciais inválidas. Por favor, tente novamente.");
-            }
 
-            console.error("Erro ao fazer login:", error);
+            if ((error as any).response?.status === 403) {
+            openErrorNotification(
+                "Primeiro Acesso Necessário", 
+                "Sua conta foi encontrada, mas você ainda não possui uma senha. Clique em 'Primeiro Acesso' para configurar."
+            );
+        } else {
+            openErrorNotification("Erro ao entrar", error instanceof Error ? error.message : "Tente novamente mais tarde.");
+        }
 
         } finally {
             setLoading(false);

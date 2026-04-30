@@ -21,6 +21,8 @@ import com.servin.api.modules.employee.services.DeleteEmployeeService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
+import java.util.Map;
+
 import com.servin.api.modules.employee.model.Employee;
 import com.servin.api.modules.employee.services.ListEmployeeService;
 
@@ -48,23 +50,24 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<String> create(@Valid @RequestBody CreateEmployeeDto dto) {
+    public ResponseEntity<?> create(@Valid @RequestBody CreateEmployeeDto dto) {
         try {
             createEmployeeService.execute(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body("Funcionário criado com sucesso!");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", e.getMessage()));
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable UUID id,
-                                         @Valid @RequestBody EditEmployeeDto dto) {
+    public ResponseEntity<?> update(@PathVariable UUID id,
+            @Valid @RequestBody EditEmployeeDto dto) {
         try {
             editEmployeeService.execute(id, dto);
-            return ResponseEntity.ok("Funcionário atualizado com sucesso.");
+            return ResponseEntity.ok(Map.of("message", "Funcionário atualizado com sucesso."));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("message", e.getMessage()));
         }
     }
 

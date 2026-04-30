@@ -1,4 +1,4 @@
-import LoginCard from "../../components/loginCard/LoginCard"
+import LoginCard from "../../components/auth/loginCard/LoginCard"
 import { LoginPageBackground } from "./style";
 
 const LoginPage = () => {

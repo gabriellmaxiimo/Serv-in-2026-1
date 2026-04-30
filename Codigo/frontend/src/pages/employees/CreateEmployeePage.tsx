@@ -1,6 +1,6 @@
 import { Layout, ConfigProvider } from "antd";
-import HeaderEventComponent from "../../components/header/HeaderComponent";
-import CreateEmployee from "../../components/createEmployee/CreateEmployee";
+import HeaderEventComponent from "../../components/layout/header/HeaderComponent";
+import CreateEmployee from "../../components/employee/createEmployee/CreateEmployee";
 
 const { Content } = Layout;
 

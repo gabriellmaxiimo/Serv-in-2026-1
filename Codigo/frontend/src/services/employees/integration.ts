@@ -1,5 +1,6 @@
-import type { CreateEmployeesType } from './types';
+import type { CreateEmployeesType, EditEmployeesType } from './types';
 import api from '../api';
+import { openErrorNotification } from '../../components/errorNotification';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
 
@@ -35,7 +36,7 @@ export const deleteEmployee = async (employeesID: string) => {
 
 export const updateEmployee = async (
     employeesID: string,
-    employeesData: CreateEmployeesType
+    employeesData: EditEmployeesType
 ) => {
     try {
         const response = await api.put(
@@ -43,8 +44,8 @@ export const updateEmployee = async (
             employeesData
         );
         return response.data;
-    } catch (error) {
-        console.error('Erro ao atualizar funcionario:', error);
-        throw error;
+    } catch (error: any) {
+        const mensagemDoJava = error.response?.data?.message;
+        openErrorNotification("Erro", mensagemDoJava);
     }
 };

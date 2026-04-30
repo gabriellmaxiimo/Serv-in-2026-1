@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { AutoComplete, Button, DatePicker, Form, Input, Select, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import useProfessional from "../../hooks/professional/useProfessional";
-import { createRole, listRoles } from "../../services/role/integration";
+import useProfessional from "../../../hooks/professional/useProfessional";
+import { listRoles, createRole } from "../../../services/role/integration";
 
 const areaOptions = [
   { label: "Medicina", value: "MEDICINE" },

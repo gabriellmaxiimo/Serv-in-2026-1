@@ -8,7 +8,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ConfigProvider theme={{
       token: {
-        colorPrimary: "#ffffff",
+        colorPrimary: "#1677ff",
         colorText: "#333333",
         colorBgContainer: "#FFFFFFFF",
       },

@@ -1,8 +1,11 @@
 import React from "react";
-import { Button, DatePicker, Form, Input, message, Switch } from "antd";
-import useEmployee from "../../hooks/employees/useEmployee";
+import { DatePicker, Form, Input, message, Switch } from "antd";
+import useEmployee from "../../../hooks/employees/useEmployee";
 import { useNavigate } from "react-router-dom";
-import { maskCPF } from "../../functions/maskCpf";
+import { maskCPF } from "../../../functions/maskCpf";
+import { PlusOutlined } from "@ant-design/icons";
+import Button from "../../common/button/Button";
+import { maskPhone } from "../../../functions/maskPhone";
 
 const CreateEmployee: React.FC = () => {
   const {
@@ -17,8 +20,7 @@ const CreateEmployee: React.FC = () => {
     phone,
     setPhone,
     setRole,
-    fetchEmployee,
-    loading
+    fetchEmployee
   } = useEmployee();
 
   const [form] = Form.useForm();
@@ -34,11 +36,18 @@ const CreateEmployee: React.FC = () => {
       setCPF(onlyNumbers);
   };
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const rawValue = e.target.value.replace(/\D/g, "");
+      const maskedValue = maskPhone(rawValue);
+      const onlyNumbers = rawValue.slice(0, 11);
+
+      form.setFieldsValue({ phone: maskedValue });
+      setPhone(onlyNumbers);
+  };
+
   const handleSubmit = async () => {
     try {
       await fetchEmployee();
-
-      message.success("Funcionário criado com sucesso!");
 
       navigate("/employees");
     } catch (error) {
@@ -103,9 +112,9 @@ const CreateEmployee: React.FC = () => {
             rules={[{ required: true, message: "Informe o telefone!" }]}
         >
             <Input
-            placeholder="(31) 99999-9999"
+            placeholder="(31) 9 9999-9999"
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={handlePhoneChange}
             />
         </Form.Item>
 
@@ -114,8 +123,13 @@ const CreateEmployee: React.FC = () => {
         </Form.Item>
 
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <Button type="primary" htmlType="submit" loading={loading}>
-            Criar Funcionário
+            <Button 
+                onClick={() => {}} 
+                type="primary" 
+                htmlType="submit" 
+                icon={<PlusOutlined />} 
+                style={{ backgroundColor: "#1677ff"}}>
+                Criar Funcionário
             </Button>
         </div>
 

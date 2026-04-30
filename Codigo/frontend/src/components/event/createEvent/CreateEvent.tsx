@@ -1,6 +1,5 @@
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import {
-  Button,
   DatePicker,
   Form,
   Input,
@@ -8,8 +7,11 @@ import {
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import React from "react";
-import useEvent from "../../hooks/event/useEvent";
+import useEvent from "../../../hooks/event/useEvent";
 import Search from "antd/es/input/Search";
+
+import * as S from "./styles";
+import Button from "../../common/button/Button";
 
 const CreateEvent: React.FC = () => {
   const {
@@ -128,7 +130,7 @@ const CreateEvent: React.FC = () => {
         </Form.Item>
       </div>
 
-      <div style={{ display: "flex", gap: "16px", flexDirection: "row", width: "100%" }}>
+      <S.LocationContainer>
         <Form.Item
           layout="vertical"
           label="CEP"
@@ -155,7 +157,7 @@ const CreateEvent: React.FC = () => {
           ]}
         >
             <Input
-              style={{ width: "300px" }}
+              style={{ width: "100%" }}
             />
         </Form.Item>
 
@@ -171,7 +173,7 @@ const CreateEvent: React.FC = () => {
           ]}
         >
             <Input
-              style={{ width: "300px" }}
+              style={{ width: "100%" }}
             />
         </Form.Item>
 
@@ -187,7 +189,7 @@ const CreateEvent: React.FC = () => {
           ]}
         >
             <Input
-              style={{ width: "300px" }}
+              style={{ width: "100%" }}
             />
         </Form.Item>
 
@@ -203,10 +205,10 @@ const CreateEvent: React.FC = () => {
           ]}
         >
             <Input
-              style={{ width: "300px" }}
+              style={{ width: "100%" }}
             />
         </Form.Item>
-      </div>
+      </S.LocationContainer>
 
       <Form.Item
         label="Upload"
@@ -236,7 +238,13 @@ const CreateEvent: React.FC = () => {
 
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button 
+            onClick={() => {}} 
+            type="primary" 
+            htmlType="submit" 
+            style={{ backgroundColor: "#1677ff", borderColor: "#1677ff" }}
+          >
+            <PlusOutlined></PlusOutlined>
             Criar Evento
           </Button>
         </Form.Item>
