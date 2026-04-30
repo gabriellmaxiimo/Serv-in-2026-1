@@ -3,29 +3,26 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'rec
 interface SimpleBarChartProps {
   data: {
     name: string;
-    x: number;
+    key: number;
   }[];
+  style?: React.CSSProperties;
+  color?: string | "#001529";
+  key: string | number;
 }
 
-const SimpleBarChart: React.FC<SimpleBarChartProps> = ({ data }) => {
+const SimpleBarChart: React.FC<SimpleBarChartProps> = ({ data, color, key }) => {
   return (
     <BarChart
-      style={{ width: '100%', maxWidth: '700px', maxHeight: '70vh', aspectRatio: 1.618 }}
-      responsive
+      style={{ width: '100%', maxWidth: 'calc(50% - 10px)', maxHeight: '70vh', aspectRatio: 1.618 }}
       data={data}
-      margin={{
-        top: 5,
-        right: 0,
-        left: 0,
-        bottom: 5,
-      }}
+      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
     >
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="name" />
-      <YAxis width="auto" />
+      <YAxis />
       <Tooltip />
       <Legend />
-      <Bar dataKey="Status" fill="#8884d8" activeBar={{ fill: 'pink', stroke: 'blue' }} radius={[10, 10, 0, 0]} />
+      <Bar dataKey={key} fill={color} radius={[10, 10, 0, 0]} />
     </BarChart>
   );
 };

@@ -6,15 +6,17 @@ import {
   EnvironmentOutlined,
   TeamOutlined,
   UserSwitchOutlined,
+  BarChartOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
 import { SiderStyle } from "./style";
-import { logoServin, servinIcon } from "../../../assets";
+import { servinIcon } from "../../../assets";
 
 const items = [
   { key: "1", icon: <EnvironmentOutlined />, label: "Eventos" },
   { key: "2", icon: <TeamOutlined />, label: "Funcionários" },
   { key: "3", icon: <UserSwitchOutlined />, label: "Profissionais" },
+  { key: "4", icon: <BarChartOutlined />, label: "Dashboard" },
   {
     key: "6",
     icon: <LogoutOutlined />,
@@ -26,12 +28,14 @@ const path = {
   "1": "/events",
   "2": "/employees",
   "3": "/professional",
+  "4": "/dashboard",
 };
 
 const onMenuClick = (e: any) => {
   if (e.key === "1") window.location.href = path["1"];
   if (e.key === "2") window.location.href = path["2"];
   if (e.key === "3") window.location.href = path["3"];
+  if (e.key === "4") window.location.href = path["4"];
   if (e.key === "6") {
     return Modal.confirm({
       title: "Tem certeza que deseja sair?",
@@ -84,7 +88,9 @@ const SideBar: React.FC = () => {
               ? "2"
               : window.location.pathname === "/professional"
                 ? "3"
-                : "",
+                : window.location.pathname === "/dashboard"
+                  ? "4"
+                  : "",
         ]}
       />
     </SiderStyle>

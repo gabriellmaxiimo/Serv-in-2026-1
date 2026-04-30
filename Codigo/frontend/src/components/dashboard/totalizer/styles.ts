@@ -11,7 +11,8 @@ export const TotalizerContainer = styled.div`
   border: 1px solid #d9d9d9;
   height: 150px;
   margin: 0 auto 20px auto;
-  width: 200px;
+  width: 100%;
+  margin: 20px;
 `;
 
 export const TotalNumber = styled.h1`
