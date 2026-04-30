@@ -229,7 +229,14 @@ const CreateProfessional = () => {
           setCreatingRole(true);
           await createRole(roleSelection.name);
           await loadRoles();
-          roleName = roleSelection.name;
+
+          setSelectedRole({
+          type: "existing",
+          id: "",
+          name: roleSelection.name,
+        });
+
+roleName = roleSelection.name;
         } catch (error: any) {
           const errorMessage = error?.response?.data || "Erro ao criar cargo";
           message.error(errorMessage);
