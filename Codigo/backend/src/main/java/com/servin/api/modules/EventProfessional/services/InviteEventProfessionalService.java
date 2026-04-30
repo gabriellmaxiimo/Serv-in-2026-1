@@ -1,4 +1,4 @@
-package com.servin.api.modules.EventProfessional.services;
+package com.servin.api.modules.eventProfessional.services;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.servin.api.modules.event.model.Event;
 import com.servin.api.modules.event.repository.EventRepository;
-import com.servin.api.modules.EventProfessional.enums.EventProfessionalStatusEnum;
-import com.servin.api.modules.EventProfessional.model.EventProfessional;
-import com.servin.api.modules.EventProfessional.repository.EventProfessionalRepository;
+import com.servin.api.modules.eventProfessional.enums.EventProfessionalStatusEnum;
+import com.servin.api.modules.eventProfessional.model.EventProfessional;
+import com.servin.api.modules.eventProfessional.repository.EventProfessionalRepository;
 import com.servin.api.modules.professional.enums.ProfessionalStatusEnum;
 import com.servin.api.modules.professional.model.Professional;
 import com.servin.api.modules.professional.repository.ProfessionalRepository;

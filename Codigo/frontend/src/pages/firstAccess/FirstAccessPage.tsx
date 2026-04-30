@@ -1,11 +1,11 @@
-import LoginCard from "../../components/loginCard/LoginCard"
-import { LoginPageBackground } from "../login/style";
+import FirstAccessCard from "../../components/firstAccessCard/FirstAccessCard";
+import { FirstAccessPageBackground } from "./style";
 
 const FirstAccessPage = () => {
     return (
-        <LoginPageBackground>
-            <LoginCard />
-        </LoginPageBackground>
+        <FirstAccessPageBackground>
+            <FirstAccessCard />
+        </FirstAccessPageBackground>
     )
 }
 

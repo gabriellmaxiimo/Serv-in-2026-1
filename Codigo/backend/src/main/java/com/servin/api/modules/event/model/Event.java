@@ -40,8 +40,6 @@ public class Event {
     @Column(nullable = true)
     private LocalDateTime finalDate;
 
-    private String location;
-
     @Column(name = "image_url", nullable = true, columnDefinition = "TEXT")
     private String imageUrl;
 
@@ -56,4 +54,19 @@ public class Event {
 
     @Column(name = "deleted_at", nullable = true)
     private LocalDateTime deletedAt;
+
+    @Column(name = "cep")
+    private String cep;
+
+    @Column(name = "street")
+    private String street;
+
+    @Column(name = "neighborhood")
+    private String neighborhood;
+
+    @Column(name = "state")
+    private String state;
+
+    @Column(name = "city")
+    private String city;
 }

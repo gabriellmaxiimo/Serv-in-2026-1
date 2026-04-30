@@ -1,4 +1,4 @@
-package com.servin.api.modules.EventProfessional;
+package com.servin.api.modules.eventProfessional;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.servin.api.modules.EventProfessional.dto.EventProfessionalDto;
-import com.servin.api.modules.EventProfessional.services.InviteEventProfessionalService;
-import com.servin.api.modules.EventProfessional.services.ListEventProfessionalService;
-import com.servin.api.modules.EventProfessional.services.RemoveEventProfessionalService;
+import com.servin.api.modules.eventProfessional.dto.EventProfessionalDto;
+import com.servin.api.modules.eventProfessional.services.InviteEventProfessionalService;
+import com.servin.api.modules.eventProfessional.services.ListEventProfessionalService;
+import com.servin.api.modules.eventProfessional.services.RemoveEventProfessionalService;
 
 import lombok.RequiredArgsConstructor;
 

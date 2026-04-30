@@ -3,8 +3,10 @@ package com.servin.api.modules.auth.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.servin.api.config.TokenService;
 import com.servin.api.modules.auth.dto.LoginDto;
@@ -25,16 +27,13 @@ public class FirstAccess {
 
     public String firstAccess(LoginDto loginDto) {
         String cpf = loginDto.cpf().trim();
-        Optional<Employee> employeeOpt = employeeRepository.findByCpf(cpf);
-
-        if (employeeOpt.isEmpty()) {
-            throw new RuntimeException("Funcionário não encontrado.");
-        }
-
-        Employee employee = employeeOpt.get();
+        Employee employee = employeeRepository.findByCpf(cpf)
+                .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
+                        org.springframework.http.HttpStatus.NOT_FOUND, "Funcionário não encontrado."));
 
         if (employee.getPassword() != null && !employee.getPassword().isEmpty()) {
-            throw new RuntimeException("Este usuário já possui senha cadastrada.");
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Este usuário já possui senha cadastrada.");
         }
 
         String encodedPassword = passwordEncoder.encode(loginDto.password());

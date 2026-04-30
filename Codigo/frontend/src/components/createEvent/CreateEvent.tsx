@@ -9,6 +9,7 @@ import {
 import TextArea from "antd/es/input/TextArea";
 import React from "react";
 import useEvent from "../../hooks/event/useEvent";
+import Search from "antd/es/input/Search";
 
 const CreateEvent: React.FC = () => {
   const {
@@ -16,13 +17,15 @@ const CreateEvent: React.FC = () => {
     setDescription,
     setStartDate,
     setEndDate,
-    setLocation,
+    onSearch,
     fetchEvent,
     beforeUpload,
     handleChange,
     imageUrl,
     loading,
   } = useEvent();
+
+  const [form] = Form.useForm();
 
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
@@ -38,8 +41,21 @@ const CreateEvent: React.FC = () => {
     </button>
   );
 
+  const handleSearch = async (value: string) => {
+    const data = await onSearch(value);
+    if (data) {
+      form.setFieldsValue({
+        eventCEP: data.cep,
+        eventState: data.uf,
+        eventCity: data.localidade || data.city,
+        eventNeighborhood: data.bairro || data.neighborhood,
+        eventStreet: data.logradouro || data.street,
+      });
+    }
+  };
+
   return (
-    <Form onFinish={fetchEvent}>
+    <Form form={form} onFinish={fetchEvent}>
       <Form.Item
         layout="vertical"
         label="Nome do Evento"
@@ -112,22 +128,85 @@ const CreateEvent: React.FC = () => {
         </Form.Item>
       </div>
 
-      <Form.Item
-        layout="vertical"
-        label="Localização"
-        name="eventLocation"
-        rules={[
-          {
-            required: true,
-            message: "Por favor, insira a localização do evento!",
-          },
-        ]}
-      >
-        <Input
-          placeholder="Digite a localização do evento"
-          onChange={(e) => setLocation(e.target.value)}
-        />
-      </Form.Item>
+      <div style={{ display: "flex", gap: "16px", flexDirection: "row", width: "100%" }}>
+        <Form.Item
+          layout="vertical"
+          label="CEP"
+          name="eventCEP"
+          rules={[
+            {
+              required: true,
+              message: "Por favor, insira a localização do evento!",
+            },
+          ]}
+        >
+            <Search placeholder="CEP" onSearch={handleSearch} style={{ width: 200 }} />
+        </Form.Item>
+
+        <Form.Item
+          layout="vertical"
+          label="Estado"
+          name="eventState"
+          rules={[
+            {
+              required: true,
+              message: "Por favor, insira a localização do evento!",
+            },
+          ]}
+        >
+            <Input
+              style={{ width: "300px" }}
+            />
+        </Form.Item>
+
+        <Form.Item
+          layout="vertical"
+          label="Cidade"
+          name="eventCity"
+          rules={[
+            {
+              required: true,
+              message: "Por favor, insira a localização do evento!",
+            },
+          ]}
+        >
+            <Input
+              style={{ width: "300px" }}
+            />
+        </Form.Item>
+
+        <Form.Item
+          layout="vertical"
+          label="Bairro"
+          name="eventNeighborhood"
+          rules={[
+            {
+              required: true,
+              message: "Por favor, insira a localização do evento!",
+            },
+          ]}
+        >
+            <Input
+              style={{ width: "300px" }}
+            />
+        </Form.Item>
+
+        <Form.Item
+          layout="vertical"
+          label="Logradouro"
+          name="eventStreet"
+          rules={[
+            {
+              required: true,
+              message: "Por favor, insira a localização do evento!",
+            },
+          ]}
+        >
+            <Input
+              style={{ width: "300px" }}
+            />
+        </Form.Item>
+      </div>
 
       <Form.Item
         label="Upload"
