@@ -4,6 +4,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { openErrorNotification } from "../../components/errorNotification";
 import { openSuccessNotification } from "../../components/successNotification";
 import { message, type GetProp, type UploadProps } from "antd";
+import { getAddressByCep } from "../../services/address/integration";
 
 const useEvent = () => {
     const today = dayjs();
@@ -12,6 +13,11 @@ const useEvent = () => {
     const [startDate, setStartDate] = useState<Dayjs>(today);
     const [endDate, setEndDate] = useState<Dayjs | null>(null);
     const [location, setLocation] = useState<string>("")
+    const [cep, setCep] = useState<string>("")
+    const [state, setState] = useState<string>("")
+    const [city, setCity] = useState<string>("")
+    const [neighborhood, setNeighborhood] = useState<string>("")
+    const [street, setStreet] = useState<string>("")
     
     const [fileObject, setFileObject] = useState<any>(null); 
     const [imageUrl, setImageUrl] = useState<string>();
@@ -58,7 +64,19 @@ const useEvent = () => {
     };
 
     const fetchEvent = async () => {
-        if (title.trim() === "" || location.trim() === "" || !startDate) {
+
+        console.log(cep, state, city, neighborhood, street);
+
+        const isCreateMode = 
+            !title.trim() || 
+            !startDate || 
+            !cep?.trim() || 
+            !state?.trim() || 
+            !city?.trim() || 
+            !neighborhood?.trim() || 
+            !street?.trim();
+
+        if (isCreateMode) {
             openErrorNotification("Campos obrigatórios", "Por favor, preencha os campos obrigatórios.");
             return;
         }
@@ -77,7 +95,12 @@ const useEvent = () => {
                 initialDate: startDate.format("YYYY-MM-DDTHH:mm:ss"),
                 finalDate: endDate ? endDate.format("YYYY-MM-DDTHH:mm:ss") : undefined,
                 location,
-                imageUrl: finalImageUrl || ""
+                imageUrl: finalImageUrl || "",
+                cep,
+                state,
+                city,
+                neighborhood,
+                street
             });
 
             if (response) {
@@ -89,6 +112,28 @@ const useEvent = () => {
         } finally {
             setLoading(false);
         }
+    }
+
+    const onSearch = async (value: string) => {
+
+        try {
+            const response = await getAddressByCep(value);
+
+            console.log("Buscando endereço para CEP:", response);
+
+            if(response) {
+                setCep(response.data.cep);
+                setState(response.data.uf);
+                setCity(response.data.localidade);
+                setNeighborhood(response.data.bairro);
+                setStreet(response.data.logradouro);
+
+                return response.data;
+            }
+        } catch(error) {
+            openErrorNotification("Erro ao buscar endereço", "Não foi possível buscar o endereço para o CEP informado.");
+        }
+        
     }
 
     const handleChange: UploadProps['onChange'] = (info) => {
@@ -112,7 +157,7 @@ const useEvent = () => {
         fetchEvent,
         handleChange,
         beforeUpload,
-        loading
+        loading, onSearch,
     }
 }
 

@@ -16,12 +16,13 @@ public class EditEventService {
     @Autowired
     private EventRepository eventRepository;
 
-    public void edit(UUID id, CreateEventDto createEventDto){
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME; 
-        
+    public void edit(UUID id, CreateEventDto createEventDto) {
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
         LocalDateTime start = LocalDateTime.parse(createEventDto.initialDate(), formatter);
-        LocalDateTime end = createEventDto.finalDate() != null ? 
-                            LocalDateTime.parse(createEventDto.finalDate(), formatter) : null;
+        LocalDateTime end = createEventDto.finalDate() != null
+                ? LocalDateTime.parse(createEventDto.finalDate(), formatter)
+                : null;
 
         LocalDateTime now = LocalDateTime.now();
 
@@ -31,9 +32,8 @@ public class EditEventService {
             }
 
             boolean eventExists = eventRepository.existsBySimilarNameAndInitialDate(
-                createEventDto.name().trim(),
-                start
-            );
+                    createEventDto.name().trim(),
+                    start);
 
             if (eventExists) {
                 throw new IllegalArgumentException("O evento ja está criado para esta data.");
@@ -42,14 +42,19 @@ public class EditEventService {
             Event event = new Event();
             event.setName(createEventDto.name());
             event.setDescription(createEventDto.description());
-            
-            event.setInitialDate(start); 
+
+            event.setInitialDate(start);
             event.setFinalDate(end);
-            
-            event.setLocation(createEventDto.location());
+
             event.setImageUrl(createEventDto.imageUrl());
             event.setCreatedAt(now);
             event.setUpdatedAt(now);
+
+            event.setCep(createEventDto.cep());
+            event.setStreet(createEventDto.street());
+            event.setNeighborhood(createEventDto.neighborhood());
+            event.setState(createEventDto.state());
+            event.setCity(createEventDto.city());
 
             if (end != null && now.isAfter(start) && now.isBefore(end)) {
                 event.setStatus(EventStatusEnum.ANDAMENTO);

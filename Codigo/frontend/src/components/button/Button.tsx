@@ -5,16 +5,22 @@ interface SearchButtonProps {
   children: React.ReactNode;
   disabled?: boolean;
   icon?: React.ReactNode;
+  style?: React.CSSProperties;
+  htmlType?: "button" | "submit" | "reset";
+  type?: "primary" | "default" | "dashed" | "text" | "link";
+  size?: "small" | "middle" | "large";
 }
 
-const CustomButton = ({ onClick, children, disabled, icon }: SearchButtonProps) => {
+const CustomButton = ({ onClick, children, disabled, icon, style, htmlType, type, size }: SearchButtonProps) => {
   return (
     <Button
-      type="primary"
+      type={type}
       onClick={onClick}
       disabled={disabled}
       icon={icon}
-      style={{ height: 45, fontWeight: "bold" }}
+      style={style}
+      htmlType={htmlType}
+      size={size}
     >
       {children}
     </Button>

@@ -1,11 +1,11 @@
-package com.servin.api.modules.EventProfessional.services;
+package com.servin.api.modules.eventProfessional.services;
 
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.servin.api.modules.EventProfessional.model.EventProfessional;
-import com.servin.api.modules.EventProfessional.repository.EventProfessionalRepository;
+import com.servin.api.modules.eventProfessional.model.EventProfessional;
+import com.servin.api.modules.eventProfessional.repository.EventProfessionalRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -19,7 +19,7 @@ public class RemoveEventProfessionalService {
     }
 
     @Transactional
-    //* Remove o vínculo através dos ids de evento e profissional.
+    // * Remove o vínculo através dos ids de evento e profissional.
     public void remove(UUID eventId, UUID professionalId) {
         EventProfessional eventProfessional = eventProfessionalRepository
                 .findByEventIdAndProfessionalId(eventId, professionalId)

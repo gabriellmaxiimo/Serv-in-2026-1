@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { openErrorNotification } from "../../components/errorNotification";
 import { openSuccessNotification } from "../../components/successNotification";
 import { firstAccess } from "../../services/auth/integration";
+import axios from "axios";
 
 const useFirstAccess = () => {
     const [cpfFA, setCpfFA] = useState("");
@@ -28,18 +29,18 @@ const useFirstAccess = () => {
     
         } catch (error) {
             const axiosError = error as any;
-            const status = axiosError.response?.status;
-            const errorMessage = axiosError.response?.data?.message || "Erro interno";
+            
+            const messageFromServer = axiosError.response?.data?.message;
 
-            if (status === 401) {
-                openErrorNotification("Credenciais inválidas.");
-            } else if (status === 400) {
-                openErrorNotification("CPF inválido");
+            if (axiosError.response?.status === 400) {
+                openErrorNotification("Erro na validação.");
+            } else if (axiosError.response?.status === 404) {
+                openErrorNotification("Não encontrado", messageFromServer || "Funcionário não existe.");
             } else {
-                openErrorNotification("Erro ao acessar pela primeira vez.", errorMessage);
+                openErrorNotification("Erro no sistema", "Tente novamente mais tarde.");
             }
         } finally {
-            setLoading(false);
+                setLoading(false);
         }
     };
     

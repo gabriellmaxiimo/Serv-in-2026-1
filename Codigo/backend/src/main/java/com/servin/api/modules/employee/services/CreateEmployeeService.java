@@ -1,5 +1,7 @@
 package com.servin.api.modules.employee.services;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +17,6 @@ public class CreateEmployeeService {
 
     public void execute(CreateEmployeeDto createEmployeeDto) {
 
-
         try {
             if (createEmployeeDto.name() == null || createEmployeeDto.name().trim().isEmpty()) {
                 throw new IllegalArgumentException("O nome é obrigatório.");
@@ -28,11 +29,12 @@ public class CreateEmployeeService {
             employee.setEmail(createEmployeeDto.email());
             employee.setPhone(createEmployeeDto.phone());
             employee.setBirthDate(createEmployeeDto.birthDate());
+            employee.setCreatedAt(LocalDateTime.now());
 
             employeeRepository.save(employee);
 
         } catch (Exception e) {
-            //throw new RuntimeException("Erro ao criar funcionário: " + e.getMessage());
+            // throw new RuntimeException("Erro ao criar funcionário: " + e.getMessage());
             e.printStackTrace();
             throw e;
         }

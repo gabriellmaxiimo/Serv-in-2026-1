@@ -44,7 +44,6 @@ const useListEvent = () => {
   const filteredEvents = useMemo(() => {
     return events.filter((event) => {
       const matchName = event.name.toLowerCase().includes(filterName.toLowerCase());
-      const matchLocation = event.location.toLowerCase().includes(filterLocation.toLowerCase());
       
       const matchInitialDate = filterInitialDate 
         ? new Date(event.initialDate) >= new Date(filterInitialDate) 
@@ -58,7 +57,7 @@ const useListEvent = () => {
         ? filterStatus.includes(event.status) 
         : true;
 
-      return matchName && matchLocation && matchInitialDate && matchFinalDate && matchStatus;
+      return matchName && matchInitialDate && matchFinalDate && matchStatus;
     });
   }, [events, filterName, filterLocation, filterInitialDate, filterFinalDate, filterStatus]);
 

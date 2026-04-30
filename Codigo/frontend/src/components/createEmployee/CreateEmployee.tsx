@@ -2,6 +2,7 @@ import React from "react";
 import { Button, DatePicker, Form, Input, message, Switch } from "antd";
 import useEmployee from "../../hooks/employees/useEmployee";
 import { useNavigate } from "react-router-dom";
+import { maskCPF } from "../../functions/maskCpf";
 
 const CreateEmployee: React.FC = () => {
   const {
@@ -20,7 +21,18 @@ const CreateEmployee: React.FC = () => {
     loading
   } = useEmployee();
 
+  const [form] = Form.useForm();
+
   const navigate = useNavigate();
+
+  const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const rawValue = e.target.value.replace(/\D/g, "");
+      const maskedValue = maskCPF(rawValue);
+      const onlyNumbers = rawValue.slice(0, 11);
+
+      form.setFieldsValue({ cpf: maskedValue });
+      setCPF(onlyNumbers);
+  };
 
   const handleSubmit = async () => {
     try {
@@ -35,7 +47,7 @@ const CreateEmployee: React.FC = () => {
   };
 
   return (
-    <Form onFinish = {handleSubmit} layout="vertical">
+    <Form form={form} onFinish={handleSubmit} layout="vertical">
         <Form.Item
             label="Nome"
             name="name"
@@ -55,8 +67,8 @@ const CreateEmployee: React.FC = () => {
         >
             <Input
                 placeholder="000.000.000-00"
-                value={cpf}
-                onChange={(e) => setCPF(e.target.value)}
+                value={maskCPF(cpf)}
+                onChange={handleCpfChange}
             />
         </Form.Item>
 
