@@ -31,11 +31,7 @@ const useListEmployees = () => {
         try {
             const employeesData = await listAllEmployees();
 
-            console.log("DADOS VINDO DO BACKEND:");
-            console.log(employeesData);
-
             if (!employeesData || employeesData.length === 0) {
-                console.log("Backend vazio → usando mock");
                 setEmployees(mockEmployee);
             } else {
                 setEmployees(employeesData);

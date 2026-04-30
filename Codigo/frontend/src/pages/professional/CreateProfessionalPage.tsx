@@ -1,6 +1,6 @@
 import { ConfigProvider, Layout } from "antd";
-import HeaderEventComponent from "../../components/header/HeaderComponent";
-import CreateProfessional from "../../components/createProfessional/CreateProfessional";
+import HeaderEventComponent from "../../components/layout/header/HeaderComponent";
+import CreateProfessional from "../../components/professional/createProfessional/CreateProfessional";
 
 const { Content } = Layout;
 

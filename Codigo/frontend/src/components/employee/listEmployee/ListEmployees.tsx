@@ -12,7 +12,7 @@ import {
   Switch,
   Form,
 } from "antd";
-import useListEmployees from "../../hooks/employees/useListEmployees";
+import useListEmployees from "../../../hooks/employees/useListEmployees";
 import {
   CloseCircleFilled,
   DeleteOutlined,
@@ -21,6 +21,9 @@ import {
   MoreOutlined,
 } from "@ant-design/icons";
 import { ListEmployeesContainer } from "./styles";
+import { maskCPF } from "../../../functions/maskCpf";
+import { maskPhone } from "../../../functions/maskPhone";
+import { openErrorNotification } from "../../errorNotification";
 
 type ListEmployeesProps = {
   emptyDescription?: string;
@@ -42,10 +45,44 @@ const ListEmployees: React.FC<ListEmployeesProps> = ({
     fetchUpdateEmployee
   } = useListEmployees();
 
+  const [form] = Form.useForm();
+
+    
+
   const [selectedEmployee, setSelectedEmployee] = useState<any>(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState<any>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const rawValue = e.target.value.replace(/\D/g, "");
+        const maskedValue = maskCPF(rawValue);
+        const onlyNumbers = rawValue.slice(0, 11);
+  
+        form.setFieldsValue({ cpf: maskedValue });
+        setEditingEmployee({
+                ...editingEmployee,
+                  cpf: onlyNumbers,
+                });
+    };
+
+    const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const rawValue = e.target.value.replace(/\D/g, "");
+        const maskedValue = maskPhone(rawValue);
+        const onlyNumbers = rawValue.slice(0, 11);
+
+        if(onlyNumbers.trim() === "") {
+          openErrorNotification("Telefone inválido", "O telefone não pode estar vazio.");
+        }
+  
+        form.setFieldsValue({ phone: maskedValue });
+        setEditingEmployee({
+                ...editingEmployee,
+                  phone: onlyNumbers,
+                });
+    };
+
+    
 
   const { confirm } = Modal;
 
@@ -220,13 +257,9 @@ return (
 
             <Input
               value={editingEmployee.cpf}
-              onChange={(e) =>
-                setEditingEmployee({
-                ...editingEmployee,
-                  cpf: e.target.value,
-                })
-              }
+              onChange={handleCpfChange}
               placeholder="CPF"
+              disabled={true}
             />
 
             <Input
@@ -242,13 +275,8 @@ return (
 
             <Input
               value={editingEmployee.phone}
-              onChange={(e) =>
-                setEditingEmployee({
-                  ...editingEmployee,
-                  phone: e.target.value,
-                })
-              }
-              placeholder="Telefone"
+              onChange={handlePhoneChange}
+              placeholder="(99) 9 9999-9999"
             />
 
             <Form.Item label="Gerente" valuePropName="checked">

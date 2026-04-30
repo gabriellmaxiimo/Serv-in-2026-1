@@ -1,4 +1,4 @@
-import FirstAccessCard from "../../components/firstAccessCard/FirstAccessCard";
+import FirstAccessCard from "../../components/auth/firstAccessCard/FirstAccessCard";
 import { FirstAccessPageBackground } from "./style";
 
 const FirstAccessPage = () => {

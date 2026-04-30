@@ -1,29 +1,25 @@
 import { Input, Form } from "antd";
-import { UserOutlined, LockOutlined, LoadingOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
-import useLogin from "../../hooks/auth/useLogin";
-import { loginEventPage, logoServin } from "../../assets";
-import { maskCPF } from "../../functions/maskCpf";
+import { UserOutlined, LockOutlined, LoadingOutlined, LeftOutlined } from "@ant-design/icons";
+import { firstAccessBackground, logoServin } from "../../../assets";
+import { maskCPF } from "../../../functions/maskCpf";
+import useFirstAccess from "../../../hooks/auth/useFirstAccess";
 import * as S from "./styles";
 
-const LoginCard = () => {
-    const { setCpf, setPassword, fetchLogin, loading } = useLogin();
+const FirstAccessCard = () => {
+    const { setCpfFA, setPasswordFA, fetchFirstAccess, loading } = useFirstAccess();
     const [form] = Form.useForm();
 
     const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const rawValue = e.target.value.replace(/\D/g, "");
+        const rawValue = e.target.value;
         const maskedValue = maskCPF(rawValue);
-        const onlyNumbers = rawValue.slice(0, 11);
+        const onlyNumbers = rawValue.replace(/\D/g, "");
 
         form.setFieldsValue({ cpf: maskedValue });
-        setCpf(onlyNumbers);
+        setCpfFA(onlyNumbers);
     };
 
     return (
-        <S.LoginPageBackground>
-            <S.ImageSection>
-                <img src={loginEventPage} alt="Background Evento" />
-            </S.ImageSection>
-
+        <S.FirstAccessPageBackground>
             <S.FormSection>
                 {loading ? (
                     <LoadingOutlined style={{ color: "#181880", fontSize: 48 }} />
@@ -39,7 +35,7 @@ const LoginCard = () => {
                             form={form}
                             name="first_access_form" 
                             layout="vertical" 
-                            onFinish={fetchLogin}
+                            onFinish={fetchFirstAccess}
                             style={{ width: "100%" }}
                         >
                             <Form.Item
@@ -65,7 +61,7 @@ const LoginCard = () => {
                                     prefix={<LockOutlined />} 
                                     placeholder="Senha" 
                                     size="large"
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    onChange={(e) => setPasswordFA(e.target.value)}
                                 />
                             </Form.Item>
 
@@ -77,24 +73,28 @@ const LoginCard = () => {
                                         size="large"
                                         onClick={() => {}}
                                     >
-                                        Entrar
+                                        Cadastrar
                                     </S.CustomButtonStyle>
 
                                     <S.CustomButtonStyle
-                                        onClick={() => window.location.href = "/first-access"}
+                                        onClick={() => window.location.href = "/login"}
                                         style={{ backgroundColor: "#030431", height: "45px" }}
                                         type="primary"
                                         size="large"
                                     >
-                                        Primeiro Acesso <RightOutlined />
+                                        <LeftOutlined /> Voltar
                                     </S.CustomButtonStyle>
                             </S.ButtonContainer>
                         </Form>
                     </S.LoginCardContainer>
                 )}
             </S.FormSection>
-        </S.LoginPageBackground>
+
+            <S.ImageSection>
+                <img src={firstAccessBackground} alt="Background Evento" />
+            </S.ImageSection>
+        </S.FirstAccessPageBackground>
     );
 };
 
-export default LoginCard;
+export default FirstAccessCard;

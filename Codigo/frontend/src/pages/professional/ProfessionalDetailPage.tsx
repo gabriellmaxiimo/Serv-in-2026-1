@@ -9,7 +9,7 @@ import {
   Tag,
   Typography,
 } from "antd";
-import HeaderEventComponent from "../../components/header/HeaderComponent";
+import HeaderEventComponent from "../../components/layout/header/HeaderComponent";
 import { getProfessionalById, listProfessionalEvents } from "../../services/professional/integration";
 import type { ProfessionalDTO } from "../../types/ProfessionalDTO";
 import type { EventProfessionalDTO } from "../../types/EventProfessionalDTO";

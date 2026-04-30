@@ -22,6 +22,7 @@ const HeaderEventComponent = () => {
               onClick={() => (window.location.href = "/events/create")}
               type="primary"
               icon={<PlusOutlined />}
+              style={{ backgroundColor: "#1677ff", borderColor: "#1677ff" }}
             >
               Criar Evento
             </Button>
@@ -32,6 +33,7 @@ const HeaderEventComponent = () => {
               onClick={() => (window.location.href = "/events")}
               children={"Voltar"}
               icon={<LeftOutlined />}
+              style={{ backgroundColor: "#1677ff", borderColor: "#1677ff" }}
               type="primary"
             >
               
@@ -53,6 +55,7 @@ const HeaderEventComponent = () => {
               onClick={() => (window.location.href = "/employees")}
               type="primary"
               icon={<LeftOutlined />}
+              style={{ backgroundColor: "#1677ff", borderColor: "#1677ff" }}
             >
               Voltar
             </Button>

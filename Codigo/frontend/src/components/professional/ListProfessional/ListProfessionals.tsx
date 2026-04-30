@@ -14,8 +14,6 @@ import {
 	type MenuProps,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import useListProfessionals from "../../hooks/professional/useListProfessionals";
-import type { ProfessionalDTO } from "../../types/ProfessionalDTO";
 import {
 	CloseCircleFilled,
 	CheckCircleOutlined,
@@ -25,6 +23,8 @@ import {
 	MoreOutlined,
 	DownOutlined,
 } from "@ant-design/icons";
+import useListProfessionals from "../../../hooks/professional/useListProfessionals";
+import type { ProfessionalDTO } from "../../../types/ProfessionalDTO";
 
 type ListProfessionalsProps = {
 	emptyDescription?: string;

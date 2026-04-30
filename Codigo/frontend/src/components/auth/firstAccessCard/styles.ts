@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import Button from "../../components/button/Button";
+import Button from "../../common/button/Button"; // Ajuste o caminho se necessário
 
-export const LoginPageBackground = styled.div`
+export const FirstAccessPageBackground = styled.div`
     display: flex;
     flex-direction: row;
     width: 100vw;

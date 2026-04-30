@@ -17,9 +17,23 @@ public class CreateEmployeeService {
 
     public void execute(CreateEmployeeDto createEmployeeDto) {
 
+        boolean isValidPhone = createEmployeeDto.phone() != null &&
+                createEmployeeDto.phone().trim().length() >= 10;
+
+        boolean isValidCpf = createEmployeeDto.cpf() != null &&
+                createEmployeeDto.cpf().trim().length() >= 11;
+
         try {
             if (createEmployeeDto.name() == null || createEmployeeDto.name().trim().isEmpty()) {
                 throw new IllegalArgumentException("O nome é obrigatório.");
+            }
+
+            if (employeeRepository.findByCpf(createEmployeeDto.cpf()).isPresent() || !isValidCpf) {
+                throw new IllegalArgumentException("Já existe um funcionário com esse cpf ou o cpf é inválido.");
+            }
+
+            if (!isValidPhone) {
+                throw new IllegalArgumentException("Telefone é obrigatório e deve conter no mínimo 10 dígitos.");
             }
 
             Employee employee = new Employee();
@@ -34,7 +48,6 @@ public class CreateEmployeeService {
             employeeRepository.save(employee);
 
         } catch (Exception e) {
-            // throw new RuntimeException("Erro ao criar funcionário: " + e.getMessage());
             e.printStackTrace();
             throw e;
         }

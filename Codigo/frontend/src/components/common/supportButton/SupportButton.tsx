@@ -1,5 +1,5 @@
 import { FloatButton, Modal } from "antd";
-import { supportIcon } from "../../assets";
+import { supportIcon } from "../../../assets";
 
 const SupportButton = () => {
   return (

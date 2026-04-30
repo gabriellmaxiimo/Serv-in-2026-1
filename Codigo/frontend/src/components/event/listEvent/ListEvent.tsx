@@ -1,4 +1,4 @@
-import logoServin from "../../assets/logo-servin.png";
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -14,7 +14,7 @@ import {
   Tag,
   type MenuProps,
 } from "antd";
-import useListEvent from "../../hooks/event/useListEvent";
+import useListEvent from "../../../hooks/event/useListEvent";
 import {
   CloseCircleFilled,
   DeleteOutlined,
@@ -22,6 +22,7 @@ import {
   EyeFilled,
   MoreOutlined,
 } from "@ant-design/icons";
+import { logoServin } from "../../../assets";
 
 
 const ListEvent: React.FC = () => {
@@ -29,8 +30,7 @@ const ListEvent: React.FC = () => {
   const { 
     events, 
     loading, 
-    setFilterName, 
-    setFilterLocation, 
+    setFilterName,
     setFilterInitialDate, 
     setFilterFinalDate, 
     setFilterStatus,
