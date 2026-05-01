@@ -1,4 +1,4 @@
-export interface CreatEmployeesType {
+export interface CreateEmployeesType {
     name: string;
     cpf: string;
     email: string;

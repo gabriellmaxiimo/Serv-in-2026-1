@@ -34,8 +34,6 @@ const ListEmployees: React.FC = () => {
     fetchUpdateEmployee
   } = useListEmployees();
 
-  console.log(employees);
-
   const [selectedEmployee, setSelectedEmployee] = useState<any>(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState<any>(null);
