@@ -104,7 +104,6 @@ const ListEvent: React.FC = () => {
             key: "edit",
             label: "Editar",
             icon: <EditOutlined />,
-            // TODO: PARA QUEM FOR FAZER O EDIT, CHAMAR AQUI O COMPONENTE DE EDIÇÃO E PASSAR O ID DO EVENTO
             onClick: () => console.log("Editar evento com ID:", record.id),
           },
           {
