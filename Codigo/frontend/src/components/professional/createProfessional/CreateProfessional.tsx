@@ -5,6 +5,30 @@ import { useNavigate } from "react-router-dom";
 import useProfessional from "../../../hooks/professional/useProfessional";
 import { listRoles, createRole } from "../../../services/role/integration";
 
+const maskCPF = (value: string) => {
+  const numbers = value.replace(/\D/g, "").slice(0, 11);
+
+  return numbers
+    .replace(/^(\d{3})(\d)/, "$1.$2")
+    .replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3")
+    .replace(/\.(\d{3})(\d)/, ".$1-$2");
+};
+
+
+const maskPhone = (value: string) => {
+  const numbers = value.replace(/\D/g, "").slice(0, 11);
+
+  if (numbers.length <= 10) {
+    return numbers
+      .replace(/^(\d{2})(\d)/, "($1) $2")
+      .replace(/(\d{4})(\d)/, "$1-$2");
+  }
+
+  return numbers
+    .replace(/^(\d{2})(\d)/, "($1) $2")
+    .replace(/(\d{5})(\d)/, "$1-$2");
+};
+
 const areaOptions = [
   { label: "Medicina", value: "MEDICINE" },
   { label: "Segurança", value: "SECURITY" },
@@ -205,7 +229,14 @@ const CreateProfessional = () => {
           setCreatingRole(true);
           await createRole(roleSelection.name);
           await loadRoles();
-          roleName = roleSelection.name;
+
+          setSelectedRole({
+          type: "existing",
+          id: "",
+          name: roleSelection.name,
+        });
+
+roleName = roleSelection.name;
         } catch (error: any) {
           const errorMessage = error?.response?.data || "Erro ao criar cargo";
           message.error(errorMessage);
@@ -246,15 +277,17 @@ const CreateProfessional = () => {
       </Form.Item>
 
       <Form.Item
-        label="CPF"
-        name="cpf"
-        rules={[{ required: true, message: "Informe o CPF!" }]}
+      label="CPF"
+      rules={[{ required: true, message: "Informe o CPF!" }]}
       >
-        <Input
-          placeholder="000.000.000-00"
-          value={cpf}
-          onChange={(e) => setCPF(e.target.value)}
-        />
+      <Input
+      placeholder="000.000.000-00"
+      value={maskCPF(cpf)}
+      onChange={(e) => {
+      const numbers = e.target.value.replace(/\D/g, "").slice(0, 11);
+      setCPF(numbers);
+      }}
+      />
       </Form.Item>
 
       <Form.Item
@@ -313,16 +346,15 @@ const CreateProfessional = () => {
       </Form.Item>
 
       <Form.Item
-        label="Telefone"
-        name="phone"
-        rules={[{ required: true, message: "Informe o telefone!" }]}
+      label="Telefone"
+      rules={[{ required: true, message: "Informe o telefone!" }]}
       >
-        <Input
-          placeholder="(31) 99999-9999"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
-      </Form.Item>
+      <Input
+      placeholder="(31) 99999-9999"
+      value={maskPhone(phone)}
+      onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
+      />
+  </Form.Item>
 
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <Button type="primary" htmlType="submit" loading={loading || creatingRole}>

@@ -23,6 +23,7 @@ const useProfessional = () => {
     const normalizedEmail = email.trim().toLowerCase();
     const normalizedRole = role.trim();
 
+    
     if (
       name.trim() === "" ||
       normalizedCpf === "" ||
