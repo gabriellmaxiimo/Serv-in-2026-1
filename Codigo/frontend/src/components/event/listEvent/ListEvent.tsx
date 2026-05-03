@@ -317,20 +317,25 @@ return (
 
             
               <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginTop: 16,
-        }}
-      >
-        <div style={{ display: "flex", gap: 8 }}>
-          <Button
-            onClick={() => navigate("/professional")}
-            className="btn-azul-modal"
-          >
-            Adicionar profissional
-          </Button>
-        </div>
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: 16,
+          }}
+        >
+          <div style={{ display: "flex", gap: 8 }}>
+            <Button
+              onClick={() => {
+                setIsModalOpen(false);
+                navigate(`/events/${selectedEvent.id}/professionals`, {
+                  state: { eventName: selectedEvent.name },
+                });
+              }}
+              className="btn-azul-modal"
+            >
+              Gerenciar profissionais
+            </Button>
+          </div>
 
         <Button
           onClick={() => setIsModalOpen(false)}

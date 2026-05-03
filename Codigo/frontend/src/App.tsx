@@ -9,6 +9,7 @@ import CreateEmployeePage from "./pages/employees/CreateEmployeePage";
 import ListEmployeesPage from "./pages/employees/ListEmployeesPage";
 import CreateEventPage from "./pages/events/CreateEventPage";
 import ListEventPage from "./pages/events/ListEventPage";
+import EventProfessionalsPage from "./pages/events/EventProfessionalsPage";
 import FirstAccessPage from "./pages/firstAccess/FirstAccessPage";
 import ListProfessionalsPage from "./pages/professional/ListProfessionalsPage";
 import CreateProfessionalPage from "./pages/professional/CreateProfessionalPage";
@@ -40,6 +41,7 @@ function App() {
               <Routes>
                 <Route path="/events" element={<ListEventPage />} />
                 <Route path="/events/create" element={<CreateEventPage />} />
+                <Route path="/events/:id/professionals" element={<EventProfessionalsPage />} />
                 <Route path="/employees" element={<ListEmployeesPage />} />
                 <Route path="/employees/create" element={<CreateEmployeePage />} />
                 <Route path="/professional" element={<ListProfessionalsPage />} />
