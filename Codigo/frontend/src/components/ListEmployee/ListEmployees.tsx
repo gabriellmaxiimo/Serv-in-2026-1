@@ -1,4 +1,5 @@
 import { Row, Col, Card, Select } from "antd";
+import { Pagination } from "antd";
 import React from "react";
 import { useState } from "react";
 import {
@@ -130,6 +131,14 @@ const ListEmployees: React.FC = () => {
     },
   ];
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 12;
+  const totalItems = employees?.length || 0;
+  const totalPages = Math.ceil(totalItems / pageSize);
+  const paginatedEmployees = (employees || []).slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
   const formatCPF = (cpf: string) => {
     if (!cpf) return "-";
     return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
@@ -329,7 +338,7 @@ return (
           <div style={{marginTop: 20}}>
               {viewMode === "grid" ? (
                 <Row gutter={[16, 16]}>
-                  {employees?.map((employee:any) => {
+                  {paginatedEmployees?.map((employee:any) => {
                     const items: MenuProps["items"] = [
                       {
                         key: "view",
@@ -450,13 +459,58 @@ return (
                 ) : (
                   <Table
                     columns={columns}
-                    dataSource={employees}
+                    dataSource={paginatedEmployees}
                     rowKey="id"
                     loading={loading}
                     pagination={false}
                   />
                 )}
             </div>
+
+                  <div style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginTop: 20,
+                    flexWrap: "wrap",
+                    gap: 10,
+                  }}>
+
+                    <div style={{
+                      flex: 1,
+                      display: "flex",
+                      justifyContent: "center"
+                    }}>
+                      {totalPages > 1 &&(
+                        <Pagination
+                          current={currentPage}
+                          pageSize={pageSize}
+                          total={totalItems}
+                          onChange={(page) => setCurrentPage(page)}
+                        />
+                      )}
+                    </div>
+                    
+                    <div style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8
+                    }}>
+                      <div style={{display: "flex", alignItems: "center", gap: 8}}>
+                        <span>Exibir</span>
+                        <Select
+                          defaultValue={12}
+                          options={[
+                            {value: 6, label: "6"},
+                            {value: 12, label: "12"},
+                            {value: 24, label: "24"},
+                          ]}
+                          style={{width: 80}}
+                        />
+                        <span>por página</span>
+                      </div>
+                    </div>
+                  </div>
         </Col>
       </Row>
 
