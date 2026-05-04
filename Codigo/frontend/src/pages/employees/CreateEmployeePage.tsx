@@ -1,5 +1,4 @@
 import { Layout, ConfigProvider } from "antd";
-import HeaderEventComponent from "../../components/layout/header/HeaderComponent";
 import CreateEmployee from "../../components/employee/createEmployee/CreateEmployee";
 
 const { Content } = Layout;
@@ -14,7 +13,6 @@ const CreateEmployeePage = () => {
       }}
     >
       <Layout style={{ minHeight: "100vh" }}>
-          <HeaderEventComponent />
           <Content
             style={{
               margin: "24px 16px",

@@ -1,4 +1,5 @@
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 import {
   DatePicker,
   Form,
@@ -36,6 +37,8 @@ const CreateEvent: React.FC = () => {
     return e?.fileList;
   };
 
+  const navigate = useNavigate();
+
   const uploadButton = (
     <button style={{ border: 0, background: "none" }} type="button">
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -57,7 +60,14 @@ const CreateEvent: React.FC = () => {
   };
 
   return (
-    <Form form={form} onFinish={fetchEvent}>
+    <Form
+      form={form}
+      onFinish={async () => {
+        await fetchEvent();
+        navigate("/events");
+      }}
+    >
+
       <Form.Item
         layout="vertical"
         label="Nome do Evento"
