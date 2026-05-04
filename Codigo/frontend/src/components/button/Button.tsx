@@ -14,7 +14,7 @@ const CustomButton = ({ onClick, children, disabled, icon }: SearchButtonProps) 
       onClick={onClick}
       disabled={disabled}
       icon={icon}
-      style={{ height: 45, fontWeight: "bold" }}
+      style={{ height: 45, fontWeight: "bold", borderRadius: 8}}
     >
       {children}
     </Button>

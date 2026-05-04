@@ -1,4 +1,5 @@
 import { Menu, Modal } from "antd";
+import {useNavigate} from "react-router-dom";
 
 import {
   LogoutOutlined,
@@ -20,42 +21,41 @@ const items = [
   },
 ];
 
-const path = {
-  "1": "/events",
-  "2": "/employees",
-};
-
-const onMenuClick = (e: any) => {
-  if (e.key === "1") window.location.href = path["1"];
-  if (e.key === "2") window.location.href = path["2"];
-  if (e.key === "6") {
-    return Modal.confirm({
-      title: "Tem certeza que deseja sair?",
-      icon: <ExclamationCircleFilled style={{ color: "red" }} />,
-      content: "Você será redirecionado para a página de login.",
-      okText: "Sim",
-      okType: "danger",
-      cancelText: "Não",
-      onOk() {
-        localStorage.removeItem("token");
-        window.location.href = "/login";
-      },
-      style: {
-        color: "#050521",
-      },
-    });
-  }
-};
-
 const SideBar: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate();
+
+  const onMenuClick = (e: any) => {
+    if (e.key === "1") navigate("/events");
+    if (e.key === "2") navigate("/employees");
+    if (e.key === "3") navigate("/professionals");
+    if (e.key === "4") navigate("/metrics");
+    if (e.key === "6") {
+      return Modal.confirm({
+        title: "Tem certeza que deseja sair?",
+        icon: <ExclamationCircleFilled style={{ color: "red" }} />,
+        content: "Você será redirecionado para a página de login.",
+        okText: "Sim",
+        okType: "danger",
+        cancelText: "Não",
+        onOk() {
+          localStorage.removeItem("token");
+          window.location.href = "/login";
+        },
+        style: {
+          color: "#050521",
+        },
+      });
+    }
+  };
+
   return (
     <SiderStyle
       collapsible
       collapsed={collapsed}
       onCollapse={(value) => setCollapsed(value)}
       style={{
-        backgroundColor: "#050521",
+        backgroundColor: "var(--primary)",
       }}
       breakpoint="lg"
     >
@@ -66,7 +66,6 @@ const SideBar: React.FC = () => {
     </div>
 
       <Menu
-        theme="dark"
         mode="inline"
         style={{
           marginTop: 20,

@@ -1,5 +1,4 @@
 import { Layout, ConfigProvider } from "antd";
-import HeaderEventComponent from "../../components/header/HeaderComponent";
 import CreateEvent from "../../components/createEvent/CreateEvent";
 
 const { Content } = Layout;
@@ -15,7 +14,6 @@ const CreateEventPage = () => {
     >
       <Layout style={{ minHeight: "100vh" }}>
         <Layout>
-          <HeaderEventComponent />
           <Content
             style={{
               margin: "24px 16px",
