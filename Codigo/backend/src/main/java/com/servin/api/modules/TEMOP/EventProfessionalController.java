@@ -1,4 +1,4 @@
-package com.servin.api.modules.eventProfessional;
+package com.servin.api.modules.TEMOP;
 
 import java.util.List;
 import java.util.UUID;

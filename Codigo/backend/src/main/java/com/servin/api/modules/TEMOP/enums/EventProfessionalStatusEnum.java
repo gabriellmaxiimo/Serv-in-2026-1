@@ -1,4 +1,4 @@
-package com.servin.api.modules.eventProfessional.enums;
+package com.servin.api.modules.TEMOP.enums;
 
 public enum EventProfessionalStatusEnum {
     PENDING_CONFIRMATION,    // email enviado, aguardando resposta
