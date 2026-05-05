@@ -13,6 +13,7 @@ import com.servin.api.modules.eventProfessional.repository.EventProfessionalRepo
 import com.servin.api.modules.professional.enums.ProfessionalStatusEnum;
 import com.servin.api.modules.professional.model.Professional;
 import com.servin.api.modules.professional.repository.ProfessionalRepository;
+import java.time.Duration;
 
 import jakarta.transaction.Transactional;
 
@@ -32,33 +33,52 @@ public class InviteEventProfessionalService {
     }
 
     @Transactional
-    //* Convida profissional para evento e cria token de confirmação.
     public void invite(UUID eventId, UUID professionalId) {
 
-        Event event = eventRepository.findByIdAndDeletedAtIsNull(eventId)
-            .orElseThrow(() -> new IllegalArgumentException("Event não encontrado"));
+    Event event = eventRepository.findByIdAndDeletedAtIsNull(eventId)
+        .orElseThrow(() -> new IllegalArgumentException("Event não encontrado"));
 
-        Professional professional = professionalRepository.findById(professionalId)
-                .orElseThrow(() -> new RuntimeException("Profissional não encontrado"));
+    Professional professional = professionalRepository.findById(professionalId)
+            .orElseThrow(() -> new RuntimeException("Profissional não encontrado"));
 
-        if (professional.getStatus() == ProfessionalStatusEnum.INACTIVE){
-            throw new RuntimeException("Profissional está inativo");
+    if (professional.getStatus() == ProfessionalStatusEnum.INACTIVE) {
+        throw new RuntimeException("Profissional está inativo");
+    }
+
+    if (eventProfessionalRepository.existsByEventAndProfessional(event, professional)) {
+        throw new RuntimeException("Profissional já está nesse evento");
+    }
+
+    var existingRelations = eventProfessionalRepository.findByProfessional(professional);
+
+    for (EventProfessional existing : existingRelations) {
+
+        if (existing.getStatus() == EventProfessionalStatusEnum.REJECTED) continue;
+
+        Event existingEvent = existing.getEvent();
+
+        long diff = Math.abs(
+            Duration.between(
+                existingEvent.getInitialDate(),
+                event.getInitialDate()
+            ).toHours()
+        );
+
+        if (diff < 4) {
+            throw new RuntimeException("Profissional já possui evento com intervalo menor que 4 horas");
         }
-        
-        if (eventProfessionalRepository.existsByEventAndProfessional(event, professional)) {
-            throw new RuntimeException("Profissional já está nesse evento");
-        }
+    }
 
-        EventProfessional ep = new EventProfessional();
-        ep.setEvent(event);
-        ep.setProfessional(professional);
-        ep.setStatus(EventProfessionalStatusEnum.PENDING_CONFIRMATION);
-        ep.setCreatedAt(LocalDateTime.now());
+    EventProfessional ep = new EventProfessional();
+    ep.setEvent(event);
+    ep.setProfessional(professional);
+    ep.setStatus(EventProfessionalStatusEnum.PENDING_CONFIRMATION);
+    ep.setCreatedAt(LocalDateTime.now());
 
-        String token = UUID.randomUUID().toString();
-        ep.setConfirmationToken(token);
+    String token = UUID.randomUUID().toString();
+    ep.setConfirmationToken(token);
 
-        eventProfessionalRepository.save(ep);
+    eventProfessionalRepository.save(ep);
     }
 
     //* Marca o convite como confirmado.

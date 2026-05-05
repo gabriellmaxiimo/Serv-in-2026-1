@@ -27,4 +27,6 @@ public interface EventProfessionalRepository extends JpaRepository<EventProfessi
     //* Busca vínculo específico para remoção.
     Optional<EventProfessional> findByEventIdAndProfessionalId(UUID eventId, UUID professionalId);
 
+    List<EventProfessional> findByProfessional(Professional professional);
+
 }
