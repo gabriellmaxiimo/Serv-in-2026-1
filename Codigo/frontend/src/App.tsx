@@ -13,6 +13,7 @@ import FirstAccessPage from "./pages/firstAccess/FirstAccessPage";
 import ListProfessionalsPage from "./pages/professional/ListProfessionalsPage";
 import CreateProfessionalPage from "./pages/professional/CreateProfessionalPage";
 import ProfessionalDetailPage from "./pages/professional/ProfessionalDetailPage";
+import EventDetailsPage from "./pages/events/EventDetailsPage";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => (
   <Layout style={{ minHeight: "100vh" }}>
@@ -40,6 +41,7 @@ function App() {
               <Routes>
                 <Route path="/events" element={<ListEventPage />} />
                 <Route path="/events/create" element={<CreateEventPage />} />
+                <Route path="/events/:id" element={<EventDetailsPage />} />
                 <Route path="/employees" element={<ListEmployeesPage />} />
                 <Route path="/employees/create" element={<CreateEmployeePage />} />
                 <Route path="/professional" element={<ListProfessionalsPage />} />

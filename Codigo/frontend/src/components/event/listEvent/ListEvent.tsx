@@ -98,6 +98,7 @@ const ListEvent: React.FC = () => {
             onClick: () => {
               setSelectedEvent(record);
               setIsModalOpen(true);
+              navigate(`/events/${record.id}`, { state: record });
             },
           },
           {
