@@ -1,4 +1,4 @@
-package com.servin.api.modules.TEMOP.model;
+package com.servin.api.modules.eventProfessional.model;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
