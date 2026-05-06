@@ -183,8 +183,9 @@ const ListProfessionals = ({
 	 						icon: <EyeFilled />,
 	 						onClick: (e) => {
 	 							e.domEvent.stopPropagation();
-	 							setSelectedProfessional(record);
-	 							setIsViewModalOpen(true);
+	 							navigate(`/professional/${record.id}`, {
+									state: { from: "professional-list" },
+								});
 	 						},
 	 					},
 	 					{
