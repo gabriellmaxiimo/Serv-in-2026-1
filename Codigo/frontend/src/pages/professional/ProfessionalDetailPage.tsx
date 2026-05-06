@@ -230,6 +230,7 @@ const ProfessionalDetailPage = () => {
                     return (
                       <div
                         key={eventItem.id}
+                        onClick={() => navigate(`/events/${eventItem.eventId}`)}
                         style={{
                           border: "1px solid #f0f0f0",
                           borderRadius: 10,
@@ -238,13 +239,55 @@ const ProfessionalDetailPage = () => {
                           display: "flex",
                           flexDirection: "column",
                           gap: 8,
+                          cursor: "pointer",
+                          transition: "all 0.3s ease",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = "#f0f0f0";
+                          e.currentTarget.style.borderColor = "#d9d9d9";
+                          e.currentTarget.style.boxShadow = "0 2px 8px rgba(0, 0, 0, 0.1)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "#fafafa";
+                          e.currentTarget.style.borderColor = "#f0f0f0";
+                          e.currentTarget.style.boxShadow = "none";
                         }}
                       >
-                        <Text strong>{eventItem.eventName || "Evento sem nome"}</Text>
-                        <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                          <Tag color={eventStatus.color}>{eventStatus.label}</Tag>
-                          <Text type="secondary">
-                            Convite em {new Date(eventItem.createdAt).toLocaleDateString("pt-BR")}
+                        <div style={{ marginBottom: 8 }}>
+                          <Text strong style={{ fontSize: 14 }}>
+                            {eventItem.eventName || "Evento sem nome"}
+                          </Text>
+                        </div>
+
+                        <Tag color={eventStatus.color} style={{ width: "fit-content" }}>
+                          {eventStatus.label}
+                        </Tag>
+
+                        <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 8 }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                            <Text type="secondary" style={{ fontSize: 12 }}>
+                              📅 Convidado em:
+                            </Text>
+                            <Text style={{ fontSize: 12, fontWeight: 500 }}>
+                              {new Date(eventItem.createdAt).toLocaleDateString("pt-BR")}
+                            </Text>
+                          </div>
+
+                          {eventItem.confirmedAt && (
+                            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                              <Text type="secondary" style={{ fontSize: 12 }}>
+                                ✓ Confirmado em:
+                              </Text>
+                              <Text style={{ fontSize: 12, fontWeight: 500 }}>
+                                {new Date(eventItem.confirmedAt).toLocaleDateString("pt-BR")}
+                              </Text>
+                            </div>
+                          )}
+                        </div>
+
+                        <div style={{ marginTop: 10, paddingTop: 10, borderTop: "1px solid #e8e8e8" }}>
+                          <Text type="secondary" style={{ fontSize: 11 }}>
+                            Clique para ver detalhes completos →
                           </Text>
                         </div>
                       </div>
