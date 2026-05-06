@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   Alert,
   Button,
@@ -67,7 +67,9 @@ const sectionStyle: React.CSSProperties = {
 
 const ProfessionalDetailPage = () => {
   const { id } = useParams<{ id: string }>();
+  const location = useLocation();
   const navigate = useNavigate();
+  const locationState = location.state as { from?: string; eventId?: string } | null;
 
   const [professional, setProfessional] = useState<ProfessionalDTO | null>(null);
   const [events, setEvents] = useState<EventProfessionalDTO[]>([]);
@@ -107,6 +109,17 @@ const ProfessionalDetailPage = () => {
     return statusLabelMap[professional.status] || { label: professional.status, color: "default" };
   }, [professional]);
 
+  const handleBack = () => {
+    if (locationState?.from === "event-detail" && locationState.eventId) {
+      navigate(`/events/${locationState.eventId}`, {
+        state: { from: "professional-detail", professionalId: id },
+      });
+      return;
+    }
+
+    navigate("/professional");
+  };
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <HeaderEventComponent />
@@ -121,7 +134,7 @@ const ProfessionalDetailPage = () => {
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
           <Title level={4} style={{ margin: 0 }}>Detalhes do Profissional</Title>
-          <Button onClick={() => navigate("/professional")}>Voltar para a lista</Button>
+          <Button onClick={handleBack}>Voltar</Button>
         </div>
 
         {loading && <Skeleton active paragraph={{ rows: 6 }} />}
@@ -230,7 +243,11 @@ const ProfessionalDetailPage = () => {
                     return (
                       <div
                         key={eventItem.id}
-                        onClick={() => navigate(`/events/${eventItem.eventId}`)}
+                        onClick={() =>
+                          navigate(`/events/${eventItem.eventId}`, {
+                            state: { from: "professional-detail", professionalId: id },
+                          })
+                        }
                         style={{
                           border: "1px solid #f0f0f0",
                           borderRadius: 10,

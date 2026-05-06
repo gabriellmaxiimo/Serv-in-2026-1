@@ -95,10 +95,10 @@ const ListEvent: React.FC = () => {
             key: "view",
             label: "Visualizar",
             icon: <EyeFilled />,
-            onClick: () => {
+            onClick: (e) => {
+              e.domEvent.stopPropagation();
               setSelectedEvent(record);
               setIsModalOpen(true);
-              navigate(`/events/${record.id}`, { state: record });
             },
           },
           {
@@ -106,13 +106,17 @@ const ListEvent: React.FC = () => {
             label: "Editar",
             icon: <EditOutlined />,
             // TODO: PARA QUEM FOR FAZER O EDIT, CHAMAR AQUI O COMPONENTE DE EDIÇÃO E PASSAR O ID DO EVENTO
-            onClick: () => console.log("Editar evento com ID:", record.id),
+            onClick: (e) => {
+              e.domEvent.stopPropagation();
+              console.log("Editar evento com ID:", record.id);
+            },
           },
           {
             key: "delete",
             label: <span style={{ color: "red" }}>Deletar</span>,
             icon: <DeleteOutlined style={{ color: "red" }} />,
-            onClick: () => {
+            onClick: (e) => {
+              e.domEvent.stopPropagation();
               confirm({
                 title: "Você tem certeza que deseja excluir este evento?",
                 icon: <CloseCircleFilled />,
@@ -130,7 +134,7 @@ const ListEvent: React.FC = () => {
 
         return (
           <Dropdown menu={{ items }} trigger={["click"]}>
-            <Button type="text" icon={<MoreOutlined />} />
+            <Button type="text" icon={<MoreOutlined />} onClick={(e) => e.stopPropagation()} />
           </Dropdown>
         );
       },
@@ -173,6 +177,10 @@ return (
         dataSource={events}
         loading={loading}
         rowKey="id"
+        onRow={(record) => ({
+          onClick: () => navigate(`/events/${record.id}`, { state: { from: "event-list", event: record } }),
+          style: { cursor: "pointer" },
+        })}
         locale={{ emptyText: <Empty description="Nenhum evento encontrado" /> }}
       />
 

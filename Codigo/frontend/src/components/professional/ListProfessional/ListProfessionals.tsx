@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import {
 	Button,
 	DatePicker,
@@ -25,6 +26,10 @@ import {
 } from "@ant-design/icons";
 import useListProfessionals from "../../../hooks/professional/useListProfessionals";
 import type { ProfessionalDTO } from "../../../types/ProfessionalDTO";
+import { inviteProfessional } from "../../../services/eventProfessional/integration";
+import { listEventProfessionals } from "../../../services/eventProfessional/integration";
+import { openSuccessNotification } from "../../successNotification";
+import { openErrorNotification } from "../../errorNotification";
 
 type ListProfessionalsProps = {
 	emptyDescription?: string;
@@ -83,128 +88,214 @@ const ListProfessionals = ({
 		value: key,
 	}));
 
-	const columns: ColumnsType<ProfessionalDTO> = [
-		{
-			title: "Nome",
-			dataIndex: "name",
-			key: "name",
-			render: (text: string) => <strong>{text}</strong>,
-		},
-		{
-			title: "CPF",
-			dataIndex: "cpf",
-			key: "cpf",
-			render: (cpf: string) =>
-				cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"),
-		},
-		{
-			title: "Cargo",
-			dataIndex: "role",
-			key: "role",
-			render: (role: ProfessionalDTO["role"]) => role?.name || "-",
-		},
-		{
-			title: "Área",
-			dataIndex: "area",
-			key: "area",
-			render: (area: string) => areaLabelMap[area] || area || "-",
-		},
-		{
-			title: "Status",
-			dataIndex: "status",
-			key: "status",
-			render: (status: string) => {
-				const statusInfo = statusLabelMap[status];
-				return (
-					<Tag color={statusInfo.color}>
-						{statusInfo.label}
-					</Tag>
-				);
-			},
-		},
-		{
-			title: "Ação",
-			dataIndex: "actionButton",
-			key: "actionButton",
-				render: (_: unknown, record: ProfessionalDTO) => {
-					const actionItem: NonNullable<MenuProps["items"]>[number] =
-					record.status === "INACTIVE"
-						? {
-							key: "reactivate",
-							label: <span style={{ color: "green" }}>Reativar</span>,
-							icon: <CheckCircleOutlined style={{ color: "green" }} />,
-								onClick: (e: MenuClickInfo) => {
-								e.domEvent.stopPropagation();
-								confirm({
-									title: "Você deseja reativar este profissional?",
-									icon: <CheckCircleOutlined style={{ color: "green" }} />,
-									content: `O profissional "${record.name}" será reativado.`,
-									okText: "Sim, reativar",
-									cancelText: "Não",
-									onOk() {
-										reactivateProfessionalById(record.id);
-									},
-								});
-							},
-						}
-						: {
-							key: "inactivate",
-							label: <span style={{ color: "red" }}>Inativar</span>,
-							icon: <StopOutlined style={{ color: "red" }} />,
-							onClick: (e: MenuClickInfo) => {
-								e.domEvent.stopPropagation();
-								confirm({
-									title: "Você deseja inativar este profissional?",
-									icon: <CloseCircleFilled />,
-									content: `O profissional "${record.name}" será inativado.`,
-									okText: "Sim, inativar",
-									okType: "danger",
-									cancelText: "Não",
-									onOk() {
-										inactivateProfessionalById(record.id);
-									},
-								});
-							},
-						};
 
-				const items: MenuProps["items"] = [
-					{
-						key: "view",
-						label: "Visualizar",
-						icon: <EyeFilled />,
-						onClick: (e) => {
-							e.domEvent.stopPropagation();
-							setSelectedProfessional(record);
-							setIsViewModalOpen(true);
-						},
-					},
-					{
-						key: "edit",
-						label: "Editar",
-						icon: <EditOutlined />,
-						onClick: (e) => {
-							e.domEvent.stopPropagation();
-							Modal.info({
-								title: "Edição de profissional",
-								content: "Fluxo de edição ainda não implementado para profissionais.",
-							});
-						},
-					},
-					actionItem,
-				];
+	// build base columns
+	const baseColumns: ColumnsType<ProfessionalDTO> = [
+	 		{
+	 			title: "Nome",
+	 			dataIndex: "name",
+	 			key: "name",
+	 			render: (text: string) => <strong>{text}</strong>,
+	 		},
+	 		{
+	 			title: "CPF",
+	 			dataIndex: "cpf",
+	 			key: "cpf",
+	 			render: (cpf: string) =>
+	 				cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"),
+	 		},
+	 		{
+	 			title: "Cargo",
+	 			dataIndex: "role",
+	 			key: "role",
+	 			render: (role: ProfessionalDTO["role"]) => role?.name || "-",
+	 		},
+	 		{
+	 			title: "Área",
+	 			dataIndex: "area",
+	 			key: "area",
+	 			render: (area: string) => areaLabelMap[area] || area || "-",
+	 		},
+	 		{
+	 			title: "Status",
+	 			dataIndex: "status",
+	 			key: "status",
+	 			render: (status: string) => {
+	 				const statusInfo = statusLabelMap[status];
+	 				return (
+	 					<Tag color={statusInfo.color}>
+	 						{statusInfo.label}
+	 					</Tag>
+	 				);
+	 			},
+	 		},
+	 		{
+	 			title: "Ação",
+	 			dataIndex: "actionButton",
+	 			key: "actionButton",
+	 				render: (_: unknown, record: ProfessionalDTO) => {
+	 					const actionItem: NonNullable<MenuProps["items"]>[number] =
+	 					record.status === "INACTIVE"
+	 						? {
+	 							key: "reactivate",
+	 							label: <span style={{ color: "green" }}>Reativar</span>,
+	 							icon: <CheckCircleOutlined style={{ color: "green" }} />,
+	 								onClick: (e: MenuClickInfo) => {
+	 								e.domEvent.stopPropagation();
+	 								confirm({
+	 									title: "Você deseja reativar este profissional?",
+	 									icon: <CheckCircleOutlined style={{ color: "green" }} />,
+	 									content: `O profissional "${record.name}" será reativado.`,
+	 									okText: "Sim, reativar",
+	 									cancelText: "Não",
+	 									onOk() {
+	 										reactivateProfessionalById(record.id);
+	 									},
+	 								});
+	 							},
+	 						}
+	 						: {
+	 							key: "inactivate",
+	 							label: <span style={{ color: "red" }}>Inativar</span>,
+	 							icon: <StopOutlined style={{ color: "red" }} />,
+	 							onClick: (e: MenuClickInfo) => {
+	 								e.domEvent.stopPropagation();
+	 								confirm({
+	 									title: "Você deseja inativar este profissional?",
+	 									icon: <CloseCircleFilled />,
+	 									content: `O profissional "${record.name}" será inativado.`,
+	 									okText: "Sim, inativar",
+	 									okType: "danger",
+	 									cancelText: "Não",
+	 									onOk() {
+	 										inactivateProfessionalById(record.id);
+	 									},
+	 								});
+	 							},
+	 						};
 
-				return (
-					<Dropdown menu={{ items }} trigger={["click"]}>
-						<Button type="text" icon={<MoreOutlined />} onClick={(e) => e.stopPropagation()} />
-					</Dropdown>
-				);
-			},
-		},
+	 				const items: MenuProps["items"] = [
+	 					{
+	 						key: "view",
+	 						label: "Visualizar",
+	 						icon: <EyeFilled />,
+	 						onClick: (e) => {
+	 							e.domEvent.stopPropagation();
+	 							setSelectedProfessional(record);
+	 							setIsViewModalOpen(true);
+	 						},
+	 					},
+	 					{
+	 						key: "edit",
+	 						label: "Editar",
+	 						icon: <EditOutlined />,
+	 						onClick: (e) => {
+	 							e.domEvent.stopPropagation();
+	 							Modal.info({
+	 								title: "Edição de profissional",
+	 								content: "Fluxo de edição ainda não implementado para profissionais.",
+	 							});
+	 						},
+	 					},
+	 					actionItem,
+	 				];
+
+	 				return (
+	 					<Dropdown menu={{ items }} trigger={["click"]}>
+	 						<Button type="text" icon={<MoreOutlined />} onClick={(e) => e.stopPropagation()} />
+	 					</Dropdown>
+	 				);
+	 			},
+	 		},
 	];
+
+	const location = useLocation();
+	const locationState = (location.state as any) ?? null;
+	const showEventActions = Boolean(locationState?.from === "event-details" && locationState?.eventId);
+
+	const [linkedProfessionalIds, setLinkedProfessionalIds] = useState<Set<string>>(new Set());
+	const [invitingIds, setInvitingIds] = useState<Set<string>>(new Set());
+
+	// Carregar profissionais vinculados quando entrar da página de evento
+	useEffect(() => {
+		const loadLinked = async () => {
+			if (!showEventActions || !locationState?.eventId) return;
+			try {
+				const resp = await listEventProfessionals(locationState.eventId);
+				const list = Array.isArray(resp.data) ? resp.data : [];
+				const ids = new Set(list.map((lp: any) => String(lp.professionalId)));
+				setLinkedProfessionalIds(ids);
+			} catch {
+				setLinkedProfessionalIds(new Set());
+			}
+		};
+
+		loadLinked();
+	}, [showEventActions, locationState?.eventId]);
+
+	const handleAddToEvent = async (professionalId: string, professionalName: string) => {
+		if (!locationState?.eventId) return;
+
+		setInvitingIds((prev) => new Set(prev).add(professionalId));
+
+		try {
+			await inviteProfessional(locationState.eventId, professionalId);
+			openSuccessNotification(`${professionalName} convidado para o evento com sucesso.`);
+			// Atualizar estado local
+			setLinkedProfessionalIds((prev) => new Set(prev).add(professionalId));
+		} catch (err) {
+			openErrorNotification("Erro ao convidar profissional para o evento");
+		} finally {
+			setInvitingIds((prev) => {
+				const next = new Set(prev);
+				next.delete(professionalId);
+				return next;
+			});
+		}
+	};
+
+	// final columns: insert event-action column at start when appropriate
+	const columns: ColumnsType<ProfessionalDTO> = showEventActions
+		? [
+			{
+				title: "Ações",
+				dataIndex: "addToEvent",
+				key: "addToEvent",
+				render: (_: unknown, record: ProfessionalDTO) => {
+					const isLinked = linkedProfessionalIds.has(record.id);
+					const isInviting = invitingIds.has(record.id);
+
+					return (
+						<Button
+							type={isLinked ? "default" : "primary"}
+							size="small"
+							disabled={isLinked}
+							loading={isInviting}
+							style={{
+								backgroundColor: isLinked ? "#d9d9d9" : undefined,
+								color: isLinked ? "#999" : undefined,
+							}}
+							onClick={(e) => {
+								e.stopPropagation();
+								if (!isLinked) {
+									handleAddToEvent(record.id, record.name);
+								}
+							}}
+						>
+							{isLinked ? "Vinculado" : "Adicionar"}
+						</Button>
+					);
+				},
+			},
+			...baseColumns,
+		]
+		: baseColumns;
 
 	const handleRowClick = (record: ProfessionalDTO) => {
 		// Navigate to professional detail page
-		navigate(`/professional/${record.id}`);
+		navigate(`/professional/${record.id}`, {
+			state: { from: "professional-list" },
+		});
 	};
 
 	return (
