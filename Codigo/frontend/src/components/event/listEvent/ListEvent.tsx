@@ -458,8 +458,9 @@ return (
                           cover={
                             <div style={{position: "relative"}}>
                               <img
-                                src={event.image || "https://via.placeholder.com/400x200"}
+                                src={event.image || (event as any).imageUrl || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='200'><rect width='100%' height='100%' fill='%23f3f4f6'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%239ca3af' font-family='Arial' font-size='18'>Sem imagem</text></svg>"}
                                 style={{height:180, width: "100%", objectFit: "cover"}}
+                                alt={event.name}
                               />
 
 
