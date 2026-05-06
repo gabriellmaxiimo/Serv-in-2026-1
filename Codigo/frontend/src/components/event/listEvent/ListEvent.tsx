@@ -1,6 +1,7 @@
-import { Pagination } from "antd";
+import { Empty, Pagination } from "antd";
 import { useState } from "react";
 import {Row, Col, Card } from "antd";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   DatePicker,
@@ -43,6 +44,8 @@ const ListEvent: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { confirm } = Modal;
+
+  const navigate = useNavigate();
 
   const statusOptions = [
     { label: "Agendado", value: "AGENDADO" },
@@ -103,7 +106,8 @@ const ListEvent: React.FC = () => {
             key: "view",
             label: "Visualizar",
             icon: <EyeFilled />,
-            onClick: () => {
+            onClick: (e) => {
+              e.domEvent.stopPropagation();
               setSelectedEvent(record);
               setIsModalOpen(true);
             },
@@ -113,13 +117,17 @@ const ListEvent: React.FC = () => {
             label: "Editar",
             icon: <EditOutlined />,
             // TODO: PARA QUEM FOR FAZER O EDIT, CHAMAR AQUI O COMPONENTE DE EDIÇÃO E PASSAR O ID DO EVENTO
-            onClick: () => console.log("Editar evento com ID:", record.id),
+            onClick: (e) => {
+              e.domEvent.stopPropagation();
+              console.log("Editar evento com ID:", record.id);
+            },
           },
           {
             key: "delete",
             label: <span style={{ color: "red" }}>Deletar</span>,
             icon: <DeleteOutlined style={{ color: "red" }} />,
-            onClick: () => {
+            onClick: (e) => {
+              e.domEvent.stopPropagation();
               confirm({
                 title: "Você tem certeza que deseja excluir este evento?",
                 icon: <CloseCircleFilled />,
@@ -137,7 +145,7 @@ const ListEvent: React.FC = () => {
 
         return (
           <Dropdown menu={{ items }} trigger={["click"]}>
-            <Button type="text" icon={<MoreOutlined />} />
+            <Button type="text" icon={<MoreOutlined />} onClick={(e) => e.stopPropagation()} />
           </Dropdown>
         );
       },
@@ -394,7 +402,7 @@ return (
                     borderRadius: 8,
                     fontWeight: 500,
                   }}
-                  onClick={() => (window.location.href = "/events/create")}
+                  onClick={() => navigate("/events/create")}
                 >
                   + Criar Evento
                 </Button>
@@ -451,6 +459,10 @@ return (
                       <Col xs={24} md={12} lg={8} key={event.id}>
                         <Card
                           hoverable
+                          onClick={(e) => {
+                            if ((e.target as HTMLElement).closest("button")) return;
+                            navigate(`/events/${event.id}`);
+                          }}
                           style={{borderRadius: 16, overflow: "hidden", position: "relative", boxShadow: "0 4px 12px rgba(0,0,0,0.08)",}}
                           cover={
                             <div style={{position: "relative"}}>
@@ -533,6 +545,11 @@ return (
                     rowKey="id"
                     loading={loading}
                     pagination={false}
+                    onRow={(record) => ({
+                      onClick: () => navigate(`/events/${record.id}`, { state: { from: "event-list", event: record } }),
+                      style: { cursor : "pointer"}
+                    })}
+                    locale={{ emptyText: <Empty description="Nenhum evento encontrado" /> }}
                   />
                 )}
             </div>

@@ -14,6 +14,7 @@ import FirstAccessPage from "./pages/firstAccess/FirstAccessPage";
 import ListProfessionalsPage from "./pages/professional/ListProfessionalsPage";
 import CreateProfessionalPage from "./pages/professional/CreateProfessionalPage";
 import ProfessionalDetailPage from "./pages/professional/ProfessionalDetailPage";
+import EventDetailsPage from "./pages/events/EventDetailsPage";
 
 function App() {
   return (
@@ -38,13 +39,18 @@ function App() {
                 <Routes>
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/first-access" element={<FirstAccessPage />} />
+
                   <Route path="/events" element={<ListEventPage />} />
                   <Route path="/events/create" element={<CreateEventPage />} />
+                  <Route path="/events/:id" element={<EventDetailsPage />} />
+
                   <Route path="/employees" element={<ListEmployeesPage />} />
                   <Route path="/employees/create" element={<CreateEmployeePage />} />
+
                   <Route path="/professionals" element={<ListProfessionalsPage />} />
                   <Route path="/professional/create" element={<CreateProfessionalPage />} />
                   <Route path="/professional/:id" element={<ProfessionalDetailPage />} />
+
                   <Route path="/metrics" element={<div>Metricas</div>} />
                   <Route path="/" element={<Navigate to="/login" />} />
                 </Routes>
