@@ -10,6 +10,12 @@ const NavBar =() => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    const hideOnRoutes = ["/login", "/first-access"];
+
+    if (hideOnRoutes.includes(location.pathname)) {
+        return null;
+    }
+
     const items = [
         {
             label: "Eventos",

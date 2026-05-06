@@ -9,7 +9,6 @@ import {
   Tag,
   Typography,
 } from "antd";
-import HeaderEventComponent from "../../components/layout/header/HeaderComponent";
 import { getProfessionalById, listProfessionalEvents } from "../../services/professional/integration";
 import type { ProfessionalDTO } from "../../types/ProfessionalDTO";
 import type { EventProfessionalDTO } from "../../types/EventProfessionalDTO";
@@ -122,7 +121,6 @@ const ProfessionalDetailPage = () => {
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <HeaderEventComponent />
       <Content
         style={{
           margin: "24px 16px",

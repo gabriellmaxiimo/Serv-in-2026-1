@@ -4,8 +4,22 @@ import useLogin from "../../../hooks/auth/useLogin";
 import { loginEventPage, logoServin } from "../../../assets";
 import { maskCPF } from "../../../functions/maskCpf";
 import * as S from "./styles";
+import { useEffect } from "react";
 
 const LoginCard = () => {
+    useEffect(() => {
+        const topbar = document.querySelector(".topbar");
+        const navbar = document.querySelector(".navbar");
+
+        if (topbar) (topbar as HTMLElement).style.display = "none";
+        if (navbar) (navbar as HTMLElement).style.display = "none";
+
+        return () => {
+            if (topbar) (topbar as HTMLElement).style.display = "";
+            if (navbar) (navbar as HTMLElement).style.display = "";
+        };
+    }, []);
+
     const { setCpf, setPassword, fetchLogin, loading } = useLogin();
     const [form] = Form.useForm();
 

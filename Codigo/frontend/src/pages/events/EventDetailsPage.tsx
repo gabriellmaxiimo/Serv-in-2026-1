@@ -3,12 +3,18 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { listAllEvents } from "../../services/events/integration";
 import { listEventProfessionals, removeProfessional } from "../../services/eventProfessional/integration";
 import type { EventProfessionalDTO } from "../../types/EventProfessionalDTO";
-import { Table, Tag, Button, Popconfirm } from "antd";
+import { Row, Col, Card, Table, Tag, Button, Popconfirm } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { getProfessionalById } from "../../services/professional/integration";
 import type { ProfessionalDTO } from "../../types/ProfessionalDTO";
 import { openSuccessNotification } from "../../components/successNotification";
 import { openErrorNotification } from "../../components/errorNotification";
+import {
+  CalendarOutlined,
+  EnvironmentOutlined,
+  EditOutlined,
+  StopOutlined,
+} from "@ant-design/icons";
 
 type EventDetailsNavigationState = {
   from?: "event-list" | "professional-detail";
@@ -37,6 +43,18 @@ const EventDetailsPage = () => {
     STAFF: "Staff",
     RECEPTION: "Recepção",
     TECHNOLOGY: "Tecnologia",
+  };
+
+  const formatDateTime = (date?: string | null) => {
+    if (!date) return "-";
+
+    return new Date(date).toLocaleString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
   const formatArea = (a?: string | null) => {
@@ -181,45 +199,100 @@ const EventDetailsPage = () => {
 
   if (!event) return <p>Evento não encontrado</p>;
 
-  return (
-    <div style={{ padding: 40 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-        <h1 style={{ margin: 0 }}>Detalhes do Evento</h1>
-        <button
-          type="button"
-          onClick={handleBack}
-          style={{
-            border: "1px solid #d9d9d9",
-            background: "#fff",
-            borderRadius: 8,
-            padding: "8px 12px",
-            cursor: "pointer",
-          }}
-        >
-          Voltar
-        </button>
+  return ( 
+  <div style={{ padding: 24, background: "#f5f7fb", minHeight: "100vh" }}>
+  
+  <div style={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20
+  }}>
+    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+      <Button onClick={handleBack}>← Voltar</Button>
+
+      <div>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <h2 style={{ margin: 0, fontSize: 26, fontWeight: 700 }}>
+            {event.name}
+          </h2>
+
+          <Tag color={event.status === "ACTIVE" ? "green" : "orange"}>
+            {event.status}
+          </Tag>
+        </div>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 10}}>
+              <EnvironmentOutlined />
+              <span>{event.location}</span>
+        </div>
       </div>
+    </div>
 
-      {event.imageUrl && (
-        <img
-          src={event.imageUrl}
-          alt="Evento"
-          style={{
-            width: "100%",
-            maxHeight: 300,
-            objectFit: "cover",
-            marginBottom: 20,
-            borderRadius: 12,
-          }}
-        />
-      )}
+    <div style={{ display: "flex", gap: 10 }}>
+      <Button icon={<EditOutlined />}>Editar Evento</Button>
+      <Button danger>Cancelar Evento</Button>
+    </div>
+  </div>
+    
+    <Row gutter={[16, 16]} style={{ marginTop: 24 }}>
+  
+      {/* COLUNA ESQUERDA (MAIOR) */}
+      <Col xs={24} md={16}>
+        <Card bordered={false} style={{ borderRadius: 12 }}>
+          
+          <div style={{ marginBottom: 16 }}>
+            <h3 style={{ marginBottom: 6 }}>Sobre o Evento</h3>
+            <p style={{ color: "#666" }}>{event.description}</p>
+          </div>
 
-      <p><strong>Nome:</strong> {event.name}</p>
-      <p><strong>Descrição:</strong> {event.description}</p>
-      <p><strong>Data Inicial:</strong> {event.initialDate}</p>
-      <p><strong>Data Final:</strong> {event.finalDate}</p>
-      <p><strong>Localização:</strong> {event.location}</p>
-      <p><strong>Status:</strong> {event.status}</p>
+          <div style={{ marginBottom: 16 }}>
+            <h3 style={{ marginBottom: 6 }}>Datas e Horários</h3>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 10, color: "#555" }}>
+  
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <CalendarOutlined />
+                <span>Início: {formatDateTime(event.initialDate)}</span>
+              </div>
+
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <CalendarOutlined />
+                <span>Fim: {formatDateTime(event.finalDate)}</span>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ marginTop: 12 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <EnvironmentOutlined />
+              <span>{event.location}</span>
+            </div>
+          </div>
+
+        </Card>
+      </Col>
+
+      {/* COLUNA DIREITA */}
+      <Col xs={24} md={8} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        
+        <Card bordered={false} style={{ borderRadius: 12 }}>
+          <h3>Organizador</h3>
+          <p style={{ margin: 0, color: "#666" }}>
+            Equipe de Eventos Corporativos
+          </p>
+        </Card>
+
+        <Card bordered={false} style={{ borderRadius: 12 }}>
+          <h3>Métricas</h3>
+          <p style={{ margin: 0, color: "#666" }}>
+            Total de Profissionais: {professionalsTableData.length}
+          </p>
+        </Card>
+
+      </Col>
+
+    </Row>
 
       <div style={{ marginTop: 28 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
@@ -237,9 +310,11 @@ const EventDetailsPage = () => {
 
         {!loadingProfessionals && professionalsTableData.length > 0 && (
           <Table
+            size="middle"
             dataSource={professionalsTableData}
             pagination={false}
             rowKey={(record) => String(record.key)}
+            rowClassName={() => "professional-row"}
             onRow={(record) => {
               return {
                 onClick: () =>
@@ -250,15 +325,25 @@ const EventDetailsPage = () => {
             }}
             columns={[
               {
-                title: "NOME",
+                title: "PROFISSIONAL",
                 dataIndex: "name",
-                key: "name",
+                render: (name: string, record: any) => (
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <span style={{ fontWeight: 600 }}>{name}</span>
+                    <span style={{ fontSize: 12, color: "#888" }}>
+                      {record.role} • {record.area}
+                    </span>
+                  </div>
+                ),
               },
               {
                 title: "CPF",
                 dataIndex: "cpf",
-                key: "cpf",
-                render: (v: string) => v || "-",
+                render: (v: string) => (
+                  <span style={{ color: "#999", fontSize: 13 }}>
+                    {v || "-"}
+                  </span>
+                ),
               },
               {
                 title: "CARGO",
@@ -277,10 +362,27 @@ const EventDetailsPage = () => {
                 dataIndex: "status",
                 key: "status",
                 render: (s: EventProfessionalDTO["status"]) => {
-                  const label = statusLabelMap[s];
-                  const color = s === "CONFIRMED" ? "green" : s === "REJECTED" ? "red" : "orange";
-                  return <Tag color={color}>{label}</Tag>;
-                },
+                  const statusConfig: Record<EventProfessionalDTO["status"], { color: string }> = {
+                    PENDING_CONFIRMATION: { color: "orange" },
+                    CONFIRMED: { color: "green" },
+                    REJECTED: { color: "red" },
+                    CANCELED: { color: "default" },
+                  };
+                  const config = statusConfig[s];
+
+                  return (
+                    <Tag
+                      style={{
+                        borderRadius: 20,
+                        padding: "2px 10px",
+                        fontWeight: 500,
+                      }}
+                      color={config.color}
+                    >
+                      {statusLabelMap[s]}
+                    </Tag>
+                  );
+                }
               },
               {
                 title: "AÇÕES",
@@ -301,11 +403,14 @@ const EventDetailsPage = () => {
                     cancelText="Cancelar"
                   >
                     <Button
-                      type="primary"
+                      type="text"
                       danger
-                      size="small"
+                      icon={<StopOutlined />}
                       loading={removingIds.has(record.id)}
                       onClick={(e) => e.stopPropagation()}
+                      style={{
+                        borderRadius: 8,
+                      }}
                     >
                       Remover
                     </Button>

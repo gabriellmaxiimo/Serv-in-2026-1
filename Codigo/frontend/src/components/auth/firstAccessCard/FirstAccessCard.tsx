@@ -4,8 +4,22 @@ import { firstAccessBackground, logoServin } from "../../../assets";
 import { maskCPF } from "../../../functions/maskCpf";
 import useFirstAccess from "../../../hooks/auth/useFirstAccess";
 import * as S from "./styles";
+import { useEffect } from "react";
 
 const FirstAccessCard = () => {
+    useEffect(() => {
+        const topbar = document.querySelector(".topbar");
+        const navbar = document.querySelector(".navbar");
+
+        if (topbar) (topbar as HTMLElement).style.display = "none";
+        if (navbar) (navbar as HTMLElement).style.display = "none";
+
+        return () => {
+            if (topbar) (topbar as HTMLElement).style.display = "";
+            if (navbar) (navbar as HTMLElement).style.display = "";
+        };
+    }, []);
+
     const { setCpfFA, setPasswordFA, fetchFirstAccess, loading } = useFirstAccess();
     const [form] = Form.useForm();
 

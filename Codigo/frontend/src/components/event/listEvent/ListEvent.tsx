@@ -414,15 +414,6 @@ return (
                   {paginatedEvents?.map((event:any) => {
                     const items: MenuProps["items"] = [
                       {
-                        key: "view",
-                        label: "Visualizar",
-                        icon: <EyeFilled />,
-                        onClick: () => {
-                          setSelectedEvent(event);
-                          setIsModalOpen(true);
-                        },
-                      },
-                      {
                         key: "edit",
                         label: "Editar",
                         icon: <EditOutlined />,

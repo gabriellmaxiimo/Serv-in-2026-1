@@ -1,5 +1,4 @@
 import { ConfigProvider, Layout } from "antd";
-import HeaderEventComponent from "../../components/layout/header/HeaderComponent";
 import CreateProfessional from "../../components/professional/createProfessional/CreateProfessional";
 
 const { Content } = Layout;
@@ -14,7 +13,6 @@ const CreateProfessionalPage = () => {
       }}
     >
       <Layout style={{ minHeight: "100vh" }}>
-        <HeaderEventComponent />
         <Content
           style={{
             margin: "24px 16px",

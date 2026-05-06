@@ -2,6 +2,7 @@ import { Row, Col, Card, Select } from "antd";
 import { Pagination } from "antd";
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   DatePicker,
@@ -207,11 +208,18 @@ const ListEmployees: React.FC<ListEmployeesProps> = ({
       .toUpperCase();
   };
 
+  const navigate = useNavigate();
+
+  const openEmployee = (id: string) => {
+    navigate(`/employees/${id}`);
+  };
+
 return (
     <>
       <Row gutter={20} align= "top">
         <Col xs={24} md={6} style={{display: "flex"}}>
-          <Card style={{
+          <Card
+            style={{
               borderRadius: 16,
               border: "1px solid #e57eb",
               boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
@@ -366,15 +374,6 @@ return (
                   {paginatedEmployees?.map((employee:any) => {
                     const items: MenuProps["items"] = [
                       {
-                        key: "view",
-                        label: "Visualizar",
-                        icon: <EyeFilled />,
-                        onClick: () => {
-                          setSelectedEmployee(employee);
-                          setIsViewModalOpen(true);
-                        },
-                      },
-                      {
                         key: "edit",
                         label: "Editar",
                         icon: <EditOutlined />,
@@ -407,6 +406,10 @@ return (
                     return (
                       <Col xs={24} md={12} lg={8} key={employee.id}>
                         <Card
+                          onClick={() => {
+                            setSelectedEmployee(employee);
+                            setIsViewModalOpen(true);
+                          }}
                           hoverable
                           style={{borderRadius: 16, position: "relative", boxShadow: "0 4px 12px rgba(0,0,0,0.08)",}}
                           bodyStyle={{padding: 16}}
@@ -467,6 +470,7 @@ return (
                             <Button
                               type="text"
                               icon={<MoreOutlined/>}
+                              onClick={(e) => e.stopPropagation()}
                               style={{
                                 position: "absolute",
                                 bottom: 10,

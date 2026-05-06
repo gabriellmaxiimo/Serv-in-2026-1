@@ -181,4 +181,10 @@
     right: 0;
     border-right-color: var(--border);
   }
+
+  .professional-row:hover {
+    background: #f6f8fc !important;
+    cursor: pointer;
+    transition: 0.2s;
+  }
 }

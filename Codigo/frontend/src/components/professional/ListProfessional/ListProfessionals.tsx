@@ -13,6 +13,8 @@ import {
 	Table,
 	Tag,
 	type MenuProps,
+	Card,
+	Space,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import {
@@ -300,79 +302,58 @@ const ListProfessionals = ({
 
 	return (
 		<>
-			{/* Main Filters */}
-			<div
-				style={{
-					width: "100%",
-					marginBottom: "20px",
-					display: "flex",
-					gap: "10px",
-					flexWrap: "wrap",
-					alignItems: "center",
-				}}
+			<Card
+			style={{
+				marginBottom: 20,
+				borderRadius: 12,
+			}}
+			bodyStyle={{ padding: 16 }}
 			>
+			<Space wrap style={{ width: "100%" }}>
 				<Input
-					style={{ flex: "1 1 200px", minWidth: "150px" }}
-					placeholder="Buscar por Nome ou CPF"
-					onChange={(e) => setFilterSearch(e.target.value)}
+				style={{ width: 260 }}
+				placeholder="Buscar por nome ou CPF"
+				onChange={(e) => setFilterSearch(e.target.value)}
 				/>
-				<Select
-					style={{ flex: "1 1 180px", minWidth: "150px" }}
-					placeholder="Área"
-					allowClear
-					onChange={(value) => setFilterArea(value || "")}
-					options={areaOptions}
-				/>
-				<Select
-					style={{ flex: "1 1 180px", minWidth: "150px" }}
-					placeholder="Status"
-					allowClear
-					onChange={(value) => setFilterStatus(value || "")}
-					options={statusOptions}
-				/>
-				<Button
-					type="link"
-					onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-					style={{ whiteSpace: "nowrap" }}
-				>
-					{showAdvancedFilters ? "Ocultar Filtros" : "Mais Filtros"} <DownOutlined />
-				</Button>
-			</div>
 
-			{/* Advanced Filters */}
-			{showAdvancedFilters && (
-				<div
-					style={{
-						width: "100%",
-						marginBottom: "20px",
-						display: "flex",
-						gap: "10px",
-						flexWrap: "wrap",
-						padding: "10px",
-						backgroundColor: "#f5f5f5",
-						borderRadius: "4px",
-					}}
-				>
-					<DatePicker
-						style={{ flex: "1 1 200px", minWidth: "150px" }}
-						placeholder="Data de Nascimento"
-						onChange={(date) =>
-							setFilterBirthDate(date ? date.toISOString() : null)
-						}
-						format="DD/MM/YYYY"
-					/>
-					<Input
-						style={{ flex: "1 1 200px", minWidth: "150px" }}
-						placeholder="E-mail"
-						onChange={(e) => setFilterEmail(e.target.value)}
-					/>
-					<Input
-						style={{ flex: "1 1 180px", minWidth: "150px" }}
-						placeholder="Telefone"
-						onChange={(e) => setFilterPhone(e.target.value)}
-					/>
-				</div>
-			)}
+				<Select
+				style={{ width: 200 }}
+				placeholder="Área"
+				allowClear
+				onChange={(value) => setFilterArea(value || "")}
+				options={areaOptions}
+				/>
+
+				<Select
+				style={{ width: 200 }}
+				placeholder="Status"
+				allowClear
+				onChange={(value) => setFilterStatus(value || "")}
+				options={statusOptions}
+				/>
+
+				<DatePicker
+				style={{ width: 200 }}
+				placeholder="Data de nascimento"
+				onChange={(date) =>
+					setFilterBirthDate(date ? date.toISOString() : null)
+				}
+				format="DD/MM/YYYY"
+				/>
+
+				<Input
+				style={{ width: 220 }}
+				placeholder="E-mail"
+				onChange={(e) => setFilterEmail(e.target.value)}
+				/>
+
+				<Input
+				style={{ width: 200 }}
+				placeholder="Telefone"
+				onChange={(e) => setFilterPhone(e.target.value)}
+				/>
+			</Space>
+			</Card>
 
 			<Table
 				columns={columns}

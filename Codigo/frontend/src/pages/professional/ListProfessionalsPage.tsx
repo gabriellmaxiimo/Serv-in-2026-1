@@ -1,5 +1,4 @@
 import { Layout } from "antd";
-import HeaderEventComponent from "../../components/layout/header/HeaderComponent";
 import ListProfessionals from "../../components/professional/ListProfessional/ListProfessionals";
 
 const { Content } = Layout;
@@ -8,7 +7,6 @@ const ListProfessionalsPage = () => {
   return (
       <Layout style={{ minHeight: "100vh" }}>
         <Layout>
-          <HeaderEventComponent />
           <Content
             style={{
               margin: "24px 16px",
