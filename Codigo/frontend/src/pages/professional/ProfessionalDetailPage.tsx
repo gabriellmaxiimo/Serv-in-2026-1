@@ -40,6 +40,16 @@ const eventStatusLabelMap: Record<EventProfessionalDTO["status"], { label: strin
   CANCELED: { label: "Cancelado", color: "default" },
 };
 
+const statusBackgroundMap: Record<"AVAILABLE" | "INACTIVE", string> = {
+  AVAILABLE: "linear-gradient(90deg, #f6ffed 0%, #ffffff 100%)",
+  INACTIVE: "linear-gradient(90deg, #fff1f0 0%, #ffffff 100%)",
+};
+
+const statusBorderMap: Record<"AVAILABLE" | "INACTIVE", string> = {
+  AVAILABLE: "#d9f7be",
+  INACTIVE: "#ffa39e",
+};
+
 const formatCpf = (cpf: string) =>
   cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
 
@@ -116,7 +126,7 @@ const ProfessionalDetailPage = () => {
       return;
     }
 
-    navigate("/professional");
+    navigate("/professionals");
   };
 
   return (
@@ -157,8 +167,8 @@ const ProfessionalDetailPage = () => {
                 flexWrap: "wrap",
                 padding: "18px 20px",
                 borderRadius: 12,
-                background: "linear-gradient(90deg, #f6ffed 0%, #ffffff 100%)",
-                border: "1px solid #d9f7be",
+                background: statusBackgroundMap[professional.status],
+                border: `1px solid ${statusBorderMap[professional.status]}`,
               }}
             >
               <div>
