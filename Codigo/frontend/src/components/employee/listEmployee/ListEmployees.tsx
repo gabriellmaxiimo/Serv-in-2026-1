@@ -102,12 +102,12 @@ const ListEmployees: React.FC<ListEmployeesProps> = ({
     {
       title: "CPF",
       dataIndex: "cpf",
-      render: (cpf: string) => cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"),
+      render: (cpf: string) => cpf ? cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4") : "-",
     },
     {
       title: "Data de Nascimento",
       dataIndex: "birthDate",
-      render: (date: string) => new Date(date).toLocaleDateString("pt-br"),
+      render: (date: string) => date ? new Date(date).toLocaleDateString("pt-br") : "-",
     },
     {
       title: "E-mail",
@@ -117,7 +117,7 @@ const ListEmployees: React.FC<ListEmployeesProps> = ({
     {
       title: "Telefone",
       dataIndex: "phone",
-      render: (phone: string) => phone.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3"),
+      render: (phone: string) => phone ? phone.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3") : "-",
     },
     {
         title: "Cargo",

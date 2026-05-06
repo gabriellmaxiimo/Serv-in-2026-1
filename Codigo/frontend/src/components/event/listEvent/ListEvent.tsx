@@ -66,7 +66,7 @@ const ListEvent: React.FC = () => {
       title: "Data de Início",
       dataIndex: "initialDate",
       key: "initialDate",
-      render: (date: any) => new Date(date).toLocaleString("pt-BR"),
+      render: (date: any) => date ? new Date(date).toLocaleString("pt-BR") : "-",
     },
     {
       title: "Data de Término",
@@ -80,6 +80,7 @@ const ListEvent: React.FC = () => {
       dataIndex: "status",
       key: "status",
       render: (status: string) => {
+        if(!status) return "-";
         const statusLower = status.toLowerCase();
         const firstLetter =
           statusLower.charAt(0).toUpperCase() + statusLower.slice(1);
@@ -151,13 +152,14 @@ const ListEvent: React.FC = () => {
   const [sortOrder, setSortOrder] = useState<
     "default" | "recent" | "old" | "az"
   >("default");
-  const [currentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const[pageSize] = useState(12);
-  const totalItems = Array.isArray(events) ? events.length : 0;
+  const safeEvents = Array.isArray(events) ? events : [];
+  const totalItems = safeEvents.length;
   const totalPages = Math.ceil(totalItems / pageSize);
-  const sortedEvents = [...(events || [])].sort((a, b) => {
-  const dateA = a.initialDate ? new Date(a.initialDate).getTime() : 0;
-  const dateB = b.initialDate ? new Date(b.initialDate).getTime() : 0;
+  const sortedEvents = [...safeEvents].sort((a, b) => {
+  const dateA = a?.initialDate ? new Date(a.initialDate).getTime() : 0;
+  const dateB = b?.initialDate ? new Date(b.initialDate).getTime() : 0;
 
     if (sortOrder === "recent") {
       return dateA - dateB; // mais próximos
@@ -168,11 +170,11 @@ const ListEvent: React.FC = () => {
     }
 
     if (sortOrder === "az") {
-      return a.name.localeCompare(b.name); // ordem alfabética
+      return (a.name ?? "").localeCompare(b.name ?? ""); // ordem alfabética
     }
 
     if (sortOrder === "default") {
-      return a.id - b.id; // ordem de criação (se ID for incremental)
+      return (a.id ?? 0) - (b.id ?? 0); // ordem de criação (se ID for incremental)
     }
 
     return 0; // 🔥 padrão (não altera ordem original)
@@ -251,14 +253,26 @@ return (
                 <DatePicker
                   style={{width: "100%", borderRadius: 8}}
                   placeholder="Data Inicial"
-                  onChange={(date) => setFilterInitialDate(date ? date.toISOString(): null)}
+                  onChange={(date) =>
+                    setFilterInitialDate(
+                      date
+                        ? date.toDate().toISOString()
+                        : null
+                    )
+                  }
                   format="DD/MM/YYYY"
                 />
 
                 <DatePicker
                   style={{width: "100%", borderRadius: 8}}
                   placeholder="Data Final"
-                  onChange={(date) => setFilterFinalDate(date ? date.toISOString(): null)}
+                  onChange={(date) =>
+                    setFilterFinalDate(
+                      date
+                        ? date.toDate().toISOString() 
+                        : null
+                    )
+                  }
                   format="DD/MM/YYYY"
                 />
               </div>
@@ -474,7 +488,11 @@ return (
                           </div>
                           <div style={{display: "flex", alignItems: "center", gap: 8, color: "#6b7280", marginBottom: 15}}>
                             <CalendarOutlined style={{color: "#9ca3af"}}/>
-                            <span>{new Date(event.initialDate).toLocaleString("pt-br")}</span>
+                            <span>
+                               {event.initialDate
+                                  ? new Date(event.initialDate).toLocaleString("pt-br")
+                                  : "-"}
+                            </span>
                           </div>
                         </div>
                         <div style={{
@@ -488,7 +506,7 @@ return (
                           fontSize: 12,
                           fontWeight: 600
                         }}>
-                          {event.status}
+                          {event?.status ?? "-"}
                         </div>
                         <Dropdown menu={{items}} trigger={["click"]}>
                           <Button
@@ -535,8 +553,10 @@ return (
                     }}>
                       {totalPages > 1 &&(
                         <Pagination
-                          defaultCurrent={1}
-                          total={50}
+                          current={currentPage}
+                          pageSize={pageSize}
+                          total={totalItems}
+                          onChange={(page) => setCurrentPage(page)}
                         />
                       )}
                     </div>

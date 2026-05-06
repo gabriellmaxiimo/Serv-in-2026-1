@@ -42,7 +42,7 @@ function App() {
                   <Route path="/events/create" element={<CreateEventPage />} />
                   <Route path="/employees" element={<ListEmployeesPage />} />
                   <Route path="/employees/create" element={<CreateEmployeePage />} />
-                  <Route path="/professionals" element={<div>Profissonais</div>} />
+                  <Route path="/professionals" element={<ListProfessionalsPage />} />
                   <Route path="/professional/create" element={<CreateProfessionalPage />} />
                   <Route path="/professional/:id" element={<ProfessionalDetailPage />} />
                   <Route path="/metrics" element={<div>Metricas</div>} />
