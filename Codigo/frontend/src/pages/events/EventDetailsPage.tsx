@@ -183,7 +183,7 @@ const EventDetailsPage = () => {
 
   const handleAddProfessional = () => {
     if (!id) return;
-    navigate(`/professional`, {
+    navigate(`/professionals`, {
       state: { from: "event-details", eventId: id },
     });
   };
