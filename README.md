@@ -60,7 +60,7 @@ O projeto segue padrões de Clean Code e organização por módulos, facilitando
 ## Rodar projeto
 
 ### Backend
-- Comando para rodar backend: ./mvnw spring-boot:run  ou  mvn spring-boot:run
+- Comando para rodar backend: ./mvnw spring-boot:run  caso não seja Linux no chat use  mvn spring-boot:run
 
 ### Frontend
 - Comando para rodar frontend: npm run dev
