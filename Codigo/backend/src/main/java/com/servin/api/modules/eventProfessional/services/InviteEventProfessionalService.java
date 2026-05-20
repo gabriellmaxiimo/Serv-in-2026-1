@@ -25,11 +25,13 @@ public class InviteEventProfessionalService {
     private final EventRepository eventRepository;
     private final ProfessionalRepository professionalRepository;
     private final EventProfessionalRepository eventProfessionalRepository;
+    private final EmailService emailService;
 
-    public InviteEventProfessionalService(EventRepository eventRepository, ProfessionalRepository professionalRepository, EventProfessionalRepository eventProfessionalRepository) {
+    public InviteEventProfessionalService(EventRepository eventRepository, ProfessionalRepository professionalRepository, EventProfessionalRepository eventProfessionalRepository, EmailService emailService) {
         this.eventRepository = eventRepository;
         this.professionalRepository = professionalRepository;
         this.eventProfessionalRepository = eventProfessionalRepository;
+        this.emailService = emailService;
     }
 
     @Transactional
@@ -79,6 +81,15 @@ public class InviteEventProfessionalService {
     ep.setConfirmationToken(token);
 
     eventProfessionalRepository.save(ep);
+    // enviar e-mail simples com corpo "teste"
+    try {
+        String to = professional.getEmail();
+        if (to != null && !to.isBlank()) {
+            emailService.sendSimple(to, "Convite para evento", "teste");
+        }
+    } catch (Exception e) {
+        System.out.println("[InviteEventProfessionalService] Erro ao enviar e-mail: " + e.getMessage());
+    }
     }
 
     //* Marca o convite como confirmado.
