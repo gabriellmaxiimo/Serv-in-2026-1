@@ -1,74 +1,223 @@
+````md
+# Fluxo do sistema de convites — Servin
 
-# Fluxo recomendado do sistema de convites
+## Objetivo
 
-## 1. Empresa convida profissional
+Permitir que empresas convidem profissionais para eventos através de email, onde o profissional poderá visualizar os detalhes do convite e aceitar ou recusar a participação.
 
-### Backend
+---
+
+# Estrutura atual
+
+## Entidades principais
+
+### Event
+Representa o evento.
+
+Contém:
+- nome
+- descrição
+- data
+- local
+- etc
+
+---
+
+### Professional
+Representa o profissional convidado.
+
+Contém:
+- nome
+- email
+- status
+- etc
+
+---
+
+### EventProfessional
+Representa o relacionamento entre:
+- evento
+- profissional
+
+Também funciona como:
+- convite
+- confirmação
+- controle de status
+
+---
+
+# Fluxo principal
+
+## 1. Empresa envia convite
+
+### Endpoint
 
 ```http
 POST /events/{eventId}/invite/{professionalId}
 ```
 
-O sistema:
-
-- valida evento
-- valida profissional
-- verifica conflitos de horário
-- cria `EventProfessional`
-- gera token
-- status = `PENDING_CONFIRMATION`
-- salva no banco
-
----
-
-## 2. Registrar envio do convite
-
-Na entidade `EventProfessional`:
+### Service responsável
 
 ```java
-private LocalDateTime inviteSentAt;
-```
-
-Após enviar email:
-
-```java
-ep.setInviteSentAt(LocalDateTime.now());
+InviteEventProfessionalService
 ```
 
 ---
 
-## 3. Serviço de email
+## 2. Backend valida informações
+
+Validações atuais:
+
+### Evento existe
+
+```java
+eventRepository.findByIdAndDeletedAtIsNull(eventId)
+```
+
+---
+
+### Profissional existe
+
+```java
+professionalRepository.findById(professionalId)
+```
+
+---
+
+### Profissional está ativo
+
+```java
+professional.getStatus() != INACTIVE
+```
+
+---
+
+### Profissional não foi convidado anteriormente
+
+```java
+existsByEventAndProfessional(event, professional)
+```
+
+---
+
+### Profissional não possui conflito de horário
+
+Verifica:
+- eventos existentes
+- diferença mínima de 4 horas
+
+```java
+Duration.between(...)
+```
+
+---
+
+## 3. Criar vínculo do convite
 
 Criar:
 
-```text
+```java
+EventProfessional ep = new EventProfessional();
+```
+
+Definir:
+- evento
+- profissional
+- status
+- token
+- data de criação
+
+---
+
+## 4. Gerar token único
+
+```java
+String token = UUID.randomUUID().toString();
+```
+
+Salvar:
+
+```java
+ep.setConfirmationToken(token);
+```
+
+Esse token será usado para:
+- visualizar convite
+- confirmar
+- recusar
+
+---
+
+## 5. Salvar convite
+
+```java
+eventProfessionalRepository.save(ep);
+```
+
+Status inicial:
+
+```java
+PENDING_CONFIRMATION
+```
+
+---
+
+# Fluxo de email
+
+## 6. Disparar email após salvar convite
+
+Criar:
+
+```java
 EmailService
 ```
 
 Responsável por:
 - montar email
 - enviar email
-- gerar links do convite
+- gerar links do frontend
 
 ---
 
-## 4. Estrutura do email
+## 7. Registrar horário do envio
+
+Adicionar em `EventProfessional`:
+
+```java
+private LocalDateTime inviteSentAt;
+```
+
+Após envio:
+
+```java
+ep.setInviteSentAt(LocalDateTime.now());
+```
+
+Salvar novamente:
+
+```java
+eventProfessionalRepository.save(ep);
+```
+
+---
+
+# Estrutura do email
+
+## Informações enviadas
 
 O email deve conter:
 
 - nome do evento
+- descrição
 - data
 - horário
 - local
-- cargo/função
-- descrição
+- função/cargo
 - observações
 
-E um botão/link:
+---
 
-```text
-Visualizar convite
-```
+## Link principal
 
 Exemplo:
 
@@ -76,9 +225,15 @@ Exemplo:
 http://localhost:3000/invite/TOKEN
 ```
 
+O email não deve confirmar automaticamente.
+
+O link deve apenas abrir a página do convite.
+
 ---
 
-## 5. Criar frontend da página do convite
+# Fluxo do frontend
+
+## 8. Página de convite
 
 ### Rota
 
@@ -86,74 +241,128 @@ http://localhost:3000/invite/TOKEN
 /invite/:token
 ```
 
-A tela mostra:
-- dados do evento
-- dados do convite
-- status atual
-- botão aceitar
-- botão recusar
-
 ---
 
-## 6. Endpoint para visualizar convite
+## 9. Ao abrir página
 
-### Backend
+Frontend chama:
 
 ```http
 GET /invite/{token}
 ```
 
-Retorna:
-- evento
-- profissional
-- status
-- datas
-- informações necessárias
+Backend retorna:
+- informações do evento
+- status do convite
+- dados do profissional
+- datas importantes
 
 ---
 
-## 7. Confirmar convite
+## 10. Usuário decide
 
-### Frontend
+A tela mostra:
+- botão aceitar
+- botão recusar
+
+---
+
+# Fluxo de confirmação
+
+## 11. Confirmar convite
+
+Frontend chama:
 
 ```http
 POST /invite/{token}/confirm
 ```
 
-### Backend
+Backend:
 
-- busca token
-- valida existência
-- valida status
-- muda para `CONFIRMED`
-- registra `confirmedAt`
+```java
+confirm(String token)
+```
+
+Ações:
+- busca convite
+- valida token
+- altera status
+- registra horário
 
 ---
 
-## 8. Recusar convite
+## 12. Registrar confirmação
 
-### Frontend
+Adicionar:
+
+```java
+private LocalDateTime confirmedAt;
+```
+
+Salvar:
+
+```java
+ep.setConfirmedAt(LocalDateTime.now());
+```
+
+Novo status:
+
+```java
+CONFIRMED
+```
+
+---
+
+# Fluxo de recusa
+
+## 13. Recusar convite
+
+Frontend chama:
 
 ```http
 POST /invite/{token}/reject
 ```
 
-### Backend
+Backend:
 
-- busca token
-- muda status para `REJECTED`
+```java
+reject(String token)
+```
+
+Novo status:
+
+```java
+REJECTED
+```
 
 ---
 
-## 9. Melhorias futuras
+# Motivo de usar frontend ao invés de confirmar direto pelo email
+
+Evita:
+- confirmação acidental
+- bots abrindo links automaticamente
+- problemas de segurança
+- má experiência do usuário
+
+Também permite:
+- visualizar detalhes do evento
+- experiência mais profissional
+- futuras melhorias
+
+---
+
+# Melhorias futuras
 
 Possíveis evoluções:
 
 - expiração de convite
 - reenvio de email
-- HTML bonito no email
+- email HTML estilizado
 - notificações
-- histórico de convites
 - cancelamento de convite
-- autenticação do profissional
 - auditoria/logs
+- autenticação do profissional
+- dashboard de convites
+```
+````
