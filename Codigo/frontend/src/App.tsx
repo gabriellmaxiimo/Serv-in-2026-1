@@ -15,6 +15,7 @@ import ListProfessionalsPage from "./pages/professional/ListProfessionalsPage";
 import CreateProfessionalPage from "./pages/professional/CreateProfessionalPage";
 import ProfessionalDetailPage from "./pages/professional/ProfessionalDetailPage";
 import EventDetailsPage from "./pages/events/EventDetailsPage";
+import DashboardGeral from "./pages/dashboard/DashboardGeral";
 
 function App() {
   return (
@@ -51,7 +52,7 @@ function App() {
                   <Route path="/professional/create" element={<CreateProfessionalPage />} />
                   <Route path="/professional/:id" element={<ProfessionalDetailPage />} />
 
-                  <Route path="/metrics" element={<div>Metricas</div>} />
+                  <Route path="/metrics" element={<DashboardGeral />} />
                   <Route path="/" element={<Navigate to="/login" />} />
                 </Routes>
               </Content>
