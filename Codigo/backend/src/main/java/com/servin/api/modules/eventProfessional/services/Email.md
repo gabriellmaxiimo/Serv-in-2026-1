@@ -1,4 +1,3 @@
-````md
 # Fluxo do sistema de convites — Servin
 
 ## Objetivo
@@ -74,15 +73,11 @@ Validações atuais:
 eventRepository.findByIdAndDeletedAtIsNull(eventId)
 ```
 
----
-
 ### Profissional existe
 
 ```java
 professionalRepository.findById(professionalId)
 ```
-
----
 
 ### Profissional está ativo
 
@@ -90,15 +85,11 @@ professionalRepository.findById(professionalId)
 professional.getStatus() != INACTIVE
 ```
 
----
-
 ### Profissional não foi convidado anteriormente
 
 ```java
 existsByEventAndProfessional(event, professional)
 ```
-
----
 
 ### Profissional não possui conflito de horário
 
@@ -364,4 +355,3 @@ Possíveis evoluções:
 - auditoria/logs
 - autenticação do profissional
 - dashboard de convites
-````
