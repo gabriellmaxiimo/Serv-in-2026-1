@@ -3,11 +3,12 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'rec
 interface SimpleBarChartProps {
   data: {
     name: string;
-    x: number;
+    yKey: number;
   }[];
+  xAxisKey?: string;
 }
 
-const SimpleBarChart: React.FC<SimpleBarChartProps> = ({ data }) => {
+const SimpleBarChart: React.FC<SimpleBarChartProps> = ({ data, xAxisKey }) => {
   return (
     <BarChart
       style={{ width: '100%', maxWidth: '700px', maxHeight: '70vh', aspectRatio: 1.618 }}
@@ -21,11 +22,16 @@ const SimpleBarChart: React.FC<SimpleBarChartProps> = ({ data }) => {
       }}
     >
       <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
-      <YAxis width="auto" />
-      <Tooltip />
+      <XAxis dataKey={"name"} />
+      <YAxis width="auto" dataKey={"yKey"}/>
+      <Tooltip active content={<div>Tooltip Content</div>}/>
       <Legend />
-      <Bar dataKey="Status" fill="#8884d8" activeBar={{ fill: 'pink', stroke: 'blue' }} radius={[10, 10, 0, 0]} />
+      <Bar 
+        dataKey={xAxisKey} 
+        fill="#8884d8" 
+        activeBar={{ fill: 'pink', stroke: 'blue' }} 
+        radius={[10, 10, 0, 0]} 
+      />
     </BarChart>
   );
 };

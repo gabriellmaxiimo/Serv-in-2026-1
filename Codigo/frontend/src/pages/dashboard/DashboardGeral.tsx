@@ -31,15 +31,17 @@ const DashboardGeral = () => {
             <SimpleChartContainer>
                 <SimpleBarChart
                     data={[
-                        { name: 'Janeiro', x: 4000 },
-                        { name: 'Fevereiro', x: 3000 }
+                        { name: 'Janeiro', yKey: 4000 },
+                        { name: 'Fevereiro', yKey: 3000 }
                     ]}
+                    xAxisKey="Teste1"
                 ></SimpleBarChart>
                 <SimpleBarChart
                     data={[
-                        { name: 'Janeiro', x: 4000 },
-                        { name: 'Fevereiro', x: 3000 }
+                        { name: 'Janeiro', yKey: 4000 },
+                        { name: 'Fevereiro', yKey: 3000 }
                     ]}
+                    xAxisKey="Teste2"
                 ></SimpleBarChart>
             </SimpleChartContainer>
         </>
