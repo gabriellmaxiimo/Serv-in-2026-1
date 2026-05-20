@@ -1,9 +1,18 @@
 import {Input, Button} from "antd";
 import {SearchOutlined, LogoutOutlined} from "@ant-design/icons";
 import { logoServin } from "../../assets";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const TopBar = () => {
+
+    const location = useLocation();
+
+    const hideOnRoutes = ["/login", "/first-access"];
+
+    if (hideOnRoutes.includes(location.pathname)) {
+        return null;
+    }
+
     return (
         <div style={{
             height: 70,
