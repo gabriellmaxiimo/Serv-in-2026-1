@@ -86,9 +86,12 @@ public class InviteEventProfessionalService {
         String to = professional.getEmail();
         if (to != null && !to.isBlank()) {
             emailService.sendSimple(to, "Convite para evento", "teste");
+        } else {
+            System.out.println("[InviteEventProfessionalService] Email do profissional vazio ou nulo");
         }
     } catch (Exception e) {
         System.out.println("[InviteEventProfessionalService] Erro ao enviar e-mail: " + e.getMessage());
+        e.printStackTrace();
     }
     }
 
