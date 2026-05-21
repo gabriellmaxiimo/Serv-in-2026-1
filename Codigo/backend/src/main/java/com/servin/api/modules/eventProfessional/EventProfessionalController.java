@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.servin.api.modules.eventProfessional.dto.EventProfessionalDto;
+import com.servin.api.modules.eventProfessional.dto.InviteEventProfessionalResponseDto;
 import com.servin.api.modules.eventProfessional.services.InviteEventProfessionalService;
 import com.servin.api.modules.eventProfessional.services.ListEventProfessionalService;
 import com.servin.api.modules.eventProfessional.services.RemoveEventProfessionalService;
@@ -28,12 +29,12 @@ public class EventProfessionalController {
     private final RemoveEventProfessionalService removeEventProfessionalService;
 
     @PostMapping("/events/{eventId}/professionals/{professionalId}/invite")
-    public ResponseEntity<String> invite(@PathVariable UUID eventId, @PathVariable UUID professionalId) {
+    public ResponseEntity<InviteEventProfessionalResponseDto> invite(@PathVariable UUID eventId, @PathVariable UUID professionalId) {
         try {
-            inviteEventProfessionalService.invite(eventId, professionalId);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Profissional convidado com sucesso.");
+            InviteEventProfessionalResponseDto response = inviteEventProfessionalService.invite(eventId, professionalId);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new InviteEventProfessionalResponseDto(e.getMessage(), false, false));
         }
     }
 

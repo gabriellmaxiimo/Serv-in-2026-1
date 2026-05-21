@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.servin.api.modules.event.model.Event;
 import com.servin.api.modules.event.repository.EventRepository;
+import com.servin.api.modules.eventProfessional.dto.InviteEventProfessionalResponseDto;
 import com.servin.api.modules.eventProfessional.enums.EventProfessionalStatusEnum;
 import com.servin.api.modules.eventProfessional.model.EventProfessional;
 import com.servin.api.modules.eventProfessional.repository.EventProfessionalRepository;
@@ -35,7 +36,7 @@ public class InviteEventProfessionalService {
     }
 
     @Transactional
-    public void invite(UUID eventId, UUID professionalId) {
+    public InviteEventProfessionalResponseDto invite(UUID eventId, UUID professionalId) {
 
     Event event = eventRepository.findByIdAndDeletedAtIsNull(eventId)
         .orElseThrow(() -> new IllegalArgumentException("Event não encontrado"));
@@ -49,6 +50,11 @@ public class InviteEventProfessionalService {
 
     if (eventProfessionalRepository.existsByEventAndProfessional(event, professional)) {
         throw new RuntimeException("Profissional já está nesse evento");
+    }
+
+    String email = professional.getEmail();
+    if (email == null || email.isBlank() || !emailService.isValidEmail(email)) {
+        throw new IllegalArgumentException("E-mail do profissional inválido. Atualize o cadastro antes de enviar o convite.");
     }
 
     var existingRelations = eventProfessionalRepository.findByProfessional(professional);
@@ -81,17 +87,14 @@ public class InviteEventProfessionalService {
     ep.setConfirmationToken(token);
 
     eventProfessionalRepository.save(ep);
-    // enviar e-mail simples com corpo "teste"
+    // send asynchronously so request responds fast
     try {
-        String to = professional.getEmail();
-        if (to != null && !to.isBlank()) {
-            emailService.sendSimple(to, "Convite para evento", "teste");
-        } else {
-            System.out.println("[InviteEventProfessionalService] Email do profissional vazio ou nulo");
-        }
+        emailService.sendSimpleAsync(email, "Convite para evento", "teste");
+        return new InviteEventProfessionalResponseDto("Convite criado e e-mail enfileirado para envio.", false, true);
     } catch (Exception e) {
-        System.out.println("[InviteEventProfessionalService] Erro ao enviar e-mail: " + e.getMessage());
+        System.out.println("[InviteEventProfessionalService] Erro ao enfileirar e-mail: " + e.getMessage());
         e.printStackTrace();
+        return new InviteEventProfessionalResponseDto("Convite criado, mas falha ao enfileirar envio de e-mail.", false, false);
     }
     }
 
