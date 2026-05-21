@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.servin.api.modules.event.model.Event;
 import com.servin.api.modules.event.repository.EventRepository;
+import com.servin.api.modules.eventProfessional.email.InviteEmailTemplate;
 import com.servin.api.modules.eventProfessional.dto.InviteEventProfessionalResponseDto;
 import com.servin.api.modules.eventProfessional.enums.EventProfessionalStatusEnum;
 import com.servin.api.modules.eventProfessional.model.EventProfessional;
@@ -87,9 +88,13 @@ public class InviteEventProfessionalService {
     ep.setConfirmationToken(token);
 
     eventProfessionalRepository.save(ep);
-    // send asynchronously so request responds fast
+
+    String subject = InviteEmailTemplate.subject(event);
+    String invitationPageLink = "http://localhost:5173/invites/" + token;
+    String body = InviteEmailTemplate.body(event, professional, invitationPageLink);
+
     try {
-        emailService.sendSimpleAsync(email, "Convite para evento", "teste");
+        emailService.sendSimpleAsync(email, subject, body);
         return new InviteEventProfessionalResponseDto("Convite criado e e-mail enfileirado para envio.", false, true);
     } catch (Exception e) {
         System.out.println("[InviteEventProfessionalService] Erro ao enfileirar e-mail: " + e.getMessage());

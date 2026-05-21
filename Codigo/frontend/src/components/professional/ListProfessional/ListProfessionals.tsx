@@ -31,6 +31,7 @@ import { inviteProfessional } from "../../../services/eventProfessional/integrat
 import { listEventProfessionals } from "../../../services/eventProfessional/integration";
 import { openSuccessNotification } from "../../successNotification";
 import { openErrorNotification } from "../../errorNotification";
+import { setInviteNotification } from "../../common/globalNotification/inviteNotificationStore";
 
 type ListProfessionalsProps = {
 	emptyDescription?: string;
@@ -242,9 +243,21 @@ const ListProfessionals = ({
 			const response = await inviteProfessional(locationState.eventId, professionalId);
 			const { message, emailSent, emailQueued } = response.data;
 
+			const showInviteSuccessBanner = (bannerTitle: string, bannerDescription: string) => {
+				setInviteNotification({
+					title: bannerTitle,
+					description: bannerDescription,
+				});
+			};
+
 			if (emailSent) {
+				showInviteSuccessBanner(
+					"Convite enviado com sucesso",
+					`${professionalName} foi convidado para o evento e a mensagem foi enviada.`
+				);
 				openSuccessNotification(message || `${professionalName} convidado para o evento com sucesso.`);
 			} else if (emailQueued) {
+				showInviteSuccessBanner("Convite criado", "O e-mail foi enfileirado para envio.");
 				openSuccessNotification(message || `Convite criado — e-mail será enviado em segundo plano.`);
 			} else {
 				openErrorNotification(
