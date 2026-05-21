@@ -16,6 +16,8 @@ import CreateProfessionalPage from "./pages/professional/CreateProfessionalPage"
 import ProfessionalDetailPage from "./pages/professional/ProfessionalDetailPage";
 import EventDetailsPage from "./pages/events/EventDetailsPage";
 import DashboardGeral from "./pages/dashboard/DashboardGeral";
+import InviteResponsePage from "./pages/invites/InviteResponsePage";
+import InviteNotificationBanner from "./components/common/globalNotification/InviteNotificationBanner";
 
 function App() {
   return (
@@ -30,6 +32,7 @@ function App() {
       <AntdApp>
         <GlobalStyle />
         <SupportButton />
+        <InviteNotificationBanner />
 
         <BrowserRouter>
           <Layout style={{ minHeight: "100vh" }}>
@@ -51,6 +54,8 @@ function App() {
                   <Route path="/professionals" element={<ListProfessionalsPage />} />
                   <Route path="/professional/create" element={<CreateProfessionalPage />} />
                   <Route path="/professional/:id" element={<ProfessionalDetailPage />} />
+
+                  <Route path="/invites/:token" element={<InviteResponsePage />} />
 
                   <Route path="/metrics" element={<DashboardGeral />} />
                   <Route path="/" element={<Navigate to="/login" />} />

@@ -7,9 +7,9 @@ const TopBar = () => {
 
     const location = useLocation();
 
-    const hideOnRoutes = ["/login", "/first-access"];
+    const hideOnRoutes = ["/login", "/first-access", "/invites"];
 
-    if (hideOnRoutes.includes(location.pathname)) {
+    if (hideOnRoutes.some((route) => location.pathname.startsWith(route))) {
         return null;
     }
 

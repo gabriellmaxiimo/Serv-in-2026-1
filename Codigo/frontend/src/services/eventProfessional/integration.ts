@@ -4,7 +4,11 @@ export const inviteProfessional = async (
   eventId: string,
   professionalId: string
 ) => {
-  return await api.post(
+  return await api.post<{
+      message: string;
+      emailSent: boolean;
+      emailQueued?: boolean;
+    }>(
     `/events/${eventId}/professionals/${professionalId}/invite`
   );
 };

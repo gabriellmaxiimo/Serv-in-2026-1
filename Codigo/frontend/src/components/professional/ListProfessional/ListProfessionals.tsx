@@ -24,7 +24,6 @@ import {
 	EditOutlined,
 	EyeFilled,
 	MoreOutlined,
-	DownOutlined,
 } from "@ant-design/icons";
 import useListProfessionals from "../../../hooks/professional/useListProfessionals";
 import type { ProfessionalDTO } from "../../../types/ProfessionalDTO";
@@ -32,6 +31,7 @@ import { inviteProfessional } from "../../../services/eventProfessional/integrat
 import { listEventProfessionals } from "../../../services/eventProfessional/integration";
 import { openSuccessNotification } from "../../successNotification";
 import { openErrorNotification } from "../../errorNotification";
+import { setInviteNotification } from "../../common/globalNotification/inviteNotificationStore";
 
 type ListProfessionalsProps = {
 	emptyDescription?: string;
@@ -56,10 +56,8 @@ const ListProfessionals = ({
 		reactivateProfessionalById,
 	} = useListProfessionals();
 
-	const [selectedProfessional, setSelectedProfessional] =
-		useState<ProfessionalDTO | null>(null);
+	const [selectedProfessional] = useState<ProfessionalDTO | null>(null);
 	const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-	const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 
 	const { confirm } = Modal;
 
@@ -242,12 +240,39 @@ const ListProfessionals = ({
 		setInvitingIds((prev) => new Set(prev).add(professionalId));
 
 		try {
-			await inviteProfessional(locationState.eventId, professionalId);
-			openSuccessNotification(`${professionalName} convidado para o evento com sucesso.`);
+			const response = await inviteProfessional(locationState.eventId, professionalId);
+			const { message, emailSent, emailQueued } = response.data;
+
+			const showInviteSuccessBanner = (bannerTitle: string, bannerDescription: string) => {
+				setInviteNotification({
+					title: bannerTitle,
+					description: bannerDescription,
+				});
+			};
+
+			if (emailSent) {
+				showInviteSuccessBanner(
+					"Convite enviado com sucesso",
+					`${professionalName} foi convidado para o evento e a mensagem foi enviada.`
+				);
+				openSuccessNotification(message || `${professionalName} convidado para o evento com sucesso.`);
+			} else if (emailQueued) {
+				showInviteSuccessBanner("Convite criado", "O e-mail foi enfileirado para envio.");
+				openSuccessNotification(message || `Convite criado — e-mail será enviado em segundo plano.`);
+			} else {
+				openErrorNotification(
+					message || "Convite criado, mas o e-mail não pôde ser enviado ou enfileirado. Entre em contato com o profissional."
+				);
+			}
 			// Atualizar estado local
 			setLinkedProfessionalIds((prev) => new Set(prev).add(professionalId));
 		} catch (err) {
-			openErrorNotification("Erro ao convidar profissional para o evento");
+			const errorMessage =
+				(err as any)?.response?.data?.message ||
+				(err as any)?.response?.data ||
+				"Erro ao convidar profissional para o evento";
+
+			openErrorNotification(errorMessage, "Verifique o e-mail do profissional ou tente novamente.");
 		} finally {
 			setInvitingIds((prev) => {
 				const next = new Set(prev);
