@@ -28,11 +28,13 @@ const DashboardGeral = () => {
             
             <SimpleChartContainer>
                 <SimpleBarChart
+                    title="Profissionais por Evento"
                     data={eventsByProfessionalData}
                     valueKey="Total"
                 />
 
                 <SimpleBarChart
+                    title="Eventos por Período"
                     data={eventsByDateData}
                     valueKey="Total"
                 />
