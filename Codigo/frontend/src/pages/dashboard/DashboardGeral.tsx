@@ -21,9 +21,9 @@ const DashboardGeral = () => {
     return (
         <>
             <TotalizerContainer>
-                <Totalizer total={totalEvents} description="Total de eventos realizados" />
-                <Totalizer total={totalEmployees} description="Total de Funcionários" />
-                <Totalizer total={totalProfessionals} description="Total de Profissionais" />
+                <Totalizer total={totalEvents} description="Eventos Realizados" />
+                <Totalizer total={totalEmployees} description="Funcionários" />
+                <Totalizer total={totalProfessionals} description="Profissionais" />
             </TotalizerContainer>
             
             <SimpleChartContainer>
