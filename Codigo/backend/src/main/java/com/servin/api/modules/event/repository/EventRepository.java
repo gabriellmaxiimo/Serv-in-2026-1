@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.UUID;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,4 +25,7 @@ public interface EventRepository extends JpaRepository<Event, UUID> {
     // Retorna todos os eventos que NÃO foram deletados
     @Query("SELECT e from Event e WHERE e.deletedAt IS NULL")
     List<Event> findAllActive();
+
+    @Query(value = "SELECT COUNT(e.id) as count, TO_CHAR(e.initialDate, 'MM/YYYY') as period FROM Event e WHERE e.deletedAt IS NULL GROUP BY TO_CHAR(e.initialDate, 'MM/YYYY')")
+    List<Map<String, Object>> countEventsByDate();
 }
