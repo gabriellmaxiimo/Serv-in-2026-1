@@ -69,4 +69,7 @@ public class Event {
 
     @Column(name = "city")
     private String city;
+
+    @Column(name = "requires_checkout")
+    private Boolean requiresCheckout = false;
 }
