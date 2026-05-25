@@ -50,17 +50,17 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody CreateEmployeeDto dto) {
+    public ResponseEntity<Map<String, String>> create(@Valid @RequestBody CreateEmployeeDto dto) {
         try {
             createEmployeeService.execute(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Funcionário criado com sucesso!");
+            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Funcionário criado com sucesso!"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", e.getMessage()));
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable UUID id,
+    public ResponseEntity<Map<String, String>> update(@PathVariable UUID id,
             @Valid @RequestBody EditEmployeeDto dto) {
         try {
             editEmployeeService.execute(id, dto);
@@ -72,12 +72,12 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable UUID id) {
+    public ResponseEntity<Map<String, String>> delete(@PathVariable UUID id) {
         try {
             deleteEmployeeService.execute(id);
-            return ResponseEntity.ok("Funcionário excluído com sucesso.");
+            return ResponseEntity.ok(Map.of("message", "Funcionário excluído com sucesso."));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", e.getMessage()));
         }
     }
 }

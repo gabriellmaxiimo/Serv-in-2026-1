@@ -21,9 +21,13 @@ public class TokenService {
     public String generateToken(Employee employee) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
+
+            String roleName = employee.isRole() ? "ADMIN" : "EMPLOYEE";
+
             return JWT.create()
                     .withIssuer("servin-api")
                     .withSubject(employee.getCpf())
+                    .withClaim("role", roleName)
                     .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
@@ -43,6 +47,20 @@ public class TokenService {
                     .build()
                     .verify(token)
                     .getSubject();
+        } catch (JWTVerificationException exception) {
+            return "";
+        }
+    }
+
+    public String extractRole(String token) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            return JWT.require(algorithm)
+                    .withIssuer("servin-api")
+                    .build()
+                    .verify(token)
+                    .getClaim("role")
+                    .asString();
         } catch (JWTVerificationException exception) {
             return "";
         }
