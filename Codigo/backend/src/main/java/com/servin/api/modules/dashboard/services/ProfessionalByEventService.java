@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.servin.api.modules.eventProfessional.repository.EventProfessionalRepository;
 
+
 @Service
 public class ProfessionalByEventService {
 

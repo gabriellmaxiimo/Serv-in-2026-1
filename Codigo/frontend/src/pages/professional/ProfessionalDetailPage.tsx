@@ -180,8 +180,8 @@ const ProfessionalDetailPage = () => {
                 </Title>
                 <Text type="secondary">CPF: {formatCpf(professional.cpf)}</Text>
               </div>
-              <Tag color={statusInfo.color} style={{ fontSize: 14, padding: "6px 10px" }}>
-                {statusInfo.label}
+              <Tag color={statusInfo?.color} style={{ fontSize: 14, padding: "6px 10px" }}>
+                {statusInfo?.label}
               </Tag>
             </div>
 
@@ -284,8 +284,8 @@ const ProfessionalDetailPage = () => {
                           </Text>
                         </div>
 
-                        <Tag color={eventStatus.color} style={{ width: "fit-content" }}>
-                          {eventStatus.label}
+                        <Tag color={eventStatus?.color} style={{ width: "fit-content" }}>
+                          {eventStatus?.label}
                         </Tag>
 
                         <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 8 }}>

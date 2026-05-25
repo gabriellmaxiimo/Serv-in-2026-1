@@ -18,8 +18,12 @@ import EventDetailsPage from "./pages/events/EventDetailsPage";
 import DashboardGeral from "./pages/dashboard/DashboardGeral";
 import InviteResponsePage from "./pages/invites/InviteResponsePage";
 import InviteNotificationBanner from "./components/common/globalNotification/InviteNotificationBanner";
+import { isAdmin } from "./functions/userIsAdmin";
 
 function App() {
+
+  const isAdminUser = isAdmin();
+
   return (
       <ConfigProvider
         theme={{
@@ -41,23 +45,30 @@ function App() {
             <Layout>
               <Content style={{ background: "#fff" }}>
                 <Routes>
+                  {isAdminUser && (
+                    <>
+                      <Route path="/events/create" element={<CreateEventPage />} />
+                      <Route path="/employees/create" element={<CreateEmployeePage />} />
+                      <Route path="/professional/create" element={<CreateProfessionalPage />} />
+
+                      <Route path="/metrics" element={<DashboardGeral />} />
+                      
+                    </>
+                  )}
+                  
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/first-access" element={<FirstAccessPage />} />
 
                   <Route path="/events" element={<ListEventPage />} />
-                  <Route path="/events/create" element={<CreateEventPage />} />
-                  <Route path="/events/:id" element={<EventDetailsPage />} />
 
-                  <Route path="/employees" element={<ListEmployeesPage />} />
-                  <Route path="/employees/create" element={<CreateEmployeePage />} />
+                  <Route path="/employees" element={<ListEmployeesPage />} />          
 
                   <Route path="/professionals" element={<ListProfessionalsPage />} />
-                  <Route path="/professional/create" element={<CreateProfessionalPage />} />
                   <Route path="/professional/:id" element={<ProfessionalDetailPage />} />
 
                   <Route path="/invites/:token" element={<InviteResponsePage />} />
-
-                  <Route path="/metrics" element={<DashboardGeral />} />
+                  <Route path="/events/:id" element={<EventDetailsPage />} />
+                  
                   <Route path="/" element={<Navigate to="/login" />} />
                 </Routes>
               </Content>
