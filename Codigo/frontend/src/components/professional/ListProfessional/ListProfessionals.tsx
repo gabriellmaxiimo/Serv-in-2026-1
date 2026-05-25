@@ -32,6 +32,7 @@ import { listEventProfessionals } from "../../../services/eventProfessional/inte
 import { openSuccessNotification } from "../../successNotification";
 import { openErrorNotification } from "../../errorNotification";
 import { setInviteNotification } from "../../common/globalNotification/inviteNotificationStore";
+import { isAdmin } from "../../../functions/userIsAdmin";
 
 type ListProfessionalsProps = {
 	emptyDescription?: string;
@@ -60,6 +61,8 @@ const ListProfessionals = ({
 	const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
 	const { confirm } = Modal;
+
+	const isAdminUser = isAdmin();
 
 	const areaLabelMap: Record<string, string> = {
 		MEDICINE: "Medicina",
@@ -186,6 +189,7 @@ const ListProfessionals = ({
 								});
 	 						},
 	 					},
+						
 	 					{
 	 						key: "edit",
 	 						label: "Editar",

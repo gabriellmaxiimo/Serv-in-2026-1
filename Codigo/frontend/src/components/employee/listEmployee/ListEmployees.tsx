@@ -32,6 +32,7 @@ import { ListEmployeesContainer } from "./styles";
 import { maskCPF } from "../../../functions/maskCpf";
 import { maskPhone } from "../../../functions/maskPhone";
 import { openErrorNotification } from "../../errorNotification";
+import { isAdmin } from "../../../functions/userIsAdmin";
 
 type ListEmployeesProps = {
   emptyDescription?: string;
@@ -55,7 +56,7 @@ const ListEmployees: React.FC<ListEmployeesProps> = ({
 
   const [form] = Form.useForm();
 
-    
+  const isAdminUser = isAdmin();  
 
   const [selectedEmployee, setSelectedEmployee] = useState<any>(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -140,6 +141,8 @@ const ListEmployees: React.FC<ListEmployeesProps> = ({
               setIsViewModalOpen(true);
             },
           },
+          
+          isAdminUser ?
           {
             key: "edit",
             label: "Editar",
@@ -148,7 +151,9 @@ const ListEmployees: React.FC<ListEmployeesProps> = ({
               setEditingEmployee({ ...record });
               setIsEditModalOpen(true);
             }
-          },
+          } : null,
+
+          isAdminUser ? 
           {
             key: "delete",
             label: <span style={{ color: "red" }}>Deletar</span>,
@@ -166,7 +171,7 @@ const ListEmployees: React.FC<ListEmployeesProps> = ({
                 },
               });
             },
-          },
+          } : null,
         ];
 
         return (
@@ -353,18 +358,21 @@ return (
                 onClick={() => setViewMode("list")}
               />
 
-              <Button
-                  type="primary"
-                  style={{
-                    background: "#22c55e",
-                    border: "none",
-                    borderRadius: 8,
-                    fontWeight: 500,
-                  }}
-                  onClick={() => (window.location.href = "/employees/create")}
-                >
-                  + Criar Funcionario
-                </Button>
+              {isAdminUser && ( 
+                <Button
+                    type="primary"
+                    style={{
+                      background: "#22c55e",
+                      border: "none",
+                      borderRadius: 8,
+                      fontWeight: 500,
+                    }}
+                    onClick={() => (window.location.href = "/employees/create")}
+                  >
+                    + Criar Funcionario
+                  </Button>
+              )}
+             
             </div>
           </div>
 
@@ -373,6 +381,7 @@ return (
                 <Row gutter={[16, 16]}>
                   {paginatedEmployees?.map((employee:any) => {
                     const items: MenuProps["items"] = [
+                      isAdminUser ?
                       {
                         key: "edit",
                         label: "Editar",
@@ -382,7 +391,9 @@ return (
                           setIsEditModalOpen(true);
                         },
 
-                      },
+                      } : null,
+
+                      isAdminUser ? 
                       {
                         key: "delete",
                         label: <span style={{ color: "red" }}>Deletar</span>,
@@ -400,7 +411,7 @@ return (
                             },
                           });
                         },
-                      },
+                      } : null,
                     ];
                     
                     return (

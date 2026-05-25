@@ -1,5 +1,5 @@
-import {Input, Button} from "antd";
-import {SearchOutlined, LogoutOutlined} from "@ant-design/icons";
+import {Button} from "antd";
+import {LogoutOutlined} from "@ant-design/icons";
 import { logoServin } from "../../assets";
 import { useLocation } from "react-router-dom";
 
@@ -36,18 +36,6 @@ const TopBar = () => {
                 />
             </div>
 
-            <Input
-                placeholder="Buscar eventos..."
-                prefix={<SearchOutlined />}
-                style={{
-                    flex: 1,
-                    width: "100%",
-                    maxWidth: 600,
-                    minWidth: 350,
-                    borderRadius: 20,
-                }}
-            />
-
             <div style={{display: "flex", alignItems: "center", gap: 35}}>
                 <span>Olá, Usuario</span> {/* TODO: Aqui no caso tem que ver como vai ser deixado aparecendo pro usuario o nome dele*/}
 
@@ -59,6 +47,10 @@ const TopBar = () => {
                         border: "none",
                         borderRadius: 8,
                         right: 10,
+                    }}
+                    onClick={() => {
+                        localStorage.removeItem("token");
+                        window.location.href = "/login";
                     }}
                 >
                     Sair

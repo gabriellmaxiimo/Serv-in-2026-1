@@ -15,6 +15,7 @@ import {
   EditOutlined,
   StopOutlined,
 } from "@ant-design/icons";
+import { isAdmin } from "../../functions/userIsAdmin";
 
 type EventDetailsNavigationState = {
   from?: "event-list" | "professional-detail";
@@ -32,6 +33,8 @@ const EventDetailsPage = () => {
   const [loadingProfessionals, setLoadingProfessionals] = useState(false);
   const [professionalsTableData, setProfessionalsTableData] = useState<any[]>([]);
   const [removingIds, setRemovingIds] = useState<Set<string>>(new Set());
+
+  const isAdminUser = isAdmin();
 
   const areaTranslationMap: Record<string, string> = {
     MEDICINE: "Medicina",
@@ -230,8 +233,13 @@ const EventDetailsPage = () => {
     </div>
 
     <div style={{ display: "flex", gap: 10 }}>
-      <Button icon={<EditOutlined />}>Editar Evento</Button>
-      <Button danger>Cancelar Evento</Button>
+      {isAdminUser && (
+          <>
+            <Button icon={<EditOutlined />}>Editar Evento</Button>
+            <Button danger>Cancelar Evento</Button>
+          </>
+        )}
+      
     </div>
   </div>
     
@@ -297,9 +305,13 @@ const EventDetailsPage = () => {
       <div style={{ marginTop: 28 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
           <h2 style={{ margin: 0 }}>Profissionais vinculados</h2>
-          <Button type="primary" onClick={handleAddProfessional}>
-            Adicionar profissional
-          </Button>
+          
+          {isAdminUser && (
+            <Button type="primary" onClick={handleAddProfessional}>
+              Adicionar profissional
+            </Button>
+          )}
+          
         </div>
 
         {loadingProfessionals && <p>Carregando profissionais...</p>}
@@ -368,7 +380,7 @@ const EventDetailsPage = () => {
                     REJECTED: { color: "red" },
                     CANCELED: { color: "default" },
                   };
-                  const config = statusConfig[s];
+                  // const config = statusConfig[s];
 
                   return (
                     <Tag
@@ -377,7 +389,7 @@ const EventDetailsPage = () => {
                         padding: "2px 10px",
                         fontWeight: 500,
                       }}
-                      color={config.color}
+                      // color={config.color}
                     >
                       {statusLabelMap[s]}
                     </Tag>

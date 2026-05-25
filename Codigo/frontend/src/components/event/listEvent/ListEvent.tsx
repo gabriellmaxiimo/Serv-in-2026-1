@@ -27,6 +27,7 @@ import {
   FontSizeOutlined,
 } from "@ant-design/icons";
 import { Modal } from "antd";
+import { isAdmin } from "../../../functions/userIsAdmin";
 
 const ListEvent: React.FC = () => {
   const {
@@ -45,6 +46,8 @@ const ListEvent: React.FC = () => {
 
   const { confirm } = Modal;
 
+  const isAdminUser = isAdmin();
+
   const navigate = useNavigate();
 
   const statusOptions = [
@@ -53,6 +56,7 @@ const ListEvent: React.FC = () => {
     { label: "Finalizado", value: "FINALIZADO" },
   ];
 
+  // TELA COM GRID EM LINHAS
   const columns = [
     {
       title: "Nome do Evento",
@@ -111,37 +115,40 @@ const ListEvent: React.FC = () => {
               e.domEvent.stopPropagation();
               setSelectedEvent(record);
               setIsModalOpen(true);
+              navigate(`/events/${record.id}`)
             },
           },
-          {
-            key: "edit",
-            label: "Editar",
-            icon: <EditOutlined />,
-            // TODO: PARA QUEM FOR FAZER O EDIT, CHAMAR AQUI O COMPONENTE DE EDIÇÃO E PASSAR O ID DO EVENTO
-            onClick: (e) => {
-              e.domEvent.stopPropagation();
-              console.log("Editar evento com ID:", record.id);
-            },
-          },
-          {
-            key: "delete",
-            label: <span style={{ color: "red" }}>Deletar</span>,
-            icon: <DeleteOutlined style={{ color: "red" }} />,
-            onClick: (e) => {
-              e.domEvent.stopPropagation();
-              confirm({
-                title: "Você tem certeza que deseja excluir este evento?",
-                icon: <CloseCircleFilled />,
-                content: `O evento "${record.name}" será removido permanentemente.`,
-                okText: "Sim, excluir",
-                okType: "danger",
-                cancelText: "Não",
-                onOk() {
-                  deleteEventById(record.id);
-                },
-              });
-            },
-          },
+          isAdminUser ?
+            {
+              key: "edit",
+              label: "Editar",
+              icon: <EditOutlined />,
+              onClick: (e) => {
+                e.domEvent.stopPropagation();
+                console.log("Editar evento com ID:", record.id);
+              },
+            } : null,
+
+          isAdminUser ?
+            {
+              key: "delete",
+              label: <span style={{ color: "red" }}>Deletar</span>,
+              icon: <DeleteOutlined style={{ color: "red" }} />,
+              onClick: (e) => {
+                e.domEvent.stopPropagation();
+                confirm({
+                  title: "Você tem certeza que deseja excluir este evento?",
+                  icon: <CloseCircleFilled />,
+                  content: `O evento "${record.name}" será removido permanentemente.`,
+                  okText: "Sim, excluir",
+                  okType: "danger",
+                  cancelText: "Não",
+                  onOk() {
+                    deleteEventById(record.id);
+                  },
+                });
+              },
+            } : null,
         ];
 
         return (
@@ -404,20 +411,26 @@ const ListEvent: React.FC = () => {
                 onClick={() => setViewMode("list")}
               />
 
-              <Button
-                type="primary"
-                style={{
-                  background: "#22c55e",
-                  border: "none",
-                  borderRadius: 8,
-                  fontWeight: 500,
-                }}
-                onClick={() => navigate("/events/create")}
-              >
-                + Criar Evento
-              </Button>
+              {isAdminUser && (
+                <Button
+                  type="primary"
+                  style={{
+                    background: "#22c55e",
+                    border: "none",
+                    borderRadius: 8,
+                    fontWeight: 500,
+                  }}
+                  onClick={() => navigate("/events/create")}
+                >
+                  + Criar Evento
+                </Button>
+              )}
+              
             </div>
           </div>
+
+          {// GRID VIEW
+          }
           <div style={{ marginTop: 20 }}>
             {viewMode === "grid" ? (
               <Row gutter={[16, 16]}>
@@ -429,14 +442,16 @@ const ListEvent: React.FC = () => {
                     " / " +
                     event.city;
                   const items: MenuProps["items"] = [
+                    isAdminUser ?
                     {
                       key: "edit",
                       label: "Editar",
                       icon: <EditOutlined />,
-                      // TODO: PARA QUEM FOR FAZER O EDIT, CHAMAR AQUI O COMPONENTE DE EDIÇÃO E PASSAR O ID DO EVENTO
                       onClick: () =>
                         console.log("Editar evento com ID:", event.id),
-                    },
+                    } : null,
+
+                    isAdminUser ? 
                     {
                       key: "delete",
                       label: <span style={{ color: "red" }}>Deletar</span>,
@@ -455,7 +470,7 @@ const ListEvent: React.FC = () => {
                           },
                         });
                       },
-                    },
+                    } : null,
                   ];
                   const getStatusColor = () => {
                     if (event.status === "AGENDADO") return "#3b82f6";

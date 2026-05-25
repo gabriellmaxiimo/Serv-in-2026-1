@@ -5,10 +5,13 @@ import{
     IdcardOutlined,
     BarChartOutlined,
 } from "@ant-design/icons";
+import { isAdmin } from "../../functions/userIsAdmin";
 
 const NavBar =() => {
     const navigate = useNavigate();
     const location = useLocation();
+
+    const isAdminUser = isAdmin();
 
     const hideOnRoutes = ["/login", "/first-access", "/invites"];
 
@@ -32,11 +35,13 @@ const NavBar =() => {
             path: "/professionals",
             icon: <IdcardOutlined />,
         },
+
+        isAdminUser ?
         {
             label: "Métricas",
             path: "/metrics",
             icon: <BarChartOutlined />,
-        },
+        } : null,
     ];
 
     return (
@@ -50,6 +55,7 @@ const NavBar =() => {
             }}
         >
             {items.map((item) => {
+                if (!item) return null;
                 const active = location.pathname === item.path;
 
                 return (
@@ -70,8 +76,8 @@ const NavBar =() => {
                             transition: "0,2s",
                         }}
                     >
-                        {item.icon}
-                        {item.label}
+                        {item?.icon}
+                        {item?.label}
                     </div>
                 );
             })}
