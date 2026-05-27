@@ -17,7 +17,6 @@ export const createEvent = async (eventData: CreateEventType) => {
 export const listAllEvents = async () => {
   try {
     const response = await api.get(`${API_BASE_URL}/events`);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Erro ao listar eventos:", error);

@@ -33,7 +33,6 @@ export const getTotalProfessionals = async () => {
 export const getProfessionalsByEvent = async () => {
     try {
         const response = await api.get(`/dashboard/professionals-by-event`);
-        console.log("Response from professionals by event:", response.data);
         return response.data;
     } catch (error) {
         console.error("Error fetching professionals by event:", error);

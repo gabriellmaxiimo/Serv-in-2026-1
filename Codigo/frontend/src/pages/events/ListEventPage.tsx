@@ -1,10 +1,7 @@
 import { Layout } from "antd";
 import ListEvent from "../../components/event/listEvent/ListEvent";
-import { isAdmin } from "../../functions/userIsAdmin";
 
 const { Content } = Layout;
-
-console.log(isAdmin());
 
 const ListEventPage = () => {
   return (

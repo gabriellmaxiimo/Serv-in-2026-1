@@ -37,7 +37,6 @@ const useListEmployees = () => {
                 setEmployees(employeesData);
             }
         } catch (error: any) {
-            console.log("ERRO:", error);
             openErrorNotification(
                 "Erro ao buscar funcionarios:",
                 error.response?.data?.message || "Erro interno"
