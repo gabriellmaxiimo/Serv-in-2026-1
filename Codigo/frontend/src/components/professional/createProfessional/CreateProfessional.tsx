@@ -256,7 +256,7 @@ roleName = roleSelection.name;
       message.success("Profissional criado com sucesso!");
       setSelectedRole(null);
       setInputValue("");
-      navigate("/professional");
+      navigate("/professionals");
     } catch {
       message.error("Erro ao criar profissional");
     }

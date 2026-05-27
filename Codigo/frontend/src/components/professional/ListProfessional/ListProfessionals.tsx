@@ -24,6 +24,7 @@ import {
 	EditOutlined,
 	EyeFilled,
 	MoreOutlined,
+	PlusOutlined,
 } from "@ant-design/icons";
 import useListProfessionals from "../../../hooks/professional/useListProfessionals";
 import type { ProfessionalDTO } from "../../../types/ProfessionalDTO";
@@ -339,50 +340,71 @@ const ListProfessionals = ({
 			}}
 			bodyStyle={{ padding: 16 }}
 			>
-			<Space wrap style={{ width: "100%" }}>
-				<Input
-				style={{ width: 260 }}
-				placeholder="Buscar por nome ou CPF"
-				onChange={(e) => setFilterSearch(e.target.value)}
-				/>
+			<div
+				style={{
+					display: "flex",
+					flexWrap: "wrap",
+					gap: 12,
+					alignItems: "center",
+					justifyContent: "space-between",
+					width: "100%",
+				}}
+			>
+				<Space wrap style={{ flex: 1, minWidth: 0 }}>
+					<Input
+						style={{ width: 260 }}
+						placeholder="Buscar por nome ou CPF"
+						onChange={(e) => setFilterSearch(e.target.value)}
+					/>
 
-				<Select
-				style={{ width: 200 }}
-				placeholder="Área"
-				allowClear
-				onChange={(value) => setFilterArea(value || "")}
-				options={areaOptions}
-				/>
+					<Select
+						style={{ width: 200 }}
+						placeholder="Área"
+						allowClear
+						onChange={(value) => setFilterArea(value || "")}
+						options={areaOptions}
+					/>
 
-				<Select
-				style={{ width: 200 }}
-				placeholder="Status"
-				allowClear
-				onChange={(value) => setFilterStatus(value || "")}
-				options={statusOptions}
-				/>
+					<Select
+						style={{ width: 200 }}
+						placeholder="Status"
+						allowClear
+						onChange={(value) => setFilterStatus(value || "")}
+						options={statusOptions}
+					/>
 
-				<DatePicker
-				style={{ width: 200 }}
-				placeholder="Data de nascimento"
-				onChange={(date) =>
-					setFilterBirthDate(date ? date.toISOString() : null)
-				}
-				format="DD/MM/YYYY"
-				/>
+					<DatePicker
+						style={{ width: 200 }}
+						placeholder="Data de nascimento"
+						onChange={(date) =>
+							setFilterBirthDate(date ? date.toISOString() : null)
+						}
+						format="DD/MM/YYYY"
+					/>
 
-				<Input
-				style={{ width: 220 }}
-				placeholder="E-mail"
-				onChange={(e) => setFilterEmail(e.target.value)}
-				/>
+					<Input
+						style={{ width: 220 }}
+						placeholder="E-mail"
+						onChange={(e) => setFilterEmail(e.target.value)}
+					/>
 
-				<Input
-				style={{ width: 200 }}
-				placeholder="Telefone"
-				onChange={(e) => setFilterPhone(e.target.value)}
-				/>
-			</Space>
+					<Input
+						style={{ width: 200 }}
+						placeholder="Telefone"
+						onChange={(e) => setFilterPhone(e.target.value)}
+					/>
+				</Space>
+
+				{isAdminUser && (
+					<Button
+						type="primary"
+						icon={<PlusOutlined />}
+						onClick={() => navigate("/professional/create")}
+					>
+						Criar profissional
+					</Button>
+				)}
+			</div>
 			</Card>
 
 			<Table

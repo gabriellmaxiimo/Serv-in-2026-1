@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import jakarta.mail.internet.MimeMessage;
+import java.util.Objects;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 @Service
@@ -52,13 +53,16 @@ public class EmailService {
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
             helper.setTo(to);
-            helper.setSubject(subject);
+            // garantir que subject não seja null para atender @NonNull
+            helper.setSubject(subject == null ? "" : subject);
 
             // IMPORTANTE: true = HTML habilitado
-            helper.setText(htmlBody, true);
+            // Garantir que não seja passado null para setText (evita problemas com @NonNull)
+            helper.setText(htmlBody == null ? "" : htmlBody, true);
 
             if (from != null && !from.isBlank()) {
-                helper.setFrom(from);
+                // ensure non-null for APIs annotated with @NonNull
+                helper.setFrom(Objects.requireNonNull(from.trim()));
             }
 
             logger.info("[EmailService] Enviando e-mail para: {}", to);

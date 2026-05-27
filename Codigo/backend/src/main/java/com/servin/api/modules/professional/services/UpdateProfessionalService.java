@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.servin.api.modules.professional.dto.UpdateProfessionalDto;
-import com.servin.api.modules.professional.enums.ProfessionalStatusEnum;
 import com.servin.api.modules.professional.model.Professional;
 import com.servin.api.modules.professional.repository.ProfessionalRepository;
 import com.servin.api.modules.role.model.Role;

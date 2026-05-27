@@ -1,6 +1,7 @@
 package com.servin.api.modules.eventProfessional.services;
 
 import java.util.UUID;
+import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,6 @@ public class RemoveEventProfessionalService {
                 .findByEventIdAndProfessionalId(eventId, professionalId)
                 .orElseThrow(() -> new IllegalArgumentException("Vínculo entre evento e profissional não encontrado"));
 
-        eventProfessionalRepository.delete(eventProfessional);
+        eventProfessionalRepository.delete(Objects.requireNonNull(eventProfessional));
     }
 }

@@ -1,8 +1,24 @@
-import { jwtDecode, type JwtPayload } from "jwt-decode";
+interface JwtPayload {
+  sub?: string;
+}
 
 interface CustomJwtPayload extends JwtPayload {
   role?: string;
 }
+
+const decodeJwt = <T,>(token: string): T => {
+  const payload = token.split(".")[1];
+
+  if (!payload) {
+    throw new Error("Token JWT inválido");
+  }
+
+  const base64 = payload.replace(/-/g, "+").replace(/_/g, "/");
+  const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), "=");
+  const json = atob(padded);
+
+  return JSON.parse(json) as T;
+};
 
 export const getUsuarioLogado = () => {
   const token = localStorage.getItem("token");
@@ -10,7 +26,7 @@ export const getUsuarioLogado = () => {
   if (!token) return null;
 
   try {
-    const decoded = jwtDecode<CustomJwtPayload>(token);
+    const decoded = decodeJwt<CustomJwtPayload>(token);
 
     return {
       cpf: decoded.sub,

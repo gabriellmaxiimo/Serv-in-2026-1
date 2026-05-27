@@ -20,6 +20,9 @@ public class InactivateProfessionalService {
 
     @Transactional
     public void execute(UUID id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID não pode ser nulo.");
+        }
         Professional professional = professionalRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Profissional não encontrado."));
 

@@ -42,6 +42,10 @@ public class InviteEventProfessionalService {
     Event event = eventRepository.findByIdAndDeletedAtIsNull(eventId)
         .orElseThrow(() -> new IllegalArgumentException("Event não encontrado"));
 
+    if (professionalId == null) {
+        throw new IllegalArgumentException("ID do profissional não pode ser nulo");
+    }
+
     Professional professional = professionalRepository.findById(professionalId)
             .orElseThrow(() -> new RuntimeException("Profissional não encontrado"));
 

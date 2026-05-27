@@ -1,6 +1,7 @@
 package com.servin.api.modules.professional.services;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class ReactivateProfessionalService {
 
     @Transactional
     public void execute(UUID id) {
+        Objects.requireNonNull(id, "ID não pode ser nulo.");
         Professional professional = professionalRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Profissional não encontrado."));
 

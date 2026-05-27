@@ -2,6 +2,7 @@ package com.servin.api.modules.role;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -65,6 +66,7 @@ public class RoleController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> delete(@PathVariable UUID id) {
 		try {
+			Objects.requireNonNull(id, "ID do cargo é obrigatório.");
 			if (!roleRepository.existsById(id)) {
 				throw new IllegalArgumentException("Cargo não encontrado.");
 			}

@@ -11,8 +11,6 @@ import com.servin.api.modules.professional.model.Professional;
 
 public interface ProfessionalRepository extends JpaRepository<Professional, UUID>{
 
-	Optional<Professional> findById(UUID id);
-
 	Optional<Professional> findByIdAndDeletedAtIsNull(UUID id);
 
 	boolean existsByCpf(String cpf);
