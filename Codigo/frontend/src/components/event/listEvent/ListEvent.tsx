@@ -66,8 +66,11 @@ const ListEvent: React.FC = () => {
     },
     {
       title: "Localização",
-      dataIndex: "location",
-      key: "location",
+      dataIndex: "street",
+      key: "street",
+      render: (street: string) => {
+        return street ? street : "-";
+      },
     },
     {
       title: "Data de Início",
@@ -115,39 +118,41 @@ const ListEvent: React.FC = () => {
               e.domEvent.stopPropagation();
               setSelectedEvent(record);
               setIsModalOpen(true);
-              navigate(`/events/${record.id}`)
+              navigate(`/events/${record.id}`);
             },
           },
-          isAdminUser ?
-            {
-              key: "edit",
-              label: "Editar",
-              icon: <EditOutlined />,
-              onClick: (e) => {
-                e.domEvent.stopPropagation();
-              },
-            } : null,
+          isAdminUser
+            ? {
+                key: "edit",
+                label: "Editar",
+                icon: <EditOutlined />,
+                onClick: (e) => {
+                  e.domEvent.stopPropagation();
+                },
+              }
+            : null,
 
-          isAdminUser ?
-            {
-              key: "delete",
-              label: <span style={{ color: "red" }}>Deletar</span>,
-              icon: <DeleteOutlined style={{ color: "red" }} />,
-              onClick: (e) => {
-                e.domEvent.stopPropagation();
-                confirm({
-                  title: "Você tem certeza que deseja excluir este evento?",
-                  icon: <CloseCircleFilled />,
-                  content: `O evento "${record.name}" será removido permanentemente.`,
-                  okText: "Sim, excluir",
-                  okType: "danger",
-                  cancelText: "Não",
-                  onOk() {
-                    deleteEventById(record.id);
-                  },
-                });
-              },
-            } : null,
+          isAdminUser
+            ? {
+                key: "delete",
+                label: <span style={{ color: "red" }}>Deletar</span>,
+                icon: <DeleteOutlined style={{ color: "red" }} />,
+                onClick: (e) => {
+                  e.domEvent.stopPropagation();
+                  confirm({
+                    title: "Você tem certeza que deseja excluir este evento?",
+                    icon: <CloseCircleFilled />,
+                    content: `O evento "${record.name}" será removido permanentemente.`,
+                    okText: "Sim, excluir",
+                    okType: "danger",
+                    cancelText: "Não",
+                    onOk() {
+                      deleteEventById(record.id);
+                    },
+                  });
+                },
+              }
+            : null,
         ];
 
         return (
@@ -424,11 +429,11 @@ const ListEvent: React.FC = () => {
                   + Criar Evento
                 </Button>
               )}
-              
             </div>
           </div>
 
-          {// GRID VIEW
+          {
+            // GRID VIEW
           }
           <div style={{ marginTop: 20 }}>
             {viewMode === "grid" ? (
@@ -441,35 +446,37 @@ const ListEvent: React.FC = () => {
                     " / " +
                     event.city;
                   const items: MenuProps["items"] = [
-                    isAdminUser ?
-                    {
-                      key: "edit",
-                      label: "Editar",
-                      icon: <EditOutlined />,
-                      onClick: () =>
-                        console.log("Editar evento com ID:", event.id),
-                    } : null,
+                    isAdminUser
+                      ? {
+                          key: "edit",
+                          label: "Editar",
+                          icon: <EditOutlined />,
+                          onClick: () =>
+                            console.log("Editar evento com ID:", event.id),
+                        }
+                      : null,
 
-                    isAdminUser ? 
-                    {
-                      key: "delete",
-                      label: <span style={{ color: "red" }}>Deletar</span>,
-                      icon: <DeleteOutlined style={{ color: "red" }} />,
-                      onClick: () => {
-                        confirm({
-                          title:
-                            "Você tem certeza que deseja excluir este evento?",
-                          icon: <CloseCircleFilled />,
-                          content: `O evento "${event.name}" será removido permanentemente.`,
-                          okText: "Sim, excluir",
-                          okType: "danger",
-                          cancelText: "Não",
-                          onOk() {
-                            deleteEventById(event.id);
+                    isAdminUser
+                      ? {
+                          key: "delete",
+                          label: <span style={{ color: "red" }}>Deletar</span>,
+                          icon: <DeleteOutlined style={{ color: "red" }} />,
+                          onClick: () => {
+                            confirm({
+                              title:
+                                "Você tem certeza que deseja excluir este evento?",
+                              icon: <CloseCircleFilled />,
+                              content: `O evento "${event.name}" será removido permanentemente.`,
+                              okText: "Sim, excluir",
+                              okType: "danger",
+                              cancelText: "Não",
+                              onOk() {
+                                deleteEventById(event.id);
+                              },
+                            });
                           },
-                        });
-                      },
-                    } : null,
+                        }
+                      : null,
                   ];
                   const getStatusColor = () => {
                     if (event.status === "AGENDADO") return "#3b82f6";
@@ -564,34 +571,22 @@ const ListEvent: React.FC = () => {
                             </span>
                           </div>
                         </div>
-                        <div
-                          style={{
-                            position: "absolute",
-                            bottom: 10,
-                            left: 30,
-                            background: "#e0f2fe",
-                            color: getStatusColor(),
-                            padding: "4px 10px",
-                            borderRadius: 999,
-                            fontSize: 12,
-                            fontWeight: 600,
-                          }}
-                        >
-                          {event?.status ?? "-"}
-                        </div>
-                        <Dropdown menu={{ items }} trigger={["click"]}>
-                          <Button
-                            type="text"
-                            icon={<MoreOutlined />}
-                            style={{
-                              position: "absolute",
-                              bottom: 10,
-                              right: 30,
-                              background: "#f3f4f6",
-                              borderRadius: 8,
-                            }}
-                          />
-                        </Dropdown>
+
+                        {isAdminUser && (
+                          <Dropdown menu={{ items }} trigger={["click"]}>
+                            <Button
+                              type="text"
+                              icon={<MoreOutlined />}
+                              style={{
+                                position: "absolute",
+                                bottom: 10,
+                                right: 30,
+                                background: "#f3f4f6",
+                                borderRadius: 8,
+                              }}
+                            />
+                          </Dropdown>
+                        )}
                       </Card>
                     </Col>
                   );
