@@ -19,6 +19,7 @@ import DashboardGeral from "./pages/dashboard/DashboardGeral";
 import InviteResponsePage from "./pages/invites/InviteResponsePage";
 import InviteNotificationBanner from "./components/common/globalNotification/InviteNotificationBanner";
 import { isAdmin } from "./functions/userIsAdmin";
+import CredentialEventPage from "./pages/events/CredentialEventPage";
 
 function App() {
 
@@ -68,6 +69,7 @@ function App() {
 
                   <Route path="/invites/:token" element={<InviteResponsePage />} />
                   <Route path="/events/:id" element={<EventDetailsPage />} />
+                  <Route path="/events/:id/credential" element={<CredentialEventPage />} />
                   
                   <Route path="/" element={<Navigate to="/login" />} />
                 </Routes>

@@ -6,7 +6,17 @@ import {
   removeProfessional,
 } from "../../services/eventProfessional/integration";
 import type { EventProfessionalDTO } from "../../types/EventProfessionalDTO";
-import { Row, Col, Card, Table, Tag, Button, Popconfirm } from "antd";
+import {
+  Row,
+  Col,
+  Card,
+  Table,
+  Tag,
+  Button,
+  Popconfirm,
+  Modal,
+  Input,
+} from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { getProfessionalById } from "../../services/professional/integration";
 import type { ProfessionalDTO } from "../../types/ProfessionalDTO";
@@ -39,6 +49,9 @@ const EventDetailsPage = () => {
     [],
   );
   const [removingIds, setRemovingIds] = useState<Set<string>>(new Set());
+  const [isCredentialModalOpen, setIsCredentialModalOpen] = useState(false);
+  const [selectedProfessional, setSelectedProfessional] = useState<any>(null);
+  const [credentialNumber, setCredentialNumber] = useState("");
 
   const isAdminUser = isAdmin();
 
@@ -200,6 +213,12 @@ const EventDetailsPage = () => {
         return newSet;
       });
     }
+  };
+
+  const handleOpenCredentialModal = (professional: any) => {
+    setSelectedProfessional(professional);
+    setCredentialNumber("");
+    setIsCredentialModalOpen(true);
   };
 
   const handleAddProfessional = () => {
@@ -418,51 +437,98 @@ const EventDetailsPage = () => {
                           padding: "2px 10px",
                           fontWeight: 500,
                         }}
-                        // color={config.color}
+                      // color={config.color}
                       >
                         {statusLabelMap[s]}
                       </Tag>
                     );
                   },
                 },
+
                 {
                   title: "AÇÕES",
                   dataIndex: "actions",
                   key: "actions",
                   render: (_: any, record: any) => (
-                    <Popconfirm
-                      title="Remover profissional"
-                      description={`Tem certeza que deseja remover ${record.name} do evento?`}
-                      onConfirm={(e) => {
-                        e?.stopPropagation();
-                        handleRemoveProfessional(record.id, record.name);
-                      }}
-                      onCancel={(e) => {
-                        e?.stopPropagation();
-                      }}
-                      okText="Sim"
-                      cancelText="Cancelar"
-                    >
+                    <>
                       <Button
-                        type="text"
-                        danger
-                        icon={<StopOutlined />}
-                        loading={removingIds.has(record.id)}
-                        onClick={(e) => e.stopPropagation()}
+                        type="primary"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOpenCredentialModal(record);
+                        }}
                         style={{
+                          marginRight: 8,
                           borderRadius: 8,
                         }}
                       >
-                        Remover
+                        Credenciar
                       </Button>
-                    </Popconfirm>
+
+                      <Popconfirm
+                        title="Remover profissional"
+                        description={`Tem certeza que deseja remover ${record.name} do evento?`}
+                        onConfirm={(e) => {
+                          e?.stopPropagation();
+                          handleRemoveProfessional(record.id, record.name);
+                        }}
+                        onCancel={(e) => {
+                          e?.stopPropagation();
+                        }}
+                        okText="Sim"
+                        cancelText="Cancelar"
+                      >
+                        <Button
+                          type="text"
+                          danger
+                          icon={<StopOutlined />}
+                          loading={removingIds.has(record.id)}
+                          onClick={(e) => e.stopPropagation()}
+                          style={{
+                            borderRadius: 8,
+                          }}
+                        >
+                          Remover
+                        </Button>
+                      </Popconfirm>
+                    </>
                   ),
                 },
               ] as ColumnsType<any>
             }
           />
         )}
+                   
       </div>
+
+      <Modal
+        title="Credenciar profissional"
+        open={isCredentialModalOpen}
+        onCancel={() => setIsCredentialModalOpen(false)}
+        onOk={() => {}}
+        okText="Realizar Check-in"
+        cancelText="Cancelar"
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 12,
+            marginTop: 20,
+          }}
+        >
+          <div>
+            <strong>Profissional:</strong>{" "}
+            {selectedProfessional?.name}
+          </div>
+
+          <Input
+            placeholder="Número da pulseira"
+            value={credentialNumber}
+            onChange={(e) => setCredentialNumber(e.target.value)}
+          />
+        </div>
+      </Modal>
     </div>
   );
 };
