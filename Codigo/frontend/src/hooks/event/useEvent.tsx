@@ -65,8 +65,6 @@ const useEvent = () => {
 
     const fetchEvent = async () => {
 
-        console.log(cep, state, city, neighborhood, street);
-
         const isCreateMode = 
             !title.trim() || 
             !startDate || 
@@ -118,8 +116,6 @@ const useEvent = () => {
 
         try {
             const response = await getAddressByCep(value);
-
-            console.log("Buscando endereço para CEP:", response);
 
             if(response) {
                 setCep(response.data.cep);

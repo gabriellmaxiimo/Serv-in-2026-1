@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { listAllEvents } from "../../services/events/integration";
-import { listEventProfessionals, removeProfessional } from "../../services/eventProfessional/integration";
+import {
+  listEventProfessionals,
+  removeProfessional,
+} from "../../services/eventProfessional/integration";
 import type { EventProfessionalDTO } from "../../types/EventProfessionalDTO";
 import { Row, Col, Card, Table, Tag, Button, Popconfirm } from "antd";
 import type { ColumnsType } from "antd/es/table";
@@ -27,11 +30,14 @@ const EventDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const location = useLocation();
-  const locationState = (location.state as EventDetailsNavigationState | null) ?? null;
+  const locationState =
+    (location.state as EventDetailsNavigationState | null) ?? null;
   const [eventFromApi, setEventFromApi] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
   const [loadingProfessionals, setLoadingProfessionals] = useState(false);
-  const [professionalsTableData, setProfessionalsTableData] = useState<any[]>([]);
+  const [professionalsTableData, setProfessionalsTableData] = useState<any[]>(
+    [],
+  );
   const [removingIds, setRemovingIds] = useState<Set<string>>(new Set());
 
   const isAdminUser = isAdmin();
@@ -69,7 +75,8 @@ const EventDetailsPage = () => {
   const eventFromState = useMemo(() => {
     if (!locationState) return null;
     if (locationState.event) return locationState.event;
-    if (typeof locationState === "object" && "id" in locationState) return locationState;
+    if (typeof locationState === "object" && "id" in locationState)
+      return locationState;
     return null;
   }, [locationState]);
 
@@ -110,8 +117,11 @@ const EventDetailsPage = () => {
         const enriched = await Promise.all(
           list.map(async (lp: EventProfessionalDTO) => {
             try {
-              const profResp = await getProfessionalById(String(lp.professionalId));
-              const profData: ProfessionalDTO = (profResp && (profResp.data ?? profResp)) as ProfessionalDTO;
+              const profResp = await getProfessionalById(
+                String(lp.professionalId),
+              );
+              const profData: ProfessionalDTO = (profResp &&
+                (profResp.data ?? profResp)) as ProfessionalDTO;
               return {
                 key: lp.id ?? `${lp.professionalId}`,
                 id: lp.professionalId,
@@ -132,7 +142,7 @@ const EventDetailsPage = () => {
                 status: lp.status,
               };
             }
-          })
+          }),
         );
 
         setProfessionalsTableData(enriched);
@@ -151,7 +161,10 @@ const EventDetailsPage = () => {
   }, [eventFromState, eventFromApi]);
 
   const handleBack = () => {
-    if (locationState?.from === "professional-detail" && locationState.professionalId) {
+    if (
+      locationState?.from === "professional-detail" &&
+      locationState.professionalId
+    ) {
       navigate(`/professional/${locationState.professionalId}`, {
         state: { from: "event-detail", eventId: id },
       });
@@ -161,17 +174,22 @@ const EventDetailsPage = () => {
     navigate("/events");
   };
 
-  const handleRemoveProfessional = async (professionalId: string, professionalName: string) => {
+  const handleRemoveProfessional = async (
+    professionalId: string,
+    professionalName: string,
+  ) => {
     if (!id) return;
 
     setRemovingIds((prev) => new Set(prev).add(professionalId));
     try {
       await removeProfessional(id, professionalId);
-      openSuccessNotification(`${professionalName} removido do evento com sucesso!`);
-      
+      openSuccessNotification(
+        `${professionalName} removido do evento com sucesso!`,
+      );
+
       // Atualizar a lista de profissionais
       setProfessionalsTableData((prev) =>
-        prev.filter((p) => p.id !== professionalId)
+        prev.filter((p) => p.id !== professionalId),
       );
     } catch (error) {
       openErrorNotification("Erro ao remover profissional do evento");
@@ -202,116 +220,123 @@ const EventDetailsPage = () => {
 
   if (!event) return <p>Evento não encontrado</p>;
 
-  return ( 
-  <div style={{ padding: 24, background: "#f5f7fb", minHeight: "100vh" }}>
-  
-  <div style={{
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20
-  }}>
-    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-      <Button onClick={handleBack}>← Voltar</Button>
+  const locationString = `${event.street}, ${event.neighborhood} - ${event.city} / ${event.state}`;
 
-      <div>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <h2 style={{ margin: 0, fontSize: 26, fontWeight: 700 }}>
-            {event.name}
-          </h2>
+  return (
+    <div style={{ padding: 24, background: "#f5f7fb", minHeight: "100vh" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 20,
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <Button onClick={handleBack}>← Voltar</Button>
 
-          <Tag color={event.status === "ACTIVE" ? "green" : "orange"}>
-            {event.status}
-          </Tag>
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <h2 style={{ margin: 0, fontSize: 26, fontWeight: 700 }}>
+                {event.name}
+              </h2>
+
+              <Tag color={event.status === "ACTIVE" ? "green" : "orange"}>
+                {event.status}
+              </Tag>
+            </div>
+          </div>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 10}}>
-              <EnvironmentOutlined />
-              <span>{event.location}</span>
+        <div style={{ display: "flex", gap: 10 }}>
+          {isAdminUser && (
+            <>
+              <Button icon={<EditOutlined />}>Editar Evento</Button>
+              <Button danger>Cancelar Evento</Button>
+            </>
+          )}
         </div>
       </div>
-    </div>
 
-    <div style={{ display: "flex", gap: 10 }}>
-      {isAdminUser && (
-          <>
-            <Button icon={<EditOutlined />}>Editar Evento</Button>
-            <Button danger>Cancelar Evento</Button>
-          </>
-        )}
-      
-    </div>
-  </div>
-    
-    <Row gutter={[16, 16]} style={{ marginTop: 24 }}>
-  
-      {/* COLUNA ESQUERDA (MAIOR) */}
-      <Col xs={24} md={16}>
-        <Card bordered={false} style={{ borderRadius: 12 }}>
-          
-          <div style={{ marginBottom: 16 }}>
-            <h3 style={{ marginBottom: 6 }}>Sobre o Evento</h3>
-            <p style={{ color: "#666" }}>{event.description}</p>
-          </div>
+      <Row gutter={[16, 16]} style={{ marginTop: 24 }}>
+        {/* COLUNA ESQUERDA (MAIOR) */}
+        <Col xs={24} md={16}>
+          <Card bordered={false} style={{ borderRadius: 12 }}>
+            <div style={{ marginBottom: 16 }}>
+              <h3 style={{ marginBottom: 6 }}>Sobre o Evento</h3>
+              <p style={{ color: "#666" }}>{event.description}</p>
+            </div>
 
-          <div style={{ marginBottom: 16 }}>
-            <h3 style={{ marginBottom: 6 }}>Datas e Horários</h3>
+            <div style={{ marginBottom: 16 }}>
+              <h3 style={{ marginBottom: 6 }}>Datas e Horários</h3>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 10, color: "#555" }}>
-  
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <CalendarOutlined />
-                <span>Início: {formatDateTime(event.initialDate)}</span>
-              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 10,
+                  color: "#555",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <CalendarOutlined />
+                  <span>Início: {formatDateTime(event.initialDate)}</span>
+                </div>
 
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <CalendarOutlined />
-                <span>Fim: {formatDateTime(event.finalDate)}</span>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <CalendarOutlined />
+                  <span>Fim: {formatDateTime(event.finalDate)}</span>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div style={{ marginTop: 12 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <EnvironmentOutlined />
-              <span>{event.location}</span>
+            <div style={{ marginTop: 12 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <EnvironmentOutlined />
+                <span>{locationString}</span>
+              </div>
             </div>
-          </div>
+          </Card>
+        </Col>
 
-        </Card>
-      </Col>
+        {/* COLUNA DIREITA */}
+        <Col
+          xs={24}
+          md={8}
+          style={{ display: "flex", flexDirection: "column", gap: 16 }}
+        >
+          <Card bordered={false} style={{ borderRadius: 12 }}>
+            <h3>Organizador</h3>
+            <p style={{ margin: 0, color: "#666" }}>
+              Equipe de Eventos Corporativos
+            </p>
+          </Card>
 
-      {/* COLUNA DIREITA */}
-      <Col xs={24} md={8} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-        
-        <Card bordered={false} style={{ borderRadius: 12 }}>
-          <h3>Organizador</h3>
-          <p style={{ margin: 0, color: "#666" }}>
-            Equipe de Eventos Corporativos
-          </p>
-        </Card>
-
-        <Card bordered={false} style={{ borderRadius: 12 }}>
-          <h3>Métricas</h3>
-          <p style={{ margin: 0, color: "#666" }}>
-            Total de Profissionais: {professionalsTableData.length}
-          </p>
-        </Card>
-
-      </Col>
-
-    </Row>
+          <Card bordered={false} style={{ borderRadius: 12 }}>
+            <h3>Métricas</h3>
+            <p style={{ margin: 0, color: "#666" }}>
+              Total de Profissionais: {professionalsTableData.length}
+            </p>
+          </Card>
+        </Col>
+      </Row>
 
       <div style={{ marginTop: 28 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 12,
+          }}
+        >
           <h2 style={{ margin: 0 }}>Profissionais vinculados</h2>
-          
+
           {isAdminUser && (
             <Button type="primary" onClick={handleAddProfessional}>
               Adicionar profissional
             </Button>
           )}
-          
         </div>
 
         {loadingProfessionals && <p>Carregando profissionais...</p>}
@@ -335,101 +360,106 @@ const EventDetailsPage = () => {
                   }),
               } as any;
             }}
-            columns={[
-              {
-                title: "PROFISSIONAL",
-                dataIndex: "name",
-                render: (name: string, record: any) => (
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <span style={{ fontWeight: 600 }}>{name}</span>
-                    <span style={{ fontSize: 12, color: "#888" }}>
-                      {record.role} • {record.area}
+            columns={
+              [
+                {
+                  title: "PROFISSIONAL",
+                  dataIndex: "name",
+                  render: (name: string, record: any) => (
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                      <span style={{ fontWeight: 600 }}>{name}</span>
+                      <span style={{ fontSize: 12, color: "#888" }}>
+                        {record.role} • {record.area}
+                      </span>
+                    </div>
+                  ),
+                },
+                {
+                  title: "CPF",
+                  dataIndex: "cpf",
+                  render: (v: string) => (
+                    <span style={{ color: "#999", fontSize: 13 }}>
+                      {v || "-"}
                     </span>
-                  </div>
-                ),
-              },
-              {
-                title: "CPF",
-                dataIndex: "cpf",
-                render: (v: string) => (
-                  <span style={{ color: "#999", fontSize: 13 }}>
-                    {v || "-"}
-                  </span>
-                ),
-              },
-              {
-                title: "CARGO",
-                dataIndex: "role",
-                key: "role",
-                render: (v: string) => v || "-",
-              },
-              {
-                title: "ÁREA",
-                dataIndex: "area",
-                key: "area",
-                render: (v: string) => v || "-",
-              },
-              {
-                title: "STATUS DO CONVITE",
-                dataIndex: "status",
-                key: "status",
-                render: (s: EventProfessionalDTO["status"]) => {
-                  const statusConfig: Record<EventProfessionalDTO["status"], { color: string }> = {
-                    PENDING_CONFIRMATION: { color: "orange" },
-                    CONFIRMED: { color: "green" },
-                    REJECTED: { color: "red" },
-                    CANCELED: { color: "default" },
-                  };
-                  // const config = statusConfig[s];
+                  ),
+                },
+                {
+                  title: "CARGO",
+                  dataIndex: "role",
+                  key: "role",
+                  render: (v: string) => v || "-",
+                },
+                {
+                  title: "ÁREA",
+                  dataIndex: "area",
+                  key: "area",
+                  render: (v: string) => v || "-",
+                },
+                {
+                  title: "STATUS DO CONVITE",
+                  dataIndex: "status",
+                  key: "status",
+                  render: (s: EventProfessionalDTO["status"]) => {
+                    const statusConfig: Record<
+                      EventProfessionalDTO["status"],
+                      { color: string }
+                    > = {
+                      PENDING_CONFIRMATION: { color: "orange" },
+                      CONFIRMED: { color: "green" },
+                      REJECTED: { color: "red" },
+                      CANCELED: { color: "default" },
+                    };
+                    // const config = statusConfig[s];
 
-                  return (
-                    <Tag
-                      style={{
-                        borderRadius: 20,
-                        padding: "2px 10px",
-                        fontWeight: 500,
+                    return (
+                      <Tag
+                        style={{
+                          borderRadius: 20,
+                          padding: "2px 10px",
+                          fontWeight: 500,
+                        }}
+                        // color={config.color}
+                      >
+                        {statusLabelMap[s]}
+                      </Tag>
+                    );
+                  },
+                },
+                {
+                  title: "AÇÕES",
+                  dataIndex: "actions",
+                  key: "actions",
+                  render: (_: any, record: any) => (
+                    <Popconfirm
+                      title="Remover profissional"
+                      description={`Tem certeza que deseja remover ${record.name} do evento?`}
+                      onConfirm={(e) => {
+                        e?.stopPropagation();
+                        handleRemoveProfessional(record.id, record.name);
                       }}
-                      // color={config.color}
-                    >
-                      {statusLabelMap[s]}
-                    </Tag>
-                  );
-                }
-              },
-              {
-                title: "AÇÕES",
-                dataIndex: "actions",
-                key: "actions",
-                render: (_: any, record: any) => (
-                  <Popconfirm
-                    title="Remover profissional"
-                    description={`Tem certeza que deseja remover ${record.name} do evento?`}
-                    onConfirm={(e) => {
-                      e?.stopPropagation();
-                      handleRemoveProfessional(record.id, record.name);
-                    }}
-                    onCancel={(e) => {
-                      e?.stopPropagation();
-                    }}
-                    okText="Sim"
-                    cancelText="Cancelar"
-                  >
-                    <Button
-                      type="text"
-                      danger
-                      icon={<StopOutlined />}
-                      loading={removingIds.has(record.id)}
-                      onClick={(e) => e.stopPropagation()}
-                      style={{
-                        borderRadius: 8,
+                      onCancel={(e) => {
+                        e?.stopPropagation();
                       }}
+                      okText="Sim"
+                      cancelText="Cancelar"
                     >
-                      Remover
-                    </Button>
-                  </Popconfirm>
-                ),
-              },
-            ] as ColumnsType<any>}
+                      <Button
+                        type="text"
+                        danger
+                        icon={<StopOutlined />}
+                        loading={removingIds.has(record.id)}
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                          borderRadius: 8,
+                        }}
+                      >
+                        Remover
+                      </Button>
+                    </Popconfirm>
+                  ),
+                },
+              ] as ColumnsType<any>
+            }
           />
         )}
       </div>

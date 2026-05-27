@@ -125,7 +125,6 @@ const ListEvent: React.FC = () => {
               icon: <EditOutlined />,
               onClick: (e) => {
                 e.domEvent.stopPropagation();
-                console.log("Editar evento com ID:", record.id);
               },
             } : null,
 
