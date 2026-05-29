@@ -80,14 +80,15 @@ const CreateProfessional = () => {
 
   const loadRoles = async () => {
     try {
+
       const roleList = await listRoles();
-      setDatabaseRoles(
-        roleList.map((item) => ({
-          type: "existing",
-          id: item.id,
-          name: item.name,
-        }))
-      );
+      const roleListMapped = roleList.map((item) => ({
+        type: "existing" as const,
+        id: item.id,
+        name: item.name,
+      }));
+      setDatabaseRoles(roleListMapped);
+      return roleListMapped;
     } catch {
       message.error("Não foi possível carregar os cargos");
     }
