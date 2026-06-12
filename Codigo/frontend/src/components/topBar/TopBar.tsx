@@ -3,9 +3,23 @@ import {LogoutOutlined} from "@ant-design/icons";
 import { logoServin } from "../../assets";
 import { useLocation } from "react-router-dom";
 
+const getFirstName = (): string => {
+    const token = localStorage.getItem("token");
+    if(!token) return "Usuário";
+
+    try{
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        const fullName: string = payload.name || "Usuário";
+        return fullName.trim().split(" ")[0] || "Usuário";
+    }catch{
+        return "Usuário";
+    }
+};
+
 const TopBar = () => {
 
     const location = useLocation();
+    const firstName = getFirstName();
 
     const hideOnRoutes = ["/login", "/first-access", "/invites"];
 
@@ -37,7 +51,7 @@ const TopBar = () => {
             </div>
 
             <div style={{display: "flex", alignItems: "center", gap: 35}}>
-                <span>Olá, Usuario</span> {/* TODO: Aqui no caso tem que ver como vai ser deixado aparecendo pro usuario o nome dele*/}
+                <span>Olá, {firstName}</span>
 
                 <Button
                     type="primary"
