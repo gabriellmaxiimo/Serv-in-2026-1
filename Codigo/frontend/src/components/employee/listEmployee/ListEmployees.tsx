@@ -386,7 +386,8 @@ return (
                         key: "edit",
                         label: "Editar",
                         icon: <EditOutlined />,
-                        onClick: () => {
+                        onClick: ({ domEvent }) => {
+                          domEvent.stopPropagation();
                           setEditingEmployee({...employee});
                           setIsEditModalOpen(true);
                         },
@@ -398,7 +399,8 @@ return (
                         key: "delete",
                         label: <span style={{ color: "red" }}>Deletar</span>,
                         icon: <DeleteOutlined style={{ color: "red" }} />,
-                        onClick: () => {
+                        onClick: ({ domEvent }) => {
+                          domEvent.stopPropagation();
                           confirm({
                             title: "Você tem certeza que deseja excluir este funcionário?",
                             icon: <CloseCircleFilled />,
