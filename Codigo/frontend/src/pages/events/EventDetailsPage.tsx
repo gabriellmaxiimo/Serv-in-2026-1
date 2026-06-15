@@ -270,7 +270,14 @@ const EventDetailsPage = () => {
         <div style={{ display: "flex", gap: 10 }}>
           {isAdminUser && (
             <>
-              <Button icon={<EditOutlined />}>Editar Evento</Button>
+              <Button
+                icon={<EditOutlined />}
+                onClick={() =>
+                  navigate(`/events/${id}/edit`, { state: { event } })
+                }
+              >
+                Editar Evento
+              </Button>
               <Button danger>Cancelar Evento</Button>
             </>
           )}

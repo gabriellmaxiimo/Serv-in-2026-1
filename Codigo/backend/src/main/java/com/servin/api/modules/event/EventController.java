@@ -10,14 +10,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.servin.api.modules.event.model.Event;
 import com.servin.api.modules.event.dto.CreateEventDto;
+import com.servin.api.modules.event.model.Event;
 import com.servin.api.modules.event.services.CreateEventService;
 import com.servin.api.modules.event.services.DeleteEventService;
+import com.servin.api.modules.event.services.EditEventService;
 import com.servin.api.modules.event.services.ListEventService;
 
 import jakarta.validation.Valid;
@@ -34,6 +36,9 @@ public class EventController {
 
     @Autowired
     private DeleteEventService deleteEventService;
+
+    @Autowired
+    private EditEventService editEventService;
 
     @PostMapping
     public ResponseEntity<String> create(@Valid @RequestBody CreateEventDto createEventDto) {
@@ -62,6 +67,16 @@ public class EventController {
             return ResponseEntity.ok("Evento deletado com sucesso!");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable UUID id, @Valid @RequestBody CreateEventDto dto) {
+        try {
+            Event updated = editEventService.edit(id, dto);
+            return ResponseEntity.ok(updated);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 }

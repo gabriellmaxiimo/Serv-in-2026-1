@@ -9,6 +9,7 @@ import TopBar from "./components/topBar/TopBar";
 import NavBar from "./components/navBar/NavBar";
 import SupportButton from "./components/common/supportButton/SupportButton";
 import CreateEventPage from "./pages/events/CreateEventPage";
+import EditEventPage from "./pages/events/EditEventPage";
 import ListEventPage from "./pages/events/ListEventPage";
 import FirstAccessPage from "./pages/firstAccess/FirstAccessPage";
 import ListProfessionalsPage from "./pages/professional/ListProfessionalsPage";
@@ -49,9 +50,9 @@ function App() {
                   {isAdminUser && (
                     <>
                       <Route path="/events/create" element={<CreateEventPage />} />
+                      <Route path="/events/:id/edit" element={<EditEventPage />} />
                       <Route path="/employees/create" element={<CreateEmployeePage />} />
                       <Route path="/professional/create" element={<CreateProfessionalPage />} />
-
                       <Route path="/metrics" element={<DashboardGeral />} />
                       
                     </>
