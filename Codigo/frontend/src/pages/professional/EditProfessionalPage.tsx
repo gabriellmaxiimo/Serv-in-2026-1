@@ -1,30 +1,17 @@
 import { useEffect, useState } from "react";
-import dayjs from "dayjs";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Layout, Skeleton, Alert } from "antd";
 import CreateProfessional from "../../components/professional/createProfessional/CreateProfessional";
 import { getProfessionalById } from "../../services/professional/integration";
-import useProfessional from "../../hooks/professional/useProfessional";
 import type { ProfessionalDTO } from "../../types/ProfessionalDTO";
 
 const { Content } = Layout;
 
 const EditProfessionalPage = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  const {
-    setName,
-    setCPF,
-    setBirthDate,
-    setEmail,
-    setPhone,
-    setArea,
-    setRole,
-    setStatus,
-  } = useProfessional();
+  const [professional, setProfessional] = useState<ProfessionalDTO | null>(null);
 
   useEffect(() => {
     const load = async () => {
@@ -40,15 +27,7 @@ const EditProfessionalPage = () => {
       try {
         const resp = await getProfessionalById(id);
         const prof = resp as ProfessionalDTO;
-
-        setName(prof.name || "");
-        setCPF(prof.cpf || "");
-        setBirthDate(prof.birthDate ? dayjs(prof.birthDate) : null);
-        setEmail(prof.email || "");
-        setPhone(prof.phone || "");
-        setArea(prof.area || null);
-        setRole(prof.role?.name || "");
-        setStatus(prof.status || "AVAILABLE");
+        setProfessional(prof);
       } catch (err: any) {
         setError(err?.response?.data?.message || err?.response?.data || "Erro ao carregar profissional");
       } finally {
@@ -57,7 +36,7 @@ const EditProfessionalPage = () => {
     };
 
     load();
-  }, [id, setName, setCPF, setBirthDate, setEmail, setPhone, setArea, setRole]);
+  }, [id]);
 
   if (loading) {
     return (
@@ -83,7 +62,7 @@ const EditProfessionalPage = () => {
     <Layout style={{ minHeight: "100vh" }}>
       <Content style={{ margin: "24px 16px", padding: 24, background: "#fff", borderRadius: 8 }}>
         <h3>Editar Profissional</h3>
-        <CreateProfessional mode="edit" professionalId={id} />
+        <CreateProfessional mode="edit" professionalId={id} initialProfessional={professional} />
       </Content>
     </Layout>
   );

@@ -2,9 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 import { AutoComplete, Button, DatePicker, Form, Input, Select, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 import useProfessional from "../../../hooks/professional/useProfessional";
 import { updateProfessional } from "../../../services/professional/integration";
 import { listRoles, createRole } from "../../../services/role/integration";
+import type { CreateProfessionalDTO } from "../../../types/CreateProfessionalDTO";
+import type { ProfessionalDTO } from "../../../types/ProfessionalDTO";
 
 const maskCPF = (value: string) => {
   const numbers = value.replace(/\D/g, "").slice(0, 11);
@@ -58,9 +61,10 @@ type RoleSelection = ExistingRole | NewRole | null;
 type Props = {
   mode?: "create" | "edit";
   professionalId?: string;
+  initialProfessional?: ProfessionalDTO | null;
 };
 
-const CreateProfessional = ({ mode = "create", professionalId }: Props) => {
+const CreateProfessional = ({ mode = "create", professionalId, initialProfessional }: Props) => {
   const {
     name,
     setName,
@@ -75,6 +79,7 @@ const CreateProfessional = ({ mode = "create", professionalId }: Props) => {
     area,
     setArea,
     setRole,
+    setStatus,
     fetchProfessional,
     status,
     loading,
@@ -84,6 +89,42 @@ const CreateProfessional = ({ mode = "create", professionalId }: Props) => {
   const [selectedRole, setSelectedRole] = useState<RoleSelection>(null);
   const [inputValue, setInputValue] = useState("");
   const [creatingRole, setCreatingRole] = useState(false);
+
+  useEffect(() => {
+    if (mode !== "edit" || !initialProfessional) {
+      return;
+    }
+
+    setName(initialProfessional.name || "");
+    setCPF(initialProfessional.cpf || "");
+    setBirthDate(initialProfessional.birthDate ? dayjs(initialProfessional.birthDate) : null);
+    setEmail(initialProfessional.email || "");
+    setPhone(initialProfessional.phone || "");
+    setArea(initialProfessional.area as CreateProfessionalDTO["area"]);
+    setRole(initialProfessional.role?.name || "");
+    setStatus(initialProfessional.status || "AVAILABLE");
+    setInputValue(initialProfessional.role?.name || "");
+    setSelectedRole(
+      initialProfessional.role
+        ? {
+            type: "existing",
+            id: initialProfessional.role.id,
+            name: initialProfessional.role.name,
+          }
+        : null,
+    );
+  }, [
+    mode,
+    initialProfessional,
+    setName,
+    setCPF,
+    setBirthDate,
+    setEmail,
+    setPhone,
+    setArea,
+    setRole,
+    setStatus,
+  ]);
 
   const loadRoles = async () => {
     try {
@@ -310,7 +351,6 @@ roleName = roleSelection.name;
     <Form onFinish={handleSubmit} layout="vertical">
       <Form.Item
         label="Nome"
-        name="name"
         rules={[{ required: true, message: "Informe o nome!" }]}
       >
         <Input
@@ -335,7 +375,6 @@ roleName = roleSelection.name;
 
       <Form.Item
         label="Data de nascimento"
-        name="birthDate"
         rules={[{ required: true, message: "Selecione a data!" }]}
       >
         <DatePicker
@@ -348,7 +387,6 @@ roleName = roleSelection.name;
 
       <Form.Item
         label="Email"
-        name="email"
         rules={[{ required: true, message: "Informe o email!" }]}
       >
         <Input
@@ -360,7 +398,6 @@ roleName = roleSelection.name;
 
       <Form.Item
         label="Área de atuação"
-        name="area"
         rules={[{ required: true, message: "Selecione a área!" }]}
       >
         <Select
@@ -373,7 +410,6 @@ roleName = roleSelection.name;
 
       <Form.Item
         label="Cargo"
-        name="role"
         rules={[{ required: true, message: "Informe o cargo!" }]}
       >
         <AutoComplete
