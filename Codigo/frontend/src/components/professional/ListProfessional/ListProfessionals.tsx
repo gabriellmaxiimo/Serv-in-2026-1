@@ -191,18 +191,15 @@ const ListProfessionals = ({
 	 						},
 	 					},
 						
-	 					{
-	 						key: "edit",
-	 						label: "Editar",
-	 						icon: <EditOutlined />,
-	 						onClick: (e) => {
-	 							e.domEvent.stopPropagation();
-	 							Modal.info({
-	 								title: "Edição de profissional",
-	 								content: "Fluxo de edição ainda não implementado para profissionais.",
-	 							});
-	 						},
-	 					},
+						{
+							key: "edit",
+							label: "Editar",
+							icon: <EditOutlined />,
+							onClick: (e) => {
+								e.domEvent.stopPropagation();
+								navigate(`/professional/${record.id}/edit`);
+							},
+						},
 	 					actionItem,
 	 				];
 

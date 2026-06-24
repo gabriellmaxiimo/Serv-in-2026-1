@@ -3,6 +3,7 @@ import { AutoComplete, Button, DatePicker, Form, Input, Select, message } from "
 import { PlusOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import useProfessional from "../../../hooks/professional/useProfessional";
+import { updateProfessional } from "../../../services/professional/integration";
 import { listRoles, createRole } from "../../../services/role/integration";
 
 const maskCPF = (value: string) => {
@@ -54,7 +55,12 @@ interface NewRole {
 
 type RoleSelection = ExistingRole | NewRole | null;
 
-const CreateProfessional = () => {
+type Props = {
+  mode?: "create" | "edit";
+  professionalId?: string;
+};
+
+const CreateProfessional = ({ mode = "create", professionalId }: Props) => {
   const {
     name,
     setName,
@@ -70,6 +76,7 @@ const CreateProfessional = () => {
     setArea,
     setRole,
     fetchProfessional,
+    status,
     loading,
   } = useProfessional();
 
@@ -248,6 +255,42 @@ roleName = roleSelection.name;
       }
 
       setRole(roleName);
+
+      if (mode === "edit") {
+        if (!professionalId) {
+          message.error("ID do profissional não informado para edição");
+          return;
+        }
+
+        try {
+          setCreatingRole(true);
+          // build payload using current hook state; CPF must remain the same
+          const payload = {
+            name: name.trim(),
+            cpf: cpf.replace(/\D/g, ""),
+            birthDate: birthDate?.format("YYYY-MM-DD"),
+            email: email.trim().toLowerCase(),
+            phone: phone.trim(),
+            area,
+            role: roleName,
+            status,
+          } as any;
+
+          await updateProfessional(professionalId, payload);
+          message.success("Profissional atualizado com sucesso!");
+          setSelectedRole(null);
+          setInputValue("");
+          navigate("/professionals");
+        } catch (err: any) {
+          const errMsg = err?.response?.data?.message || err?.response?.data || "Erro ao atualizar profissional";
+          message.error(errMsg);
+        } finally {
+          setCreatingRole(false);
+        }
+
+        return;
+      }
+
       const response = await fetchProfessional();
 
       if (!response) {
@@ -277,18 +320,17 @@ roleName = roleSelection.name;
         />
       </Form.Item>
 
-      <Form.Item
-      label="CPF"
-      rules={[{ required: true, message: "Informe o CPF!" }]}
-      >
-      <Input
-      placeholder="000.000.000-00"
-      value={maskCPF(cpf)}
-      onChange={(e) => {
-      const numbers = e.target.value.replace(/\D/g, "").slice(0, 11);
-      setCPF(numbers);
-      }}
-      />
+      <Form.Item label="CPF" rules={[{ required: true, message: "Informe o CPF!" }]}>
+        <Input
+          placeholder="000.000.000-00"
+          value={maskCPF(cpf)}
+          disabled={mode === "edit"}
+          onChange={(e) => {
+            if (mode === "edit") return;
+            const numbers = e.target.value.replace(/\D/g, "").slice(0, 11);
+            setCPF(numbers);
+          }}
+        />
       </Form.Item>
 
       <Form.Item
@@ -359,7 +401,7 @@ roleName = roleSelection.name;
 
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <Button type="primary" htmlType="submit" loading={loading || creatingRole}>
-          Criar Profissional
+          {mode === "edit" ? "Salvar alterações" : "Criar Profissional"}
         </Button>
       </div>
     </Form>

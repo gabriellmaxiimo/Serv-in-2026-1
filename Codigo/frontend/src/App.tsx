@@ -13,6 +13,7 @@ import ListEventPage from "./pages/events/ListEventPage";
 import FirstAccessPage from "./pages/firstAccess/FirstAccessPage";
 import ListProfessionalsPage from "./pages/professional/ListProfessionalsPage";
 import CreateProfessionalPage from "./pages/professional/CreateProfessionalPage";
+import EditProfessionalPage from "./pages/professional/EditProfessionalPage";
 import ProfessionalDetailPage from "./pages/professional/ProfessionalDetailPage";
 import EventDetailsPage from "./pages/events/EventDetailsPage";
 import DashboardGeral from "./pages/dashboard/DashboardGeral";
@@ -65,6 +66,7 @@ function App() {
                   <Route path="/employees" element={<ListEmployeesPage />} />          
 
                   <Route path="/professionals" element={<ListProfessionalsPage />} />
+                  <Route path="/professional/:id/edit" element={<EditProfessionalPage />} />
                   <Route path="/professional/:id" element={<ProfessionalDetailPage />} />
 
                   <Route path="/invites/:token" element={<InviteResponsePage />} />

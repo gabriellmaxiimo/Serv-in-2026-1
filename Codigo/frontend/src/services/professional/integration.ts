@@ -46,6 +46,16 @@ export const listProfessionalEvents = async (professionalId: string) => {
   }
 };
 
+export const updateProfessional = async (professionalId: string, professionalData: any) => {
+  try {
+    const response = await api.put(`${API_BASE_URL}/professionals/${professionalId}`, professionalData);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar profissional:", error);
+    throw error;
+  }
+};
+
 export const inactivateProfessional = async (professionalId: string) => {
   try {
     const response = await api.patch(`${API_BASE_URL}/professionals/${professionalId}/inactivate`);

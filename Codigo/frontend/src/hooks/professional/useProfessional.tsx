@@ -15,6 +15,7 @@ const useProfessional = () => {
   const [phone, setPhone] = useState<string>("");
   const [area, setArea] = useState<ProfessionalArea | null>(null);
   const [role, setRole] = useState<string>("");
+  const [status, setStatus] = useState<string>("AVAILABLE");
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -53,6 +54,7 @@ const useProfessional = () => {
         phone: phone.trim(),
         area,
         role: normalizedRole,
+        status,
       });
 
       if (response) {
@@ -87,6 +89,8 @@ const useProfessional = () => {
     setArea,
     role,
     setRole,
+    status,
+    setStatus,
     fetchProfessional,
     loading,
   };
