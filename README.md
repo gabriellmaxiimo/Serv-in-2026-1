@@ -29,7 +29,8 @@ A solução permite:
 - Gabriel Máximo de Castro  
 - Luan Henrique  
 - Ítalo Vinhas Antunes Silva  
-- Pedro Vieira  
+- Pedro Vieira
+- Yago Garzon Chaves
 
 ---
 
