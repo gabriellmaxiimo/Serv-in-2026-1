@@ -19,10 +19,10 @@ const useProfessional = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const fetchProfessional = async () => {
+  const fetchProfessional = async (roleOverride?: string) => {
     const normalizedCpf = cpf.replace(/\D/g, "");
     const normalizedEmail = email.trim().toLowerCase();
-    const normalizedRole = role.trim();
+    const normalizedRole = (roleOverride ?? role).trim();
 
     
     if (

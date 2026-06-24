@@ -291,7 +291,7 @@ roleName = roleSelection.name;
         return;
       }
 
-      const response = await fetchProfessional();
+      const response = await fetchProfessional(roleName);
 
       if (!response) {
         return;
