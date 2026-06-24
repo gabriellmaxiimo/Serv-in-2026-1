@@ -1,9 +1,11 @@
 package com.servin.api.modules.event.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import com.servin.api.modules.event.enums.EventStatusEnum;
+import com.servin.api.modules.eventEmployee.model.EventEmployee;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +13,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -72,4 +75,7 @@ public class Event {
 
     @Column(name = "requires_checkout")
     private Boolean requiresCheckout = false;
+
+    @OneToMany(mappedBy = "event")
+    private List<EventEmployee> eventEmployees;
 }
