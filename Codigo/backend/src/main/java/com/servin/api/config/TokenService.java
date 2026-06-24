@@ -28,6 +28,7 @@ public class TokenService {
                     .withIssuer("servin-api")
                     .withSubject(employee.getCpf())
                     .withClaim("role", roleName)
+                    .withClaim("name", employee.getName())
                     .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
