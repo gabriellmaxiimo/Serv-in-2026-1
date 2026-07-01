@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant User
+    participant ApiApplication
+    participant SecurityConfig
+    participant WebConfig
+    participant Employee
+    participant Event
+    User->>+ApiApplication: Initialize
+    ApiApplication->>+SecurityConfig: process()
+    SecurityConfig->>+WebConfig: process()
+    WebConfig->>+Employee: process()
+    Employee->>+Event: process()
+    Event-->>-User: Complete

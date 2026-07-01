@@ -1,0 +1,82 @@
+classDiagram
+    class Employee {
+        +UUID id
+        +String name
+        +String cpf
+        +LocalDate birthDate
+        +String email
+        +String phone
+        +String role
+        +LocalDateTime createdAt
+        +LocalDateTime updatedAt
+        +LocalDateTime deletedAt
+    }
+
+    class Professional {
+        +UUID id
+        +String name
+        +String cpf
+        +String email
+        +LocalDate birthDate
+        +String phone
+        +ProfessionalAreaEnum area
+        +String role
+        +ProfessionalStatusEnum status
+        +LocalDateTime createdAt
+        +LocalDateTime updatedAt
+        +LocalDateTime deletedAt
+    }
+
+    class Event {
+        +UUID id
+        +String name
+        +String description
+        +LocalDateTime initialDate
+        +LocalDateTime finalDate
+        +String location
+        +String imageUrl
+        +EventStatusEnum status
+        +LocalDateTime createdAt
+        +LocalDateTime updatedAt
+        +LocalDateTime deletedAt
+    }
+
+    class EventProfessional {
+        +UUID id
+        +Professional professional
+        +Event event
+    }
+
+    class EventStatusEnum {
+        <<enumeration>>
+        ANDAMENTO
+        FINALIZADO
+        CANCELADO
+        AGENDADO
+    }
+
+    class ProfessionalAreaEnum {
+        <<enumeration>>
+        MEDICINE
+        SECURITY
+        FOOD_SERVICE
+        BEVERAGES
+        CLEANING
+        LOGISTICS
+        STAFF
+        RECEPTION
+        TECHNOLOGY
+    }
+
+    class ProfessionalStatusEnum {
+        <<enumeration>>
+        AVALIABLE
+        INACTIVE
+        ALLOCATED
+        PENDING_CONFIRMATION
+    }
+
+    EventProfessional --> Professional : professional
+    EventProfessional --> Event : event
+    Professional "1" -- "0..*" EventProfessional : participates
+    Event "1" -- "0..*" EventProfessional : includes

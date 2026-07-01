@@ -1,0 +1,37 @@
+graph TB
+    subgraph "Client Tier"
+        Browser[Web Browser]
+        Mobile[Mobile App]
+    end
+
+    subgraph "Application Server"
+        WebServer[Web Server]
+        AppServer[Application Server]
+        Codigo[Codigo]
+    end
+
+    subgraph "Data Tier"
+        Database[(Database Server)]
+        Cache[(Cache Server)]
+    end
+
+    subgraph "External Services"
+        _eslint_js[@eslint/js]
+        globals[globals]
+        eslint_plugin_react_hooks[eslint-plugin-react-hooks]
+    end
+
+    Browser --> WebServer
+    Mobile --> WebServer
+    WebServer --> AppServer
+    AppServer --> Codigo
+    Codigo --> Database
+    AppServer --> Cache
+    AppServer --> _eslint_js
+    AppServer --> globals
+    AppServer --> eslint_plugin_react_hooks
+
+    style Browser fill:#e1f5ff
+    style Mobile fill:#e1f5ff
+    style Database fill:#ffe1e1
+    style Cache fill:#ffe1e1

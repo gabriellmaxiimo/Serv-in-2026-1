@@ -1,0 +1,17 @@
+graph TB
+    subgraph "Modules"
+        Codigo[Codigo]
+    end
+
+    subgraph "External Libraries"
+        _eslint_js[@eslint/js]
+        globals[globals]
+        eslint_plugin_react_hooks[eslint-plugin-react-hooks]
+        eslint_plugin_react_refresh[eslint-plugin-react-refresh]
+        typescript_eslint[typescript-eslint]
+    end
+
+
+    classDef moduleStyle fill:#e1f5ff,stroke:#0066cc
+    classDef serviceStyle fill:#ffe1e1,stroke:#cc0000
+    classDef libraryStyle fill:#e1ffe1,stroke:#00cc00
