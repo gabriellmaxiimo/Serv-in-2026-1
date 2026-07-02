@@ -1,31 +1,38 @@
 cff-version: 1.0.1
 message: Please cite this software using these metadata.
-title: 
+title: Serv'in
 authors:
-  - family-names: Sobrenome do aluno 1
-    given-names: Nome do aluno 1
-  - family-names: Sobrenome do aluno 2
-    given-names: Nome do aluno 2
-  - family-names: Sobrenome do aluno 3
-    given-names: Nome do aluno 3
-  - family-names: Sobrenome do aluno 4
-    given-names: Nome do aluno 4
-  - family-names: Sobrenome do aluno 5
-    given-names: Nome do aluno 5
-  - family-names: Sobrenome do aluno 6
-    given-names: Nome do aluno 6
+  - family-names: de Lara
+    given-names: Iago
+  - family-names: Heleno
+    given-names: João Vitor
+  - family-names: Máximo
+    given-names: Gabriel
+  - family-names: Henrique
+    given-names: Luan
+  - family-names: Vinhas
+    given-names: Ítale
+  - family-names: Vieira
+    given-names: Pedro
+  - family-names: Garzon
+    given-names: Yago
   - name-suffix: Professor
     affiliation: PUC Minas
-    family-names: Alonso Veloso
-    given-names: Eveline
+    family-names: Hanne Soares de Andrade
+    given-names: Michelle
+  - name-suffix: Professor
+    affiliation: PUC Minas
+    family-names: da Silva 
+    given-names: Luiz Carlos
   - name-suffix: Professor
     affiliation: PUC Minas
     family-names: 
-    given-names: 
+    given-names: Nelson
 keywords:
-  - 
-  - 
-repository-code: 
+  - Eventos
+  - Credenciamento
+  - Funcionários
+repository-code: https://github.com/ICEI-PUC-Minas-PMGES-TI/pmg-es-2026-1-ti3-9577100-serv-in.git
 license: CC-BY-4.0
 version: 1.0.0
-date-released:
+date-released: 2026-07-01
